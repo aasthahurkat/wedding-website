@@ -1,0 +1,84 @@
+// components/CoverBoard.jsx
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import tileData from '../data/tileData';
+
+const CELL = 48;
+const NAME_SHIFT = { x: '65vw', y: '15vh' };
+
+export default function CoverBoard({ access, onAnimationComplete }) {
+  const [play, setPlay] = useState(false);
+  const creamTiles = tileData.filter((t) => !t.highlight);
+  const burgundyTiles = tileData.filter((t) => t.highlight);
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center p-4">
+      <div
+        className="relative"
+        style={{ width: CELL * 12, height: CELL * 12 }}
+      >
+        <AnimatePresence>
+          {!play &&
+            creamTiles.map((t, i) => (
+              <motion.div
+                key={`cream-${i}`}
+                className="scrabble-tile absolute"
+                style={{
+                  top: (t.row - 1) * CELL,
+                  left: (t.col - 1) * CELL,
+                  width: CELL,
+                  height: CELL,
+                }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05, duration: 0.6 }}
+              >
+                {t.letter}
+              </motion.div>
+            ))}
+          <motion.div
+            className="absolute"
+            style={{ width: CELL * 12, height: CELL * 12 }}
+            animate={
+              play
+                ? { x: NAME_SHIFT.x, y: NAME_SHIFT.y }
+                : { x: 0, y: 0 }
+            }
+            transition={{ duration: 0.8, ease: [0.45, 0, 0.2, 1] }}
+            onAnimationComplete={() => {
+              if (play) onAnimationComplete();
+            }}
+          >
+            {burgundyTiles.map((t, i) => (
+              <motion.div
+                key={`burg-${i}`}
+                className="scrabble-tile name-tile absolute"
+                style={{
+                  top: (t.row - 1) * CELL,
+                  left: (t.col - 1) * CELL,
+                  width: CELL,
+                  height: CELL,
+                }}
+                initial={play ? { opacity: 0, y: -20 } : { opacity: 0 }}
+                animate={play ? { opacity: 1, y: 0 } : { opacity: 0 }}
+                transition={{ delay: i * 0.05, duration: 0.6 }}
+              >
+                {t.letter}
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {!play && (
+        <button
+          aria-label="Enter site, play animation"
+          className="enter-btn fixed bottom-8 sm:bottom-20 left-1/2 transform -translate-x-1/2 text-2xl sm:text-3xl"
+          onClick={() => setPlay(true)}
+        >
+          ▶
+        </button>
+      )}
+    </div>
+  );
+}
