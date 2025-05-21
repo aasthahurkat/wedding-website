@@ -40,3 +40,5 @@ export default function OutfitsPage({ group }) {
     </div>
   );
 }
+
+OutfitsPage.noLayout = true;
