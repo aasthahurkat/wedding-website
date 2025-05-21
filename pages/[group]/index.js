@@ -130,7 +130,7 @@ We’ve built this site with love (and a little nerdy fun)—you might spot bits
               {/* Right column */}
               <div className="w-1/2">
                 <img
-                  src="/images/welcome-photo.jpg"
+                  src="/images/welcome-photo.JPG"
                   alt="Aastha & Preetesh smiling by the water"
                   className="rounded-lg shadow-lg w-full object-cover aspect-[4/5]"
                 />
