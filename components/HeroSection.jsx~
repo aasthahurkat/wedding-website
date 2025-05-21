@@ -1,0 +1,74 @@
+// components/HeroSection.jsx
+import Navbar from './Navbar';
+import Image from 'next/image';
+import tileData from '../data/tileData';
+import { motion } from 'framer-motion';
+
+const CELL = 48;
+
+export default function HeroSection({ access, onRevealWelcome }) {
+  const burgundyTiles = tileData.filter((t) => t.highlight);
+
+  return (
+    <>
+      {/* Background Image */}
+      <motion.div
+        className="fixed inset-0 -z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Image
+          src="/images/hero-photo.jpg"
+          layout="fill"
+          objectFit="cover"
+          priority
+        />
+      </motion.div>
+
+      {/* Navbar Reveal */}
+      <motion.div
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-30"
+      >
+        <Navbar currentGroup={access} />
+      </motion.div>
+
+      {/* Burgundy Tiles on Hero */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div
+          className="relative"
+          style={{ width: CELL * 12, height: CELL * 12 }}
+        >
+          {burgundyTiles.map((t, i) => (
+            <div
+              key={i}
+              className="scrabble-tile name-tile absolute"
+              style={{
+                top: (t.row - 1) * CELL,
+                left: (t.col - 1) * CELL,
+                width: CELL,
+                height: CELL,
+              }}
+            >
+              {t.letter}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Scroll Hint */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+        <button
+          aria-label="Reveal welcome section"
+          onClick={onRevealWelcome}
+          className="text-3xl animate-bounce"
+        >
+          ↓
+        </button>
+      </div>
+    </>
+  );
+}

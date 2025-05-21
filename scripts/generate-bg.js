@@ -1,0 +1,74 @@
+// scripts/generate-bg.js
+import fs       from 'fs/promises'
+import path     from 'path'
+import sharp    from 'sharp'
+
+// 1) Define your events array (same as data/events.js)
+const events = [
+  { id: "aastha-mehndi" },
+  { id: "preetesh-mehndi" },
+  { id: "aastha-mamera" },
+  { id: "preetesh-mamera" },
+  { id: "sangeet" },
+  { id: "after-party" },
+  { id: "baraat-phere" },
+  { id: "cocktails-toasts" },
+]
+
+// 2) Folder where your plates live
+const PLATE_DIR = path.resolve(process.cwd(), 'public/images/square-plates')
+
+// 3) Default gradient stops per event (tweak as you like)
+const gradients = {
+  "aastha-mehndi":     ['#f8f4f0','#ffe4c4'],
+  "preetesh-mehndi":   ['#f8f4f0','#f0e68c'],
+  "aastha-mamera":     ['#faf5f0','#fcf0d8'],
+  "preetesh-mamera":   ['#ffe4b5','#d2b48c'],
+  "sangeet":           ['#8B1E3F','#C49C48'],
+  "after-party":       ['#8B0000','#FF4500'],
+  "baraat-phere":      ['#fffaf0','#e3c07b'],
+  "cocktails-toasts":  ['#D35C4E','#FADBD8'],
+}
+
+// 4) Helper to build an SVG radial-gradient
+function makeSVG(width, height, [c1,c2]) {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+      <defs>
+        <radialGradient id="g" cx="50%" cy="50%" r="75%">
+          <stop offset="0%" stop-color="${c1}"/>
+          <stop offset="100%" stop-color="${c2}"/>
+        </radialGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#g)"/>
+    </svg>`
+}
+
+async function ensurePlate(evt) {
+  const outPath = path.join(PLATE_DIR, `${evt.id}.jpg`)
+  try {
+    await fs.access(outPath)
+    console.log(`✔️ Exists: ${evt.id}.jpg`)
+  } catch {
+    console.log(`🖌  Generating: ${evt.id}.jpg`)
+    const [c1,c2] = gradients[evt.id] || ['#ffffff','#eeeeee']
+    const svg = makeSVG(2500, 1000, [c1,c2])
+    await sharp(Buffer.from(svg))
+      .jpeg({ quality: 85 })
+      .toFile(outPath)
+    console.log(`   → Saved ${outPath}`)
+  }
+}
+
+async function run() {
+  await fs.mkdir(PLATE_DIR, { recursive: true })
+  for (const evt of events) {
+    await ensurePlate(evt)
+  }
+  console.log('🎉 All plates are in place!')
+}
+
+run().catch(err => {
+  console.error(err)
+  process.exit(1)
+})
