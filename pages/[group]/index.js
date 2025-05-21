@@ -35,7 +35,7 @@ export default function HomePage() {
           {/* Mobile/Tablet: full-screen hero */}
           <section
             className="md:hidden h-screen bg-center bg-cover"
-            style={{ backgroundImage: "url('/images/welcome-photo.jpg')" }}
+            style={{ backgroundImage: "url('/images/welcome-photo.JPG')" }}
           />
 
           {/* Mobile/Tablet: single-column, centered welcome */}
