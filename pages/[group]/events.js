@@ -52,7 +52,7 @@ const sortedDates = Object
 
         <div className="text-center mb-8">
           <a
-            href="/${group}/rsvp"
+            href={`/${group}/rsvp`}
             className="inline-block px-6 py-2 bg-burgundy text-ivory rounded hover:bg-burgundy/90 transition focus:outline-none focus:ring-2 focus:ring-burgundy"
           >
             RSVP now!
