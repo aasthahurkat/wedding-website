@@ -60,7 +60,7 @@ export default function FAQPage({ group }) {
 
         {/* Event Timeline & Venues */}
         <section>
-          <h2 className="text-2xl font-semibold text-navy mb-4">Getting Around</h2>
+          <h2 className="text-2xl font-semibold text-navy mb-4">Event Timeline & Venues</h2>
           <dl className="space-y-6">
             <div>
               <dt className="font-medium">Where and when is each ceremony?</dt>
