@@ -75,12 +75,6 @@ export default function FAQPage({ group }) {
   </a>. For exact dates and times, check out our Events page.
               </dd>
             </div>
-            <div>
-              <dt className="font-medium">Can I rent a car or bike?</dt>
-              <dd>
-                Yes—Bounce scooters and Zoomcar rentals are available. Note that traffic can be hectic; international licenses are required for cars.
-              </dd>
-            </div>
           </dl>
         </section>
 
