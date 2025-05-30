@@ -23,36 +23,56 @@ export default function FAQPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      <main className="flex-1 bg-cream py-16 px-4 mx-auto max-w-4xl space-y-12 scroll-py-32">
+      <main className="flex-1 bg-cream pt-24 px-4 mx-auto max-w-4xl space-y-12 scroll-py-32">
         <h1 className="text-3xl font-serif text-navy text-center">FAQs</h1>
 
+
+       {/* RSVP and Invitations */}
+        <section>
+          <h2 className="text-2xl font-semibold text-navy mb-4">RSVP & Invitations</h2>
+          <dl className="space-y-6">
+            <div>
+              <dt className="font-medium font-bold">Do I need to RSVP?</dt>
+              <dd>
+               It’s not mandatory, but it will make it so much easier for us to get a headcount and sort out the logistics and accommodations — so if you could RSVP by <strong>November 15 </strong> on our RSVP page, we’d really appreciate it!
+              </dd>
+            </div>
+          </dl>
+        </section>
         {/* Lodging */}
         <section>
           <h2 className="text-2xl font-semibold text-navy mb-4">Lodging</h2>
           <dl className="space-y-6">
             <div>
-              <dt className="font-medium">Where are the wedding hotels?</dt>
+              <dt className="font-medium">Where can I stay for the wedding dates?</dt>
               <dd>
-                We’ve reserved room blocks at Hotel Sayaji, Lemon Tree, and The Grand Bhagwati. Use code <em>WEDDING25</em> when booking, or email the hotel front desk with our wedding name.
+               Our wedding venue has rooms reserved for family, and we’ve blocked off a nearby property just for our friends. We’ll cover your stay on the nights of December 23 & 24, and there’ll be shuttle service running between the two—so just unpack and relax!
               </dd>
             </div>
             <div>
-              <dt className="font-medium">Are there Airbnb options?</dt>
+              <dt className="font-medium"> What if I’m arriving early or sticking around later—any recs?</dt>
               <dd>
-                Yes—Vijay Nagar and South Tukoganj neighborhoods have great apartments. We recommend checking Superhost listings near city center for easy access to all events.
+                If you need extra nights, our go-to spots are Hotel ShreeMaya or LemonTree, or you can hunt down a cozy Superhost Airbnb in Vijay Nagar or South Tukoganj.
               </dd>
             </div>
           </dl>
         </section>
 
-        {/* Getting Around */}
+        {/* Event Timeline & Venues */}
         <section>
           <h2 className="text-2xl font-semibold text-navy mb-4">Getting Around</h2>
           <dl className="space-y-6">
             <div>
-              <dt className="font-medium">What’s the best local transport?</dt>
+              <dt className="font-medium">Where and when is each ceremony?</dt>
               <dd>
-                Auto‐rickshaws (₹50/km) are fun for short hops; for door-to-door convenience, use Ola or Uber app. Always ask for meter fare on autos or agree on a price beforehand.
+               Except for our December 22nd events, all wedding ceremonies take place at <a
+    href="https://www.google.com/maps/place/Shri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust/@22.6420739,75.8978692,17z/data=!4m17!1m10!3m9!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!2sShri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust!8m2!3d22.64203!4d75.8978915!10e5!14m1!1BCgIYEw!16s%2Fg%2F11h3l5csyj!3m5!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!8m2!3d22.64203!4d75.8978915!16s%2Fg%2F11h3l5csyj?entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-burgundy hover:underline"
+  >
+    Shri Anandam, Maheshwari Jankalyan Trust
+  </a>. For exact dates and times, check out our Events page.
               </dd>
             </div>
             <div>
@@ -64,82 +84,64 @@ export default function FAQPage({ group }) {
           </dl>
         </section>
 
-        {/* Food & Dining */}
-        <section>
-          <h2 className="text-2xl font-semibold text-navy mb-4">Food & Dining</h2>
-          <dl className="space-y-6">
-            <div>
-              <dt className="font-medium">What’s served at the wedding?</dt>
-              <dd>
-                We’ll have a mix of local Indori favorites (poha, jalebi) alongside North Indian and South Indian buffet stations. Vegetarian, vegan, and gluten-free options are clearly marked.
-              </dd>
-            </div>
-            <div>
-              <dt className="font-medium">Where to find local street food?</dt>
-              <dd>
-                Head to Sarafa Bazaar after dark for mouth-watering treats: bhutte ka kees, mohanthal, and garama garam chai. Bring cash and your appetite!
-              </dd>
-            </div>
-          </dl>
-        </section>
-
         {/* Packing & Dress Code */}
         <section>
           <h2 className="text-2xl font-semibold text-navy mb-4">Packing & Dress Code</h2>
           <dl className="space-y-6">
             <div>
-              <dt className="font-medium">What should I wear?</dt>
+              <dt className="font-medium">What should I wear to each event?</dt>
               <dd>
-                Day events are cocktail attire; evening sangeet and reception are traditional Indian dress (lehenga/sherwani welcome!). Comfortable shoes recommended for meerkat‐style dancing.
+                We’ll have a wardrobe planner live soon on our Outfits page—definitely check that for inspo. You don’t have to stick to any theme unless you want to; any lovely Indian outfit you feel great in will work. And if you need a hand picking or tailoring, there’s a spot in the RSVP form to let us know—we can suggest stores and even coordinate quick alterations and delivery so you look and feel your best.
               </dd>
             </div>
             <div>
-              <dt className="font-medium">What about weather?</dt>
+              <dt className="font-medium">What's the weather like in December?</dt>
               <dd>
-                December days are warm (~25°C) with cooler nights (~12°C). Pack a light jacket and layers, plus a compact umbrella just in case.
-              </dd>
-            </div>
-          </dl>
-        </section>
-
-        {/* Culture & Customs */}
-        <section>
-          <h2 className="text-2xl font-semibold text-navy mb-4">Culture & Customs</h2>
-          <dl className="space-y-6">
-            <div>
-              <dt className="font-medium">Can I bring a gift?</dt>
-              <dd>
-                Your presence is the best gift! If you’d like, traditional monetary gifts in an envelope are customary. Please do not bring extravagantly wrapped presents.
-              </dd>
-            </div>
-            <div>
-              <dt className="font-medium">What are the wedding traditions?</dt>
-              <dd>
-                Expect a baraat procession, vibrant mehndi ceremony, and saat phere (seven vows) under a floral mandap. We’ll explain on-site with a program booklet.
+               December in Indore is pretty mild—daytime highs hover around 25 °C (77 °F), while nights dip to about 12 °C (54 °F). Layers are your best friend: a light jacket or shawl for after dark, and maybe a compact umbrella in case of surprise drizzles—though we’re all hoping the clouds sit this one out!🤞 
               </dd>
             </div>
           </dl>
         </section>
 
-        {/* Health & Safety */}
+        {/* Gift Registry & Gifting */}
         <section>
-          <h2 className="text-2xl font-semibold text-navy mb-4">Health & Safety</h2>
+          <h2 className="text-2xl font-semibold text-navy mb-4">Gifts & Registry</h2>
           <dl className="space-y-6">
             <div>
-              <dt className="font-medium">Pharmacies & Clinics</dt>
+              <dt className="font-medium">Do you have a gift registry?</dt>
               <dd>
-                A 24/7 pharmacy is located next to Hotel Sayaji; QuickCare Clinic on AB Road handles walk-ins. Always carry bottled water and hand sanitizer.
+                We’ll be adding a Registry page to our website soon—feel free to browse once it’s live, but honestly, having you there in person is the best gift we could ask for!
               </dd>
             </div>
             <div>
-              <dt className="font-medium">Emergency Contacts</dt>
+              <dt className="font-medium">Where should I send gifts?</dt>
               <dd>
-                Hosts: Aastha (📞 +91 98765 43210), Preetesh (📞 +91 91234 56789), Wedding Planner: Sunita (📞 +91 77665 44332).
+<p>Your presence at our wedding is truly the greatest gift we could ask for!</p>
+  <p>If you’d like to send something extra, we’d love to have it delivered to our Seattle apartment (just drop us a line for the address) or to our parents’ homes in Indore:</p>
+
+  <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 mt-4">
+    <div>
+      <strong>Aastha Hurkat</strong><br/>
+      c/o Ramniwas Hurkat<br/>
+      132 Hilink City <br/>
+      Chhota Bangarda Road, Indore 452005
+    </div>
+    <div>
+      <strong>Preetesh Patodi</strong><br/>
+      c/o Neetesh Patodi<br/>
+      111 Ramchandra Nagar<br/>
+      Airport Road, Indore 452005
+    </div>
+  </div>
+
+  <p className="mt-4">Of course, if you’d rather bring it by hand at the celebration, that’s wonderful too—deliveries just help us keep everything organized!</p>
+
               </dd>
             </div>
           </dl>
         </section>
       </main>
+<div className="h-12" /> 
       <Footer />
     </div>
   );
