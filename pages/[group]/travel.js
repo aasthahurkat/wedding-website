@@ -44,7 +44,7 @@ export default function TravelPage({ group }) {
     },
     {
       id: 3,
-      description: "It’s so rare to have all your friends from different chapters of our lives in one place, and with the wedding just before New Year’s, we couldn’t think of a better time to keep the celebration rolling. We’ll be in Goa from <strong>December 28th, 2025 to January 2nd, 2026</strong> unwinding and shaking off wedding fatigue—hope you’ll join us to ring in the New Year together!",
+      description: "It’s so rare to have all our friends from different chapters of our lives in one place, and with the wedding just before New Year’s, we couldn’t think of a better time to keep the celebration rolling. We’ll be in Goa from <strong>December 28th, 2025 to January 2nd, 2026</strong> unwinding and shaking off wedding fatigue—hope you’ll join us to ring in the New Year together!",
       content: [
         { sub: "Stay & Travel", text: `We are heading from Indore to Goa on December 28th. We'll probably book a stay in South Goa. Feel free to book your travel and stay at your convenience. We will update this page with more information from our trip so that we can coordinate. Here's a 
     <a
