@@ -75,8 +75,8 @@ export default function TravelPage({ group }) {
 
         {/* Tabs */}
         <div className="flex justify-center space-x-4 mb-8">
-          <button onClick={() => setSelected("goa")} className={tabClasses("goa")}>New Years' Trip</button>
           <button onClick={() => setSelected("visitors")} className={tabClasses("visitors")}>Visiting Indore</button>
+          <button onClick={() => setSelected("goa")} className={tabClasses("goa")}>New Years' Trip</button>
         </div>
 
         {/* Goa Section */}
