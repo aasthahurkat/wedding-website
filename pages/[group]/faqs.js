@@ -34,7 +34,7 @@ export default function FAQPage({ group }) {
             <div>
               <dt className="font-medium font-bold">Do I need to RSVP?</dt>
               <dd>
-               It’s not mandatory, but it will make it so much easier for us to get a headcount and sort out the logistics and accommodations — so if you could RSVP by <strong>November 15 </strong> on our RSVP page, we’d really appreciate it!
+               It’s not mandatory, but it will make it so much easier for us to get a headcount and sort out the logistics and accommodations — so if you could RSVP by <strong>October 15 </strong> on our RSVP page, we’d really appreciate it!
               </dd>
             </div>
           </dl>
