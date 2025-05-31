@@ -36,7 +36,7 @@ export default function TravelPage({ group }) {
       title: "In-City Essentials",
       description: "Settling in? Thrive in Indore city center with:",
       content: [
-        { sub: "Accommodation", text: "Hotel Sayaji, Lemon Tree, or The Grand Bhagwati (use code WEDDING25); Airbnb in Vijay Nagar for a local vibe." },
+        { sub: "Accommodation", text: "Hotel Shreemaya, Lemon Tree,; Airbnb in South Tukoganj for a local vibe." },
         { sub: "Stay Connected", text: "Its Grab an Airtel or Jio SIM (₹299 for 30GB + unlimited calls) at the airport or local kiosks. You could also use Airalo app to get an esim." },
         { sub: "Currency & Apps", text: "Best Forex at City Union Bank or Ratlam Road; apps: Zomato/Swiggy, Ola/Uber, Paytm/Google Pay." },
         { sub: "Local Highlights", text: "Rajwada Palace, Kanch Mandir, Sarafa Bazaar (night food street), Patalpani Falls." }
