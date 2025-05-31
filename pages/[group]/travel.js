@@ -25,7 +25,7 @@ export default function TravelPage({ group }) {
     {
       id: 1,
       title: "Pre-Trip Prep & Arrival",
-      description: "Before you set off, here’s your survival guide (with a dash of sass): (This is for our friends who are traveling internationally)",
+      description: "Before you set off, here’s your survival guide",
       content: [
         { sub: "Visa & Entry", text: "We’re no immigration experts, so be sure to double-check official government websites for visa details. If you need a formal letter or printed invitation to make things easier, just holler—we’ve got you covered!" },
        { sub: "Getting to Indore", text: "Fly into Mumbai (BOM) or Delhi (DEL) and catch a quick domestic flight to Indore (IDR). Once you touch down, you can grab an Uber or Ola, or give us a heads-up and we’ll arrange a pickup if that’s easier." },
