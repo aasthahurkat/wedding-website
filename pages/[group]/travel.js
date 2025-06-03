@@ -117,7 +117,7 @@ export default function TravelPage({ group }) {
         {selected === "goa" && (
           <section>
             <img
-              src="/images/sized-plates/goa-plate.PNG"
+              src="/images/sized-plates/goa-plate.png"
               alt="Goa plate"
               className="w-40 mx-auto mb-2"
             />
