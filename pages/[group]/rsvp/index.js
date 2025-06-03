@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ACCESS_GROUPS } from "../../../data/accessGroups";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
+import { supabase } from "../../../lib/supabaseClient";
 
 export async function getStaticPaths() {
   return {
@@ -29,39 +30,72 @@ export async function getStaticProps({ params }) {
 function RSVPPage({ group }) {
   const router = useRouter();
   const [form, setForm] = useState({
+    name: "",
+    email: "",
     attending: "",
+    needsPickup: "",
     arrival: "",
     returnDate: "",
     guest: "",
     outfitHelp: "",
     whatsappNumber: "",
-    message: "",
   });
 
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!group) {
       console.error("Group is undefined!");
       return;
     }
 
-    const normalizedGroup = group.toLowerCase();
-    if (form.attending === "yes") {
-      router.push(`/${normalizedGroup}/rsvp/thankyou`);
-    } else {
-      router.push(`/${normalizedGroup}/rsvp/thankyou-missyou`);
+    if (form.attending === "yes" && !form.email) {
+      alert("Please enter your email.");
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.from("rsvps").insert([
+        {
+          name: form.name,
+          email: form.attending === "yes" ? form.email : null,
+          attending: form.attending,
+          needs_pickup: form.needsPickup || null,
+          arrival: form.arrival || null,
+          return_date: form.returnDate || null,
+          guest: form.guest || null,
+          outfit_help: form.outfitHelp || null,
+          whatsapp_number: form.whatsappNumber || null,
+          group: group,
+        },
+      ]);
+
+      if (error) {
+        console.error("Supabase insert error:", error);
+        alert(
+          "Sorry, there was a problem submitting your RSVP. Please try again."
+        );
+        return;
+      }
+
+      if (form.attending === "yes") {
+        router.push(`/${group}/rsvp/thankyou`);
+      } else {
+        router.push(`/${group}/rsvp/thankyou-missyou`);
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      alert("Sorry, there was a problem submitting your RSVP. Please try again.");
     }
   };
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Navbar */}
       <Navbar currentGroup={group} />
 
-      {/* Main content grows to fill available space */}
       <motion.div
         className="flex-grow bg-gradient-to-b from-ivory to-white py-16 px-4"
         initial={{ opacity: 0 }}
@@ -75,6 +109,19 @@ function RSVPPage({ group }) {
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Name */}
+              <div>
+                <label className="block mb-2 font-medium text-navy">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-saffron"
+                  required
+                />
+              </div>
+
               {/* Will you attend? */}
               <div>
                 <label className="block mb-2 font-medium text-navy">
@@ -98,8 +145,48 @@ function RSVPPage({ group }) {
                 </div>
               </div>
 
-              {/* Arrival & Return Dates */}
+              {/* Email — only if attending is yes */}
               {form.attending === "yes" && (
+                <div>
+                  <label className="block mb-2 font-medium text-navy">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    className="w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-saffron"
+                    required
+                  />
+                </div>
+              )}
+
+              {/* Pickup required? */}
+              {form.attending === "yes" && (
+                <div>
+                  <label className="block mb-2 font-medium text-navy">
+                    Do you require pickup and drop-off from airport or railway station?
+                  </label>
+                  <div className="flex space-x-6">
+                    {["yes", "no"].map((opt) => (
+                      <label key={opt} className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          name="needsPickup"
+                          value={opt}
+                          checked={form.needsPickup === opt}
+                          onChange={handleChange}
+                          className="form-radio text-saffron"
+                          required
+                        />
+                        <span className="capitalize text-navy">{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Arrival & Return Dates */}
+              {form.attending === "yes" && form.needsPickup === "yes" && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block mb-1 font-medium text-navy">
@@ -197,7 +284,7 @@ function RSVPPage({ group }) {
                 </div>
               )}
 
-              {/* Submit Button */}
+        {/* Submit Button */}
               <div>
                 <button
                   type="submit"
@@ -212,13 +299,10 @@ function RSVPPage({ group }) {
         </section>
       </motion.div>
 
-      {/* Footer stays at bottom thanks to flex layout */}
       <Footer />
     </div>
   );
 }
 
-// mark to skip your global layout wrapper
 RSVPPage.noLayout = true;
-
 export default RSVPPage;

@@ -1,4 +1,4 @@
-// File: pages/[group]/events/index.js
+// File: pages/[group]/events.js
 import Image from "next/image";
 import { Clock, MapPin } from 'lucide-react';
 import React, { useState } from 'react';
