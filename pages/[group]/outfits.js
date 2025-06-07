@@ -28,13 +28,13 @@ const outfitData = {
   subtitle: 'Help us make our celebration picture-perfect!',
   sections: [
     {
-      event: 'Mehendi & Haldi',
+      event: 'Mehendi',
       colors: ['Bright yellows', 'Oranges', 'Marigold', 'Vibrant greens'],
       description: 'Think festive and fun! Bright colors that celebrate the joy of the occasion.',
       notes: 'Comfortable fabrics recommended as these are outdoor ceremonies.',
     },
     {
-      event: 'Sangam & Evening Events',
+      event: 'Evening Events',
       colors: ['Rich jewel tones', 'Deep blues', 'Emerald', 'Royal purple'],
       description: 'Elegant and sophisticated. Think cocktail party meets Indian celebration.',
       notes: 'Semi-formal to formal Indian or Western attire welcome.',
@@ -46,6 +46,8 @@ const outfitData = {
       notes: 'Please avoid white, black, or very light colors for the main ceremony.',
     },
   ],
+  
+  storesSummary: "If you're looking to shop in Indore, here are some wonderful stores that offer beautiful traditional and contemporary Indian wear for wedding celebrations:",
   
   stores: [
     {
@@ -84,6 +86,30 @@ const outfitData = {
       note: 'Established family business since 1960',
     },
   ],
+  
+  onlineStores: [
+    {
+      name: 'Lashkaraa',
+      website: 'lashkaraa.com',
+      specialty: 'Designer ethnic wear for men and women',
+      note: 'Beautiful collection of lehengas, sarees, and sherwanis',
+    },
+    {
+      name: 'Aza Fashion',
+      website: 'azafashions.com', 
+      specialty: 'Contemporary Indian wear',
+      note: 'Trendy fusion pieces and traditional outfits',
+    },
+    {
+      name: 'Kalki Fashion',
+      website: 'kalkifashion.com',
+      specialty: 'Wedding and Festive wear',
+      note: 'Luxurious designs perfect for wedding celebrations',
+    },
+  ],
+  
+  rentalsSummary: "If you don't want to purchase multiple outfits for the different wedding celebrations, rental is definitely the way to go! It's a fantastic option that lets you wear stunning designer pieces without the commitment of buying. Here are some wonderful places that some of our friends have recommended for rental outfits:",
+  
   rentals: [
     {
       name: 'Rent It Bae Indore',
@@ -137,83 +163,155 @@ export default function OutfitsPage({ group }) {
             </p>
           </div>
 
-          {/* Outfit Sections */}
-          <div className="space-y-8">
-            {outfitData.sections.map((section, index) => (
-              <div
-                key={index}
-                className="bg-ivory rounded-lg shadow-lg p-4 sm:p-6 border border-neutral/20"
-              >
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex-shrink-0">
-                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-burgundy" />
-                  </div>
-                  <div className="flex-grow">
-                    <h3 className="text-lg sm:text-xl font-serif text-navy mb-3">
+          {/* SECTION 1: DRESS CODE */}
+          <div className="mb-16">
+            {/* Section Header */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-burgundy/10 rounded-full mb-4">
+                <Sparkles className="w-8 h-8 text-burgundy" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-serif text-navy mb-2">Dress Code</h2>
+              <div className="w-24 h-1 bg-burgundy mx-auto mb-4"></div>
+              <p className="text-navy/70 max-w-lg mx-auto">
+                Here's what to wear for each celebration to look your absolute best!
+              </p>
+            </div>
+
+            {/* Outfit Cards */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {outfitData.sections.map((section, index) => (
+                <div
+                  key={index}
+                  className="bg-ivory rounded-xl shadow-lg p-6 border border-neutral/20 hover:shadow-xl transition-shadow"
+                >
+                  <div className="text-center mb-4">
+                    <h3 className="text-xl font-serif text-navy mb-2">
                       {section.event}
                     </h3>
-                    <p className="text-navy/80 mb-4">{section.description}</p>
-
-                    <div className="mb-4">
-                      <h4 className="font-medium text-navy mb-2">Recommended Colors:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {section.colors.map((color, idx) => (
-                          <span
-                            key={idx}
-                            className="px-3 py-1 bg-burgundy/10 text-burgundy rounded-full text-sm"
-                          >
-                            {color}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <p className="text-navy/60 text-sm italic">{section.notes}</p>
+                    <p className="text-navy/80 text-sm mb-4">{section.description}</p>
                   </div>
+
+                  <div className="mb-4">
+                    <h4 className="font-medium text-navy mb-3 text-center">Recommended Colors</h4>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {section.colors.map((color, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-burgundy/15 text-burgundy rounded-full text-sm font-medium"
+                        >
+                          {color}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <p className="text-navy/60 text-xs italic text-center bg-neutral/5 p-3 rounded-lg">
+                    {section.notes}
+                  </p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* Store Recommendations (for friends only) */}
+          {/* SECTION 2: SHOPPING RECOMMENDATIONS (for friends only) */}
           {current === 'friends' && (
-            <div className="mt-8 sm:mt-12">
-              <h2 className="text-xl sm:text-2xl font-serif text-navy text-center mb-6 sm:mb-8 px-4">
-                Shopping Recommendations in Indore
-              </h2>
-              <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {outfitData.stores.map((store, index) => (
-                  <div
-                    key={index}
-                    className="bg-ivory rounded-lg shadow-lg p-6 border border-neutral/20"
-                  >
-                    <h3 className="text-lg font-serif text-navy mb-2">{store.name}</h3>
-                    <p className="text-burgundy text-sm font-medium mb-2">{store.type}</p>
-                    <p className="text-navy/70 text-sm mb-2">📍 {store.location}</p>
-                    <p className="text-navy/80 text-sm mb-3">{store.specialty}</p>
-                    <p className="text-navy/60 text-xs italic">{store.note}</p>
-                  </div>
-                ))}
+            <div className="mb-16">
+              {/* Section Header */}
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-burgundy/10 rounded-full mb-4">
+                  <svg className="w-8 h-8 text-burgundy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-serif text-navy mb-2">Shopping Guide</h2>
+                <div className="w-24 h-1 bg-burgundy mx-auto mb-4"></div>
+                <div className="bg-burgundy/5 rounded-lg p-6 max-w-4xl mx-auto">
+                  <p className="text-navy/80 text-center leading-relaxed">
+                    {outfitData.storesSummary}
+                  </p>
+                </div>
+              </div>
+
+              {/* Physical Stores in Indore */}
+              <div className="mb-12">
+                <div className="flex items-center justify-center mb-6">
+                  <div className="flex-1 h-px bg-burgundy/20"></div>
+                  <h3 className="px-6 text-lg sm:text-xl font-serif text-navy bg-cream">
+                    🏪 Physical Stores in Indore
+                  </h3>
+                  <div className="flex-1 h-px bg-burgundy/20"></div>
+                </div>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {outfitData.stores.map((store, index) => (
+                    <div
+                      key={index}
+                      className="bg-ivory rounded-xl shadow-lg p-6 border border-neutral/20 hover:shadow-xl transition-shadow"
+                    >
+                      <h4 className="text-lg font-serif text-navy mb-2">{store.name}</h4>
+                      <p className="text-burgundy text-sm font-medium mb-2">{store.type}</p>
+                      <p className="text-navy/70 text-sm mb-2">📍 {store.location}</p>
+                      <p className="text-navy/80 text-sm mb-3">{store.specialty}</p>
+                      <p className="text-navy/60 text-xs italic bg-neutral/5 p-3 rounded-lg">{store.note}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Online Stores */}
+              <div>
+                <div className="flex items-center justify-center mb-6">
+                  <div className="flex-1 h-px bg-burgundy/20"></div>
+                  <h3 className="px-6 text-lg sm:text-xl font-serif text-navy bg-cream">
+                    🌐 Online Shopping Portals
+                  </h3>
+                  <div className="flex-1 h-px bg-burgundy/20"></div>
+                </div>
+                <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3">
+                  {outfitData.onlineStores.map((store, index) => (
+                    <div
+                      key={index}
+                      className="bg-ivory rounded-xl shadow-lg p-6 border border-neutral/20 hover:shadow-xl transition-shadow"
+                    >
+                      <h4 className="text-lg font-serif text-navy mb-2">{store.name}</h4>
+                      <p className="text-burgundy text-sm font-medium mb-2">🌐 {store.website}</p>
+                      <p className="text-navy/80 text-sm mb-3">{store.specialty}</p>
+                      <p className="text-navy/60 text-xs italic bg-neutral/5 p-3 rounded-lg">{store.note}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
-          {/* Rental Options (for friends only) */}
+          {/* SECTION 3: RENTAL OPTIONS (for friends only) */}
           {current === 'friends' && (
-            <div className="mt-8 sm:mt-12">
-              <h2 className="text-xl sm:text-2xl font-serif text-navy text-center mb-6 sm:mb-8 px-4">
-                Rental Options in Indore
-              </h2>
-              <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
+            <div className="mb-16">
+              {/* Section Header */}
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-burgundy/10 rounded-full mb-4">
+                  <svg className="w-8 h-8 text-burgundy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-serif text-navy mb-2">Rental Options</h2>
+                <div className="w-24 h-1 bg-burgundy mx-auto mb-4"></div>
+                <div className="bg-burgundy/5 rounded-lg p-6 max-w-4xl mx-auto">
+                  <p className="text-navy/80 text-center leading-relaxed">
+                    {outfitData.rentalsSummary}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
                 {outfitData.rentals.map((rental, index) => (
                   <div
                     key={index}
-                    className="bg-ivory rounded-lg shadow-lg p-6 border border-neutral/20"
+                    className="bg-ivory rounded-xl shadow-lg p-6 border border-neutral/20 hover:shadow-xl transition-shadow"
                   >
                     <h3 className="text-lg font-serif text-navy mb-2">{rental.name}</h3>
                     <p className="text-burgundy text-sm font-medium mb-2">📞 {rental.contact}</p>
                     <p className="text-navy/80 text-sm mb-3">{rental.specialty}</p>
-                    <p className="text-navy/60 text-xs italic">{rental.note}</p>
+                    <p className="text-navy/60 text-xs italic bg-neutral/5 p-3 rounded-lg">{rental.note}</p>
                   </div>
                 ))}
               </div>
