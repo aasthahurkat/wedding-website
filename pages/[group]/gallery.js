@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { supabase } from '../../lib/supabaseClient';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
-import { Upload, Heart, Download, Camera, Trash2 } from 'lucide-react';
+import { Upload, Heart, Download, Camera } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
@@ -240,38 +240,7 @@ export default function GalleryPage({ group }) {
     }
   };
 
-  const deletePhoto = async (photo) => {
-    if (!confirm('Are you sure you want to delete this photo?')) {
-      return;
-    }
 
-    try {
-      // Delete from storage
-      const { error: storageError } = await supabase.storage
-        .from('gallery-photos')
-        .remove([photo.file_path]);
-
-      if (storageError) {
-        console.error('Storage delete error:', storageError);
-        throw storageError;
-      }
-
-      // Delete from database
-      const { error: dbError } = await supabase.from('gallery_photos').delete().eq('id', photo.id);
-
-      if (dbError) {
-        console.error('Database delete error:', dbError);
-        throw dbError;
-      }
-
-      // Refresh photos
-      await fetchPhotos();
-      alert('Photo deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting photo:', error);
-      alert(`Error deleting photo: ${error.message}`);
-    }
-  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -349,7 +318,7 @@ export default function GalleryPage({ group }) {
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity" />
-                  <div className="absolute top-1 sm:top-2 right-1 sm:right-2 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 sm:gap-2">
+                  <div className="absolute top-1 sm:top-2 right-1 sm:right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -359,18 +328,6 @@ export default function GalleryPage({ group }) {
                     >
                       <Download className="w-3 h-3 sm:w-4 sm:h-4 text-navy" />
                     </button>
-                    {/* Only show delete button if uploaded by current group */}
-                    {photo.uploaded_by === group && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deletePhoto(photo);
-                        }}
-                        className="p-1 sm:p-2 bg-red-500/90 rounded-full hover:bg-red-500 transition-colors"
-                      >
-                        <Trash2 className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-                      </button>
-                    )}
                   </div>
                 </div>
               ))}
