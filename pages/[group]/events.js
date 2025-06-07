@@ -4,7 +4,6 @@ import { Clock, MapPin, Download } from 'lucide-react';
 import React, { useState, useMemo, useCallback } from 'react';
 import { events } from '../../data/events';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
-import jsPDF from 'jspdf';
 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
