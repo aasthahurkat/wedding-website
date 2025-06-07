@@ -238,152 +238,168 @@ export default function EventsPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-
+      
       <main className="flex-1 relative bg-cream">
         <div
           className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm"
           aria-hidden="true"
         />
-        <div className="relative z-10 pt-24 pb-12 px-4 max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-8 sm:mb-12">
-            <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-4">Wedding Events</h1>
-            <p className="text-navy/70 max-w-2xl mx-auto text-sm sm:text-base px-4">
-              Join us for these beautiful celebrations as we begin our journey together
-            </p>
+        <div className="relative z-10 pt-24 pb-12 px-4 max-w-7xl mx-auto">
+          <h1 className="text-2xl sm:text-3xl font-serif text-center text-navy mb-2 capitalize">
+            Wedding Festivities!
+          </h1>
+          <p className="text-center text-navy/70 mb-4">
+            We're so excited for you to join our wedding festivities! <br /> Below you will find the
+            when and where for each celebration—just flip any plate to dive into all the details.
+          </p>
 
-            {/* Download PDF Button */}
-            <div className="mt-6">
-              <button
-                onClick={generatePDF}
-                disabled={isGeneratingPDF}
-                className="inline-flex items-center px-6 py-3 bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 transition-colors disabled:opacity-50 text-sm sm:text-base"
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+            {upper === 'FRIENDS' && (
+              <a
+                href={`/${group}/rsvp`}
+                className="inline-block px-6 py-2 bg-burgundy text-ivory rounded hover:bg-burgundy/90 transition focus:outline-none focus:ring-2 focus:ring-burgundy"
               >
-                <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                {isGeneratingPDF ? 'Generating PDF...' : 'Download Schedule'}
-              </button>
-            </div>
+                RSVP now!
+              </a>
+            )}
+
+            <button
+              onClick={generatePDF}
+              disabled={isGeneratingPDF}
+              className="inline-flex items-center gap-2 px-6 py-2 bg-burgundy text-ivory rounded hover:bg-burgundy/90 transition focus:outline-none focus:ring-2 focus:ring-burgundy disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isGeneratingPDF ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ivory"></div>
+                  <span>Generating...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4" />
+                  <span>Download Schedule</span>
+                </>
+              )}
+            </button>
           </div>
 
-          {/* Events by Date */}
-          <div className="space-y-8 sm:space-y-12">
-            {sortedDates.map((date) => (
-              <DateSection 
-                key={date} 
-                date={date} 
-                events={grouped[date]} 
-                flippedId={flippedId}
-                setFlippedId={setFlippedId}
-              />
-            ))}
-          </div>
+          {sortedDates.map((date) => (
+            <section key={date} className="mb-8 sm:mb-12">
+              <h2 className="text-xl sm:text-2xl font-semibold text-navy mb-4 text-center">
+                {new Date(date + 'T00:00').toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </h2>
+              <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {grouped[date].map((evt) => (
+                  <EventCard
+                    key={evt.id}
+                    evt={evt}
+                    isFlipped={flippedId === evt.id}
+                    onFlip={() => setFlippedId(flippedId === evt.id ? null : evt.id)}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+
+          {sortedDates.length === 0 && (
+            <p className="text-center text-sm text-navy/70">No events available for this group.</p>
+          )}
         </div>
       </main>
-
       <Footer />
     </div>
   );
 }
 
-// Memoized DateSection component for better performance
-const DateSection = React.memo(({ date, events, flippedId, setFlippedId }) => {
-  const dateObj = new Date(date + 'T00:00');
-  const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
-  const monthDay = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-
-  return (
-    <div>
-      {/* Date Header */}
-      <div className="text-center mb-6 sm:mb-8">
-        <h2 className="text-xl sm:text-2xl font-serif text-burgundy mb-2">
-          {dayName}
-        </h2>
-        <p className="text-navy/80 text-lg">{monthDay}</p>
-      </div>
-
-      {/* Events for this date */}
-      <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
-        {events.map((evt) => (
-          <EventCard
-            key={evt.id}
-            evt={evt}
-            isFlipped={flippedId === evt.id}
-            onFlip={setFlippedId}
-          />
-        ))}
-      </div>
-    </div>
-  );
-});
-
-DateSection.displayName = 'DateSection';
-
 // Memoized EventCard component for better performance
 const EventCard = React.memo(({ evt, isFlipped, onFlip }) => {
-  const handleFlip = useCallback(() => {
-    onFlip(isFlipped ? null : evt.id);
-  }, [isFlipped, evt.id, onFlip]);
+  const cardStyle = {
+    width: '100%',
+    paddingBottom: '50%',
+    position: 'relative',
+    perspective: '1000px',
+    cursor: 'pointer',
+  };
+
+  const panelStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    transformStyle: 'preserve-3d',
+    transition: 'transform 0.6s ease',
+    transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+  };
+
+  const faceStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backfaceVisibility: 'hidden',
+    borderRadius: '0.5rem',
+    overflow: 'hidden',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+  };
 
   return (
-    <div className="relative h-64 sm:h-72 perspective-1000">
-      <div
-        className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${
-          isFlipped ? 'rotate-y-180' : ''
-        }`}
-        onClick={handleFlip}
-      >
-        {/* Front of card */}
-        <div className="absolute inset-0 backface-hidden bg-ivory rounded-lg shadow-lg border border-neutral/20 p-4 sm:p-6">
-          <div className="h-full flex flex-col">
-            <div className="flex-grow">
-              <h3 className="text-lg sm:text-xl font-serif text-navy mb-2 sm:mb-3">
-                {evt.title}
-              </h3>
-              <div className="space-y-2 text-sm sm:text-base">
-                <div className="flex items-center text-navy/80">
-                  <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
-                  <span>{evt.time}</span>
-                </div>
-                <div className="flex items-start text-navy/80">
-                  <MapPin className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>{evt.location}</span>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 text-center">
-              <span className="text-xs text-navy/60">Tap for details</span>
-            </div>
-          </div>
+    <div
+      className="w-full"
+      style={cardStyle}
+      onClick={onFlip}
+      role="button"
+      aria-label={isFlipped ? `Show front of ${evt.title}` : `Show details of ${evt.title}`}
+    >
+      <div style={panelStyle}>
+        {/* Front Face */}
+        <div style={faceStyle}>
+          <Image
+            src={`/images/named-plates/stretched_${evt.id}.png`}
+            alt={evt.title}
+            fill
+            className="object-cover"
+            quality={75}
+            loading="lazy"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"></div>
         </div>
 
-        {/* Back of card */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180 bg-burgundy/10 rounded-lg shadow-lg border border-burgundy/20 p-4 sm:p-6">
-          <div className="h-full flex flex-col">
-            <h3 className="text-lg sm:text-xl font-serif text-navy mb-3 sm:mb-4">
-              {evt.title}
-            </h3>
-            <div className="flex-grow">
-              <p className="text-navy/80 text-sm sm:text-base leading-relaxed">
-                {evt.description}
-              </p>
-            </div>
-            {evt.outfits && evt.outfits.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-burgundy/20">
-                <h4 className="font-medium text-navy text-sm mb-2">Suggested Attire:</h4>
-                <div className="flex flex-wrap gap-1">
-                  {evt.outfits.map((outfit, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2 py-1 bg-burgundy/20 text-burgundy rounded text-xs"
+        {/* Back Face */}
+        <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: '#F7F2E9' }}>
+          <div className="relative h-full p-4 sm:p-6">
+            <div className="flex flex-col justify-center h-full">
+              <h3 className="text-lg sm:text-xl font-semibold text-navy mb-3">{evt.title}</h3>
+
+              {/* Time & Location Info */}
+              <div className="space-y-2 mb-4 text-sm">
+                {evt.time && (
+                  <div className="flex items-center gap-2 text-navy/90">
+                    <Clock className="w-4 h-4 text-burgundy flex-shrink-0" />
+                    <span className="font-medium">{evt.time}</span>
+                  </div>
+                )}
+                {evt.location && (
+                  <div className="flex items-center gap-2 text-navy/90">
+                    <MapPin className="w-4 h-4 text-burgundy flex-shrink-0" />
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evt.mapQuery)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="font-medium text-burgundy hover:underline"
                     >
-                      {outfit}
-                    </span>
-                  ))}
-                </div>
+                      {evt.location}
+                    </a>
+                  </div>
+                )}
               </div>
-            )}
-            <div className="mt-4 text-center">
-              <span className="text-xs text-navy/60">Tap to go back</span>
+
+              <p className="text-xs sm:text-sm text-navy/80">{evt.description}</p>
             </div>
           </div>
         </div>
