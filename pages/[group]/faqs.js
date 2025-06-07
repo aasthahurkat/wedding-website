@@ -1,6 +1,6 @@
 // File: pages/[group]/faqs.js
 import React, { useState } from 'react';
-import { HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { HelpCircle, ChevronDown, ChevronUp, Calendar, Gift, Home, Crown } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
@@ -20,7 +20,31 @@ export async function getStaticProps({ params }) {
   return { props: { group } };
 }
 
-// Single FAQ Item component
+// Simple category styling - just for headers
+const categoryStyles = {
+  rsvp: {
+    headerColor: 'text-purple-700',
+    icon: Calendar,
+  },
+  lodging: {
+    headerColor: 'text-blue-700',
+    icon: Home,
+  },
+  events: {
+    headerColor: 'text-amber-700',
+    icon: Calendar,
+  },
+  dressCode: {
+    headerColor: 'text-pink-700',
+    icon: Crown,
+  },
+  gifts: {
+    headerColor: 'text-emerald-700',
+    icon: Gift,
+  }
+};
+
+// Simple FAQ Item component
 function FAQItem({ question, children, isOpen, onToggle }) {
   return (
     <div className="bg-ivory/50 rounded-lg mb-4 border border-neutral/20 shadow-sm hover:shadow-md transition-shadow">
@@ -47,171 +71,283 @@ function FAQItem({ question, children, isOpen, onToggle }) {
   );
 }
 
+// Simple Category Section component
+function CategorySection({ title, category, children, description }) {
+  const style = categoryStyles[category];
+  const IconComponent = style.icon;
+  
+  return (
+    <section className="mb-12">
+      <div className="flex items-center gap-3 mb-6">
+        <IconComponent className={`w-6 h-6 ${style.headerColor}`} />
+        <div>
+          <h2 className={`text-xl font-serif ${style.headerColor}`}>{title}</h2>
+          {description && <p className="text-navy/60 text-sm mt-1">{description}</p>}
+        </div>
+      </div>
+      <div className="space-y-3">
+        {children}
+      </div>
+    </section>
+  );
+}
+
 export default function FAQPage({ group }) {
-  const [openIndex, setOpenIndex] = useState(0); // Open first item by default
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const allFAQs = [
+    // RSVP & Invitations
+    {
+      id: 0,
+      category: 'rsvp',
+      question: "Do I need to RSVP?",
+      content: (
+        <>
+          It's not mandatory, but it will make it so much easier for us to get a headcount and
+          sort out the logistics and accommodations, so if you could RSVP by{' '}
+          <strong>OCTOBER 15</strong> on our RSVP page, we'd really appreciate it!
+        </>
+      )
+    },
+    
+    // Lodging
+    {
+      id: 1,
+      category: 'lodging',
+      question: "Where can I stay for the wedding dates?",
+      content: (
+        <>
+          Our wedding venue has rooms reserved for family, and we've blocked off a nearby
+          property just for our friends. We'll cover your stay on the nights of December 23 &
+          24, and there'll be shuttle service running between the two—so just unpack and relax!
+        </>
+      )
+    },
+    {
+      id: 2,
+      category: 'lodging',
+      question: "What if I'm arriving early or sticking around later—any recs?",
+      content: (
+        <>
+          If you need extra nights, our go-to spots are Hotel ShreeMaya or LemonTree, or you can
+          hunt down a cozy Superhost Airbnb in Vijay Nagar or South Tukoganj.
+        </>
+      )
+    },
+    
+    // Events & Timeline
+    {
+      id: 3,
+      category: 'events',
+      question: "Where and when is each ceremony?",
+      content: (
+        <>
+          Except for our December 22nd events, all wedding ceremonies take place at{' '}
+          <a
+            href="https://www.google.com/maps/place/Shri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust/@22.6420739,75.8978692,17z/data=!4m17!1m10!3m9!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!2sShri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust!8m2!3d22.64203!4d75.8978915!10e5!14m1!1BCgIYEw!16s%2Fg%2F11h3l5csyj!3m5!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!8m2!3d22.64203!4d75.8978915!16s%2Fg%2F11h3l5csyj?entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-burgundy hover:underline"
+          >
+            Shri Anandam, Maheshwari Jankalyan Trust
+          </a>
+          . For exact dates and times, check out our Events page.
+        </>
+      )
+    },
+    
+    // Dress Code & Packing
+    {
+      id: 4,
+      category: 'dressCode',
+      question: "What should I wear to each event?",
+      content: (
+        <>
+          We have a complete wardrobe guide on our Outfits page with event-specific recommendations! 
+          You don't have to stick to any strict theme—any lovely Indian outfit you feel great in will work. 
+          Need help with shopping or tailoring? Let us know in your RSVP and we can suggest stores and 
+          coordinate quick alterations.
+        </>
+      )
+    },
+    {
+      id: 5,
+      category: 'dressCode',
+      question: "What's the weather like in December?",
+      content: (
+        <>
+          December in Indore is pretty mild—daytime highs hover around 25 °C (77 °F), while
+          nights dip to about 12 °C (54 °F). Layers are your best friend: a light jacket or
+          shawl for after dark, and maybe a compact umbrella in case of surprise drizzles—though
+          we're all hoping the clouds sit this one out!🤞
+        </>
+      )
+    },
+    
+    // Gifts & Registry
+    {
+      id: 6,
+      category: 'gifts',
+      question: "Do you have a gift registry?",
+      content: (
+        <>
+          We'll be adding a Registry page to our website soon—feel free to browse once it's
+          live, but honestly, having you there in person is the best gift we could ask for!
+        </>
+      )
+    },
+    {
+      id: 7,
+      category: 'gifts',
+      question: "Where should I send gifts?",
+      content: (
+        <>
+          <p>Your presence at our wedding is truly the greatest gift we could ask for!</p>
+          <p>
+            If you'd like to send something extra, we'd love to have it delivered to our Seattle
+            apartment (just drop us a line for the address) or to our parents' homes in Indore:
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 mt-4">
+            <div className="bg-white/50 p-3 rounded-lg">
+              <strong>Aastha Hurkat</strong>
+              <br />
+              c/o Ramniwas Hurkat
+              <br />
+              132 Hilink City
+              <br />
+              Chhota Bangarda Road, Indore 452005
+            </div>
+            <div className="bg-white/50 p-3 rounded-lg">
+              <strong>Preetesh Patodi</strong>
+              <br />
+              c/o Neetesh Patodi
+              <br />
+              111 Ramchandra Nagar, Indore 452001
+            </div>
+          </div>
+        </>
+      )
+    }
+  ];
+
+  // Group FAQs by category
+  const faqsByCategory = {
+    rsvp: allFAQs.filter(faq => faq.category === 'rsvp'),
+    lodging: allFAQs.filter(faq => faq.category === 'lodging'),
+    events: allFAQs.filter(faq => faq.category === 'events'),
+    dressCode: allFAQs.filter(faq => faq.category === 'dressCode'),
+    gifts: allFAQs.filter(faq => faq.category === 'gifts')
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      <main className="flex-1 bg-cream pt-24 px-4 mx-auto max-w-4xl scroll-py-32">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <HelpCircle className="w-8 h-8 text-burgundy" />
+      
+      <main className="flex-1 bg-cream pt-24 pb-12 px-4">
+        {/* CONSISTENT WIDTH CONTAINER */}
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-4">
+              <HelpCircle className="w-8 h-8 text-burgundy" />
+            </div>
+            <h1 className="text-3xl font-serif text-navy mb-4">Frequently Asked Questions</h1>
+            <p className="text-navy/70 max-w-2xl mx-auto">
+              Here you'll find answers to the questions we get asked the most about the event and
+              RSVP. If your question isn't here, just reach out — we're always happy to help!
+            </p>
           </div>
-          <h1 className="text-3xl font-serif text-navy mb-4">FAQs</h1>
-        </div>
-        <div className="border-l-2 border-burgundy pl-6 space-y-8">
-          <p className="text-black/80 mt-1">
-            {' '}
-            Here you'll find answers to the questions we get asked the most about the event and
-            RSVP. If your question isn’t here, just reach out — we’re always happy to help!
-          </p>
 
-          {/* RSVP and Invitations */}
-          <section>
-            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">
-              RSVP & Invitations
-            </h2>
-            <FAQItem
-              question="Do I need to RSVP?"
-              isOpen={openIndex === 0}
-              onToggle={() => setOpenIndex(openIndex === 0 ? null : 0)}
+          <div className="border-l-2 border-burgundy pl-6 space-y-8">
+            {/* RSVP & Invitations */}
+            <CategorySection 
+              title="RSVP & Invitations" 
+              category="rsvp"
             >
-              It’s not mandatory, but it will make it so much easier for us to get a headcount and
-              sort out the logistics and accommodations, so if you could RSVP by{' '}
-              <strong>OCTOBER 15</strong> on our RSVP page, we’d really appreciate it!
-            </FAQItem>
-          </section>
+              {faqsByCategory.rsvp.map((faq) => (
+                <FAQItem
+                  key={faq.id}
+                  question={faq.question}
+                  isOpen={openIndex === faq.id}
+                  onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                >
+                  {faq.content}
+                </FAQItem>
+              ))}
+            </CategorySection>
 
-          {/* Lodging */}
-          <section>
-            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">
-              Lodging
-            </h2>
-            <FAQItem
-              question="Where can I stay for the wedding dates?"
-              isOpen={openIndex === 1}
-              onToggle={() => setOpenIndex(openIndex === 1 ? null : 1)}
+            {/* Lodging */}
+            <CategorySection 
+              title="Lodging" 
+              category="lodging"
             >
-              Our wedding venue has rooms reserved for family, and we’ve blocked off a nearby
-              property just for our friends. We’ll cover your stay on the nights of December 23 &
-              24, and there’ll be shuttle service running between the two—so just unpack and relax!
-            </FAQItem>
-            <FAQItem
-              question="What if I’m arriving early or sticking around later—any recs?"
-              isOpen={openIndex === 2}
-              onToggle={() => setOpenIndex(openIndex === 2 ? null : 2)}
-            >
-              If you need extra nights, our go-to spots are Hotel ShreeMaya or LemonTree, or you can
-              hunt down a cozy Superhost Airbnb in Vijay Nagar or South Tukoganj.
-            </FAQItem>
-          </section>
+              {faqsByCategory.lodging.map((faq) => (
+                <FAQItem
+                  key={faq.id}
+                  question={faq.question}
+                  isOpen={openIndex === faq.id}
+                  onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                >
+                  {faq.content}
+                </FAQItem>
+              ))}
+            </CategorySection>
 
-          {/* Event Timeline & Venues */}
-          <section>
-            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">
-              Event Timeline & Venues
-            </h2>
-            <FAQItem
-              question="Where and when is each ceremony?"
-              isOpen={openIndex === 3}
-              onToggle={() => setOpenIndex(openIndex === 3 ? null : 3)}
+            {/* Event Timeline & Venues */}
+            <CategorySection 
+              title="Event Timeline & Venues" 
+              category="events"
             >
-              Except for our December 22nd events, all wedding ceremonies take place at{' '}
-              <a
-                href="https://www.google.com/maps/place/Shri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust/@22.6420739,75.8978692,17z/data=!4m17!1m10!3m9!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!2sShri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust!8m2!3d22.64203!4d75.8978915!10e5!14m1!1BCgIYEw!16s%2Fg%2F11h3l5csyj!3m5!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!8m2!3d22.64203!4d75.8978915!16s%2Fg%2F11h3l5csyj?entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-burgundy hover:underline"
-              >
-                Shri Anandam, Maheshwari Jankalyan Trust
-              </a>
-              . For exact dates and times, check out our Events page.
-            </FAQItem>
-          </section>
+              {faqsByCategory.events.map((faq) => (
+                <FAQItem
+                  key={faq.id}
+                  question={faq.question}
+                  isOpen={openIndex === faq.id}
+                  onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                >
+                  {faq.content}
+                </FAQItem>
+              ))}
+            </CategorySection>
 
-          {/* Packing & Dress Code */}
-          <section>
-            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">
-              Packing & Dress Code
-            </h2>
-            <FAQItem
-              question="What should I wear to each event?"
-              isOpen={openIndex === 4}
-              onToggle={() => setOpenIndex(openIndex === 4 ? null : 4)}
+            {/* Packing & Dress Code */}
+            <CategorySection 
+              title="Packing & Dress Code" 
+              category="dressCode"
             >
-              We’ll have a wardrobe planner live soon on our Outfits page—definitely check that for
-              inspo. You don’t have to stick to any theme unless you want to; any lovely Indian
-              outfit you feel great in will work. And if you need a hand picking or tailoring,
-              there’s a spot in the RSVP form to let us know—we can suggest stores and even
-              coordinate quick alterations and delivery so you look and feel your best.
-            </FAQItem>
-            <FAQItem
-              question="What's the weather like in December?"
-              isOpen={openIndex === 5}
-              onToggle={() => setOpenIndex(openIndex === 5 ? null : 5)}
-            >
-              December in Indore is pretty mild—daytime highs hover around 25 °C (77 °F), while
-              nights dip to about 12 °C (54 °F). Layers are your best friend: a light jacket or
-              shawl for after dark, and maybe a compact umbrella in case of surprise drizzles—though
-              we’re all hoping the clouds sit this one out!🤞
-            </FAQItem>
-          </section>
+              {faqsByCategory.dressCode.map((faq) => (
+                <FAQItem
+                  key={faq.id}
+                  question={faq.question}
+                  isOpen={openIndex === faq.id}
+                  onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                >
+                  {faq.content}
+                </FAQItem>
+              ))}
+            </CategorySection>
 
-          {/* Gift Registry & Gifting */}
-          <section>
-            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">
-              Gifts & Registry
-            </h2>
-            <FAQItem
-              question="Do you have a gift registry?"
-              isOpen={openIndex === 6}
-              onToggle={() => setOpenIndex(openIndex === 6 ? null : 6)}
+            {/* Gift Registry & Gifting */}
+            <CategorySection 
+              title="Gift Registry & Gifting" 
+              category="gifts"
             >
-              We’ll be adding a Registry page to our website soon—feel free to browse once it’s
-              live, but honestly, having you there in person is the best gift we could ask for!
-            </FAQItem>
-            <FAQItem
-              question="Where should I send gifts?"
-              isOpen={openIndex === 7}
-              onToggle={() => setOpenIndex(openIndex === 7 ? null : 7)}
-            >
-              <p>Your presence at our wedding is truly the greatest gift we could ask for!</p>
-              <p>
-                If you’d like to send something extra, we’d love to have it delivered to our Seattle
-                apartment (just drop us a line for the address) or to our parents’ homes in Indore:
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 mt-4">
-                <div>
-                  <strong>Aastha Hurkat</strong>
-                  <br />
-                  c/o Ramniwas Hurkat
-                  <br />
-                  132 Hilink City
-                  <br />
-                  Chhota Bangarda Road, Indore 452005
-                </div>
-                <div>
-                  <strong>Preetesh Patodi</strong>
-                  <br />
-                  c/o Neetesh Patodi
-                  <br />
-                  111 Ramchandra Nagar
-                  <br />
-                  Airport Road, Indore 452005
-                </div>
-              </div>
-
-              <p className="mt-4">
-                Of course, if you’d rather bring it by hand at the celebration, that’s wonderful
-                too—deliveries just help us keep everything organized!
-              </p>
-            </FAQItem>
-          </section>
+              {faqsByCategory.gifts.map((faq) => (
+                <FAQItem
+                  key={faq.id}
+                  question={faq.question}
+                  isOpen={openIndex === faq.id}
+                  onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                >
+                  {faq.content}
+                </FAQItem>
+              ))}
+            </CategorySection>
+          </div>
         </div>
       </main>
-      <div className="h-12" />
+
       <Footer />
     </div>
   );
