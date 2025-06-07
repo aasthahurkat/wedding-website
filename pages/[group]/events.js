@@ -11,6 +11,26 @@ import Footer from '../../components/Footer';
 // Lazy load jsPDF only when needed for better initial page load
 const loadJsPDF = () => import('jspdf');
 
+// Helper function to get the appropriate description based on user group
+const getEventDescription = (event, userGroup) => {
+  if (typeof event.description === 'string') {
+    return event.description;
+  } else if (typeof event.description === 'object' && event.description[userGroup]) {
+    return event.description[userGroup];
+  }
+  return event.description?.FRIENDS || event.description?.BRIDE || event.description?.GROOM || '';
+};
+
+// Helper function to get the appropriate title based on user group
+const getEventTitle = (event, userGroup) => {
+  if (typeof event.title === 'string') {
+    return event.title;
+  } else if (typeof event.title === 'object' && event.title[userGroup]) {
+    return event.title[userGroup];
+  }
+  return event.title?.FRIENDS || event.title?.BRIDE || event.title?.GROOM || '';
+};
+
 export async function getStaticPaths() {
   return {
     paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
@@ -159,8 +179,9 @@ export default function EventsPage({ group }) {
         for (const evt of eventsForDate) {
           // Calculate card height based on content
           let cardHeight = 25; // Base height for name and bottom row
-          if (evt.description) {
-            const wrappedDesc = pdf.splitTextToSize(evt.description, contentWidth - 30);
+          const cardDescription = getEventDescription(evt, upper);
+          if (cardDescription) {
+            const wrappedDesc = pdf.splitTextToSize(cardDescription, contentWidth - 30);
             cardHeight += wrappedDesc.length * 4 + 8;
           }
 
@@ -182,15 +203,16 @@ export default function EventsPage({ group }) {
           pdf.setTextColor(...navy);
           pdf.setFontSize(16);
           pdf.setFont('helvetica', 'bold');
-          pdf.text(evt.title.toUpperCase(), pageWidth / 2, yPosition + 10, { align: 'center' });
+          pdf.text(getEventTitle(evt, upper).toUpperCase(), pageWidth / 2, yPosition + 10, { align: 'center' });
 
           // Event description - centered
           let currentY = yPosition + 10;
-          if (evt.description) {
+          const eventDescription = getEventDescription(evt, upper);
+          if (eventDescription) {
             pdf.setTextColor(...gray);
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
-            const wrappedDesc = pdf.splitTextToSize(evt.description, contentWidth - 30);
+            const wrappedDesc = pdf.splitTextToSize(eventDescription, contentWidth - 30);
             currentY += 8;
             for (const line of wrappedDesc) {
               pdf.text(line, pageWidth / 2, currentY, { align: 'center' });
@@ -249,8 +271,8 @@ export default function EventsPage({ group }) {
             Wedding Festivities!
           </h1>
           <p className="text-center text-navy/70 mb-4">
-            We're so excited for you to join our wedding festivities! <br /> Below you will find the
-            when and where for each celebration—just flip any plate to dive into all the details.
+            Get ready to celebrate with us across multiple magical events! <br /> Below you will find
+            the When and Where for each celebration—just flip any plate to dive into all the details.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
@@ -296,6 +318,7 @@ export default function EventsPage({ group }) {
                   <EventCard
                     key={evt.id}
                     evt={evt}
+                    userGroup={upper}
                     isFlipped={flippedId === evt.id}
                     onFlip={() => setFlippedId(flippedId === evt.id ? null : evt.id)}
                   />
@@ -315,7 +338,7 @@ export default function EventsPage({ group }) {
 }
 
 // Memoized EventCard component for better performance
-const EventCard = React.memo(({ evt, isFlipped, onFlip }) => {
+const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
   const cardStyle = {
     width: '100%',
     paddingBottom: '50%',
@@ -353,14 +376,14 @@ const EventCard = React.memo(({ evt, isFlipped, onFlip }) => {
       style={cardStyle}
       onClick={onFlip}
       role="button"
-      aria-label={isFlipped ? `Show front of ${evt.title}` : `Show details of ${evt.title}`}
+      aria-label={isFlipped ? `Show front of ${getEventTitle(evt, userGroup)}` : `Show details of ${getEventTitle(evt, userGroup)}`}
     >
       <div style={panelStyle}>
         {/* Front Face */}
         <div style={faceStyle}>
           <Image
             src={`/images/named-plates/stretched_${evt.id}.png`}
-            alt={evt.title}
+            alt={getEventTitle(evt, userGroup)}
             fill
             className="object-cover"
             quality={75}
@@ -373,7 +396,7 @@ const EventCard = React.memo(({ evt, isFlipped, onFlip }) => {
         <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: '#F7F2E9' }}>
           <div className="relative h-full p-4 sm:p-6">
             <div className="flex flex-col justify-center h-full">
-              <h3 className="text-lg sm:text-xl font-semibold text-navy mb-3">{evt.title}</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-navy mb-3">{getEventTitle(evt, userGroup)}</h3>
 
               {/* Time & Location Info */}
               <div className="space-y-2 mb-4 text-sm">
@@ -399,7 +422,7 @@ const EventCard = React.memo(({ evt, isFlipped, onFlip }) => {
                 )}
               </div>
 
-              <p className="text-xs sm:text-sm text-navy/80">{evt.description}</p>
+              <p className="text-xs sm:text-sm text-navy/80">{getEventDescription(evt, userGroup)}</p>
             </div>
           </div>
         </div>

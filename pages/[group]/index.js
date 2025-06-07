@@ -50,21 +50,20 @@ export default function HomePage() {
               <h1 className="text-3xl font-serif text-navy">Welcome to our wedding website!</h1>
 
               <div className="prose prose-md mx-auto space-y-4">
-                <p>
+                <div className="space-y-4">
                   We’re so excited to finally share this little corner of the internet with you—a
                   space that holds all the details, emotions, and joyful chaos leading up to our big
                   day. <br />
                   <p>
                     In December 2025, we’re coming home to Indore—where our roots are, where our
-                    families are, and where this beautiful new chapter will begin. Over the next few
-                    days, this site will be your guide to everything: the celebrations, the colors,
+                    families are, and where this beautiful new chapter will begin. This site will be your guide to everything: the celebrations, the colors,
                     the outfits, and a few surprises we’ve planned along the way.{' '}
                   </p>
                   We’ve built this site with love (and a little nerdy fun)—you might spot bits of us
                   in the design, in the themes, and in the words. It’s not just a schedule. It’s our
                   story, shared with the people who matter most.
                   <p> We can’t wait to dance, laugh, cry (a little), and celebrate with you. </p>
-                </p>
+                </div>
 
                 <p className="mt-6">
                   With love,
@@ -104,8 +103,7 @@ export default function HomePage() {
                     big day. <br />
                     <p>
                       In December 2025, we’re coming home to Indore—where our roots are, where our
-                      families are, and where this beautiful new chapter will begin. Over the next
-                      few days, this site will be your guide to everything: the celebrations, the
+                      families are, and where this beautiful new chapter will begin. This site will be your guide to everything: the celebrations, the
                       colors, the outfits, and a few surprises we’ve planned along the way.{' '}
                     </p>
                     We’ve built this site with love (and a little nerdy fun)—you might spot bits of
