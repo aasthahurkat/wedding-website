@@ -145,7 +145,7 @@ export default function TravelPage({ group }) {
                   <img
                     src="/images/sized-plates/goa-plate.png"
                     alt="Goa plate"
-                    className="w-32 mx-auto"
+                    className="w-40 mx-auto"
                   />
                 </div>
                 
