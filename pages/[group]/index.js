@@ -1,22 +1,22 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import { ACCESS_GROUPS } from "../../data/accessGroups";
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
+import { ACCESS_GROUPS } from '../../data/accessGroups';
 
 export default function HomePage() {
   const router = useRouter();
   const { group } = router.query;
-  const access = (group || "").toLowerCase();
+  const access = (group || '').toLowerCase();
   const valid = ACCESS_GROUPS.some((g) => g.key === access);
 
   // Redirect invalid groups to 404
   useEffect(() => {
     if (router.isReady && !valid) {
-      router.replace("/404");
+      router.replace('/404');
     }
-  }, [router.isReady, valid]);
+  }, [router, router.isReady, valid]);
 
   // While loading or invalid, render nothing
   if (!router.isReady || !valid) return null;
@@ -47,21 +47,23 @@ export default function HomePage() {
                 className="w-40 mx-auto mb-4"
               />
 
-              <h1 className="text-3xl font-serif text-navy">
-                Welcome to our wedding website!
-              </h1>
+              <h1 className="text-3xl font-serif text-navy">Welcome to our wedding website!</h1>
 
               <div className="prose prose-md mx-auto space-y-4">
                 <p>
-                 We’re so excited to finally share this little corner of the internet with you—a space that holds all the details, emotions, and joyful chaos leading up to our big day. <br />
-
-<p>In December 2025, we’re coming home to Indore—where our roots are, where our families are, and where this beautiful new chapter will begin.
-
-Over the next few days, this site will be your guide to everything: the celebrations, the colors, the outfits, and a few surprises we’ve planned along the way. </p>
-
-We’ve built this site with love (and a little nerdy fun)—you might spot bits of us in the design, in the themes, and in the words. It’s not just a schedule. It’s our story, shared with the people who matter most.
-
-<p> We can’t wait to dance, laugh, cry (a little), and celebrate with you. </p>
+                  We’re so excited to finally share this little corner of the internet with you—a
+                  space that holds all the details, emotions, and joyful chaos leading up to our big
+                  day. <br />
+                  <p>
+                    In December 2025, we’re coming home to Indore—where our roots are, where our
+                    families are, and where this beautiful new chapter will begin. Over the next few
+                    days, this site will be your guide to everything: the celebrations, the colors,
+                    the outfits, and a few surprises we’ve planned along the way.{' '}
+                  </p>
+                  We’ve built this site with love (and a little nerdy fun)—you might spot bits of us
+                  in the design, in the themes, and in the words. It’s not just a schedule. It’s our
+                  story, shared with the people who matter most.
+                  <p> We can’t wait to dance, laugh, cry (a little), and celebrate with you. </p>
                 </p>
 
                 <p className="mt-6">
@@ -97,25 +99,25 @@ We’ve built this site with love (and a little nerdy fun)—you might spot bits
 
                 <div className="prose prose-lg max-w-[50ch] space-y-4">
                   <p>
-                  
-We’re so excited to finally share this little corner of the internet with you—a space that holds all the details, emotions, and joyful chaos leading up to our big day. <br />
-
-<p>In December 2025, we’re coming home to Indore—where our roots are, where our families are, and where this beautiful new chapter will begin.
-
-Over the next few days, this site will be your guide to everything: the celebrations, the colors, the outfits, and a few surprises we’ve planned along the way. </p>
-
-We’ve built this site with love (and a little nerdy fun)—you might spot bits of us in the design, in the themes, and in the words. It’s not just a schedule. It’s our story, shared with the people who matter most.
-
-<p> We can’t wait to dance, laugh, cry (a little), and celebrate with you. </p>
-
+                    We’re so excited to finally share this little corner of the internet with you—a
+                    space that holds all the details, emotions, and joyful chaos leading up to our
+                    big day. <br />
+                    <p>
+                      In December 2025, we’re coming home to Indore—where our roots are, where our
+                      families are, and where this beautiful new chapter will begin. Over the next
+                      few days, this site will be your guide to everything: the celebrations, the
+                      colors, the outfits, and a few surprises we’ve planned along the way.{' '}
+                    </p>
+                    We’ve built this site with love (and a little nerdy fun)—you might spot bits of
+                    us in the design, in the themes, and in the words. It’s not just a schedule.
+                    It’s our story, shared with the people who matter most.
+                    <p> We can’t wait to dance, laugh, cry (a little), and celebrate with you. </p>
                   </p>
 
                   <p className="mt-6 leading-snug">
                     With love,
                     <br />
-                    Aastha
-                 
-                    &amp; Preetesh
+                    Aastha &amp; Preetesh
                   </p>
                 </div>
 

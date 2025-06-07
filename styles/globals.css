@@ -13,8 +13,8 @@
 /* 3) CSS variables & custom fonts */
 :root {
   --font-playfair: 'Playfair Display', serif;
-  --font-body:    'Montserrat', sans-serif;
---navbar-height: 64px;
+  --font-body: 'Montserrat', sans-serif;
+  --navbar-height: 64px;
   --footer-height: 80px;
 }
 
@@ -29,7 +29,9 @@
 /* 4) Base layer: global resets & typography */
 @layer base {
   /* Global box-sizing reset */
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
@@ -44,7 +46,11 @@
     line-height: 1.2;
     font-size: clamp(1.75rem, 5vw, 2.5rem);
   }
-  h2, h3, h4, h5, h6 {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-header text-navy;
     line-height: 1.25;
   }
@@ -63,8 +69,8 @@
     font-family: 'Roboto Mono', monospace;
     letter-spacing: 0.2em;
     text-shadow:
-      1px 1px 0 rgba(0,0,0,0.5),
-     -1px -1px 0 rgba(255,255,255,0.7);
+      1px 1px 0 rgba(0, 0, 0, 0.5),
+      -1px -1px 0 rgba(255, 255, 255, 0.7);
   }
 
   /* ── Scrabble Tile ── */
@@ -80,7 +86,7 @@
   }
 
   /* ── Name Highlight ── */
-  .name-tile{
+  .name-tile {
     @apply bg-card-red text-white border-red-700;
   }
 
@@ -93,8 +99,14 @@
 
   /* ── Tile-Drop Animation ── */
   @keyframes tileDrop {
-    from { transform: translateY(-40px) rotate(-10deg); opacity: 0; }
-    to   { transform: translateY(0)        rotate(0deg);  opacity: 1; }
+    from {
+      transform: translateY(-40px) rotate(-10deg);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
   }
   .anim--tile-drop {
     opacity: 0;
@@ -126,33 +138,48 @@
     @apply z-50;
   }
   .license-plate-text {
-  font-family: 'DIN Condensed', sans-serif;
-  font-weight: 700;                /* ensure bold cut */
-  font-size: clamp(4rem, 10vw, 6rem);                 /* tweak as needed */
-  line-height: 1;
-  letter-spacing: -0.03em;         /* tighten letters */
-  text-transform: uppercase;
-  color: black;
-  white-space: nowrap;
-  top: calc(50% + 0.6rem);
-  transform: translate(-50%, -50%) scaleX(1);
-  transform-origin: center center;
+    font-family: 'DIN Condensed', sans-serif;
+    font-weight: 700; /* ensure bold cut */
+    font-size: clamp(4rem, 10vw, 6rem); /* tweak as needed */
+    line-height: 1;
+    letter-spacing: -0.03em; /* tighten letters */
+    text-transform: uppercase;
+    color: black;
+    white-space: nowrap;
+    top: calc(50% + 0.6rem);
+    transform: translate(-50%, -50%) scaleX(1);
+    transform-origin: center center;
   }
   .event-meta {
     @apply text-base font-bold text-black flex items-center space-x-1;
   }
 
-.perspective { perspective: 1000px; }
-.preserve-3d { transform-style: preserve-3d; }
-.backface-hidden { backface-visibility: hidden; }
-.transition-flip { transition: transform 0.6s ease; }
-	
+  .perspective {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .transition-flip {
+    transition: transform 0.6s ease;
+  }
 
   /* ── 3D-Flip Utilities ── */
-  .util--perspective { perspective: 1000px; }
-  .util--preserve-3d { transform-style: preserve-3d; }
-  .util--backface-hidden { backface-visibility: hidden; }
-  .util--rotate-y-180 { transform: rotateY(180deg); }
+  .util--perspective {
+    perspective: 1000px;
+  }
+  .util--preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .util--backface-hidden {
+    backface-visibility: hidden;
+  }
+  .util--rotate-y-180 {
+    transform: rotateY(180deg);
+  }
 }
 
 /* 6) Better mobile experience */
@@ -163,12 +190,12 @@
     min-width: 48px;
     touch-action: manipulation;
   }
-  
+
   /* Smooth scrolling */
   .smooth-scroll {
     scroll-behavior: smooth;
   }
-  
+
   /* Better focus indicators */
   .focus-ring:focus-visible {
     outline: 2px solid theme('colors.burgundy');
@@ -181,18 +208,18 @@
   .container {
     @apply px-4;
   }
-  
+
   /* Prevent text size adjustment on orientation change */
   html {
     -webkit-text-size-adjust: 100%;
   }
-  
+
   /* Better button spacing on mobile */
   .mobile-btn {
     @apply py-3 px-6 text-base;
     min-height: 48px;
   }
-  
+
   /* Improved card flipping on mobile */
   .mobile-card-flip {
     min-height: 200px;
@@ -201,7 +228,7 @@
 
 /* 7) Site-wide watercolor overlay behind content */
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   background: url('/images/ivory-watercolor.png') center/cover no-repeat;

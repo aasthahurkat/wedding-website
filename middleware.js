@@ -25,9 +25,9 @@ export function middleware(request) {
   }
 
   // Count requests in the current window
-  const requestCount = Array.from(rateLimit.entries())
-    .filter(([key, timestamp]) => key.startsWith(ip) && timestamp > windowStart)
-    .length;
+  const requestCount = Array.from(rateLimit.entries()).filter(
+    ([key, timestamp]) => key.startsWith(ip) && timestamp > windowStart
+  ).length;
 
   if (requestCount >= MAX_REQUESTS) {
     return new NextResponse(
@@ -60,4 +60,4 @@ export function middleware(request) {
 
 export const config = {
   matcher: '/api/:path*',
-}; 
+};

@@ -33,4 +33,4 @@ export function useGroup() {
     throw new Error('useGroup must be used within a GroupProvider');
   }
   return context;
-} 
+}

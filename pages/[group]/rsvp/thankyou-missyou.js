@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { Heart, MessageCircleHeart } from "lucide-react";
-import Navbar from "../../../components/Navbar";
-import Footer from "../../../components/Footer";
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { Heart, MessageCircleHeart } from 'lucide-react';
+import Navbar from '../../../components/Navbar';
+import Footer from '../../../components/Footer';
 
 export default function ThankYouMissYou() {
   const router = useRouter();
-  const group = (router.query.group || "").toLowerCase();
+  const group = (router.query.group || '').toLowerCase();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -17,20 +17,21 @@ export default function ThankYouMissYou() {
           <div className="mb-6">
             <MessageCircleHeart className="w-8 h-8 text-burgundy mx-auto mb-4" />
           </div>
-          
-          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">
-            We'll Miss You!
-          </h1>
-          
+
+          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">We&apos;ll Miss You!</h1>
+
           <p className="text-navy/80 mb-8 leading-relaxed">
-            Thank you for letting us know. We completely understand and wish you could be there with us.<br />
-            You'll be in our hearts on our special day! 💕
+            Thank you for letting us know. We completely understand and wish you could be there with
+            us.
+            <br />
+            You&apos;ll be in our hearts on our special day! 💕
           </p>
 
           <div className="bg-white rounded-lg shadow-sm border border-neutral/10 p-6 mb-8">
             <h3 className="text-lg font-semibold text-navy mb-3">Stay Connected</h3>
             <p className="text-navy/70 mb-4">
-              Even though you can't join us in person, we'd love to share some moments with you through photos and updates.
+              Even though you can&apos;t join us in person, we&apos;d love to share some moments
+              with you through photos and updates.
             </p>
             <Link
               href={`/${group}/gallery`}
@@ -42,9 +43,7 @@ export default function ThankYouMissYou() {
 
           <div className="mt-8 flex items-center justify-center gap-2 text-navy/60">
             <Heart className="w-4 h-4 text-burgundy" />
-            <span className="text-sm">
-              Sending you love from our celebration! 💕
-            </span>
+            <span className="text-sm">Sending you love from our celebration! 💕</span>
           </div>
         </div>
       </main>

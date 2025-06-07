@@ -1,21 +1,21 @@
 // pages/_app.js
-import Head from "next/head";
-import { AnimatePresence, LayoutGroup } from "framer-motion";
-import { Playfair_Display, Oswald } from "next/font/google";
-import "../styles/globals.css";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Head from 'next/head';
+import { AnimatePresence, LayoutGroup } from 'framer-motion';
+import { Playfair_Display, Oswald } from 'next/font/google';
+import '../styles/globals.css';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { GroupProvider } from '../lib/context/GroupContext';
 
 const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-playfair",
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-playfair',
 });
 const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-oswald",
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-oswald',
 });
 
 export default function MyApp({ Component, pageProps, router }) {
@@ -29,7 +29,7 @@ export default function MyApp({ Component, pageProps, router }) {
         <title>Aastha & Preetesh Wedding</title>
       </Head>
       <div className={`${playfair.variable} ${oswald.variable} font-sans`}>
-        {!noLayout && <Navbar currentGroup={(router.query.group || "").toLowerCase()} />}
+        {!noLayout && <Navbar currentGroup={(router.query.group || '').toLowerCase()} />}
 
         <LayoutGroup id="shared-layout">
           <AnimatePresence mode="sync" initial={false}>

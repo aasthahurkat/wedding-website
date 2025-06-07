@@ -66,17 +66,20 @@ CREATE POLICY "Anyone can delete" ON storage.objects FOR DELETE USING (bucket_id
 ## 4. Supabase Free Tier Limits
 
 Your free tier includes:
+
 - **Database**: Up to 500MB
 - **Storage**: Up to 1GB
 - **Bandwidth**: Up to 2GB per month
 - **API requests**: Up to 50,000 per month
 
 ### For a Wedding Website:
+
 - **Estimated photo storage**: ~20-50 photos at ~2-5MB each = 100-250MB
 - **Should be fine** for your wedding with ~1600 guests and selective photo sharing
 - **Monitor usage** in your Supabase dashboard
 
 ### Alternative Free Options (if needed):
+
 1. **Cloudinary** - 25GB bandwidth, 25,000 transformations/month
 2. **Imgur API** - Unlimited uploads, may have terms restrictions
 3. **Firebase Storage** - 1GB storage, 10GB bandwidth/month
@@ -91,6 +94,7 @@ This happens when RLS is enabled but no policies allow the operation. Make sure 
 ### "TypeError: Failed to fetch" Error:
 
 This usually means:
+
 1. **Environment variables not set**: Check your `.env.local` file
 2. **Bucket doesn't exist**: Create the `gallery-photos` bucket
 3. **Wrong bucket name**: Make sure you're using `gallery-photos` not `wedding-gallery`
@@ -144,10 +148,12 @@ The current setup allows anyone to upload/delete photos. For production, conside
 ## 7. Monitoring Usage
 
 Monitor your Supabase usage at:
+
 - Dashboard → Settings → Usage
 - Set up usage alerts for approaching limits
 
 If you exceed limits, you can:
+
 1. Upgrade to Pro plan ($25/month)
 2. Switch to alternative storage solution
-3. Implement image compression/optimization 
+3. Implement image compression/optimization

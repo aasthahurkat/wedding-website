@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { Heart, PartyPopper } from "lucide-react";
-import Navbar from "../../../components/Navbar";
-import Footer from "../../../components/Footer";
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { Heart, PartyPopper } from 'lucide-react';
+import Navbar from '../../../components/Navbar';
+import Footer from '../../../components/Footer';
 
 export default function ThankYouExcited() {
   const router = useRouter();
-  const group = (router.query.group || "").toLowerCase();
+  const group = (router.query.group || '').toLowerCase();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -17,13 +17,12 @@ export default function ThankYouExcited() {
           <div className="mb-6">
             <PartyPopper className="w-8 h-8 text-burgundy mx-auto mb-4" />
           </div>
-          
-          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">
-            We're So Excited!
-          </h1>
-          
+
+          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">We&apos;re So Excited!</h1>
+
           <p className="text-navy/80 mb-8 leading-relaxed">
-            Thank you for your RSVP! We can't wait to celebrate with you.<br />
+            Thank you for your RSVP! We can&apos;t wait to celebrate with you.
+            <br />
             Here are some next steps to help you prepare for our special day.
           </p>
 
@@ -34,7 +33,7 @@ export default function ThankYouExcited() {
             >
               View Travel Information
             </Link>
-            
+
             <Link
               href={`/${group}/outfits`}
               className="inline-block w-full sm:w-auto px-8 py-3 bg-navy text-white font-medium rounded-lg hover:bg-navy/90 transition-colors ml-0 sm:ml-4"
@@ -46,7 +45,8 @@ export default function ThankYouExcited() {
           <div className="bg-white rounded-lg shadow-sm border border-neutral/10 p-6">
             <h3 className="text-lg font-semibold text-navy mb-3">Stay Connected</h3>
             <p className="text-navy/70 mb-4">
-              We'll send updates about the celebration and any last-minute details via WhatsApp.
+              We&apos;ll send updates about the celebration and any last-minute details via
+              WhatsApp.
             </p>
             <a
               href="https://wa.me/your-whatsapp-group-link"
@@ -60,9 +60,7 @@ export default function ThankYouExcited() {
 
           <div className="mt-8 flex items-center justify-center gap-2 text-navy/60">
             <Heart className="w-4 h-4 text-burgundy" />
-            <span className="text-sm">
-              Can't wait to celebrate with you! 💕
-            </span>
+            <span className="text-sm">Can&apos;t wait to celebrate with you! 💕</span>
           </div>
         </div>
       </main>

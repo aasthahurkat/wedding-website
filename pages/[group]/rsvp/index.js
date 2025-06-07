@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import { motion } from "framer-motion";
-import { Heart, Calendar, Users, MapPin, Phone } from "lucide-react";
-import Navbar from "../../../components/Navbar";
-import Footer from "../../../components/Footer";
-import { ACCESS_GROUPS } from "../../../data/accessGroups";
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import { Heart } from 'lucide-react';
+import Navbar from '../../../components/Navbar';
+import Footer from '../../../components/Footer';
+import { ACCESS_GROUPS } from '../../../data/accessGroups';
 
 export async function getStaticPaths() {
   return {
@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const group = params.group?.toLowerCase() || "";
+  const group = params.group?.toLowerCase() || '';
   if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
     return { notFound: true };
   }
@@ -24,45 +24,42 @@ export async function getStaticProps({ params }) {
 function RSVPPage({ group }) {
   const router = useRouter();
   const [form, setForm] = useState({
-    name: "",
-    attending: "",
-    email: "",
-    needsPickup: "",
-    arrival: "",
-    returnDate: "",
-    guest: "",
-    whatsappNumber: "",
-    outfitHelp: ""
+    name: '',
+    attending: '',
+    email: '',
+    needsPickup: '',
+    arrival: '',
+    returnDate: '',
+    guest: '',
+    whatsappNumber: '',
+    outfitHelp: '',
   });
 
-  const handleChange = (e) =>
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/rsvp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, group }),
       });
 
       const data = await response.json();
       if (!response.ok) {
-        alert(
-          data.message || `HTTP ${response.status}: Something went wrong.`
-        );
+        alert(data.message || `HTTP ${response.status}: Something went wrong.`);
         return;
       }
 
-      if (form.attending === "yes") {
+      if (form.attending === 'yes') {
         router.push(`/${group}/rsvp/thankyou`);
       } else {
         router.push(`/${group}/rsvp/thankyou-missyou`);
       }
     } catch (err) {
-      console.error("Unexpected error:", err);
-      alert("Sorry, there was a problem submitting your RSVP. Please try again.");
+      console.error('Unexpected error:', err);
+      alert('Sorry, there was a problem submitting your RSVP. Please try again.');
     }
   };
 
@@ -72,27 +69,21 @@ function RSVPPage({ group }) {
 
       <main className="flex-1 bg-cream pt-24 pb-12">
         <div className="max-w-2xl mx-auto px-4">
-          
           {/* Header */}
           <div className="text-center mb-8">
             <Heart className="w-8 h-8 text-burgundy mx-auto mb-4" />
-            <h1 className="text-3xl sm:text-4xl font-serif text-navy mb-4">
-              RSVP
-            </h1>
+            <h1 className="text-3xl sm:text-4xl font-serif text-navy mb-4">RSVP</h1>
             <p className="text-navy/70">
-              Please let us know if you'll be joining us for our special day
+              Please let us know if you&apos;ll be joining us for our special day
             </p>
           </div>
 
           {/* Form */}
           <div className="bg-white rounded-lg shadow-sm border border-neutral/10 p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
-              
               {/* Name Field */}
               <div>
-                <label className="block mb-2 font-medium text-navy">
-                  Full Name
-                </label>
+                <label className="block mb-2 font-medium text-navy">Full Name</label>
                 <input
                   type="text"
                   name="name"
@@ -111,15 +102,15 @@ function RSVPPage({ group }) {
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: "yes", label: "Yes, I'll be there!" },
-                    { value: "no", label: "Sorry, I can't make it" }
+                    { value: 'yes', label: 'Yes, I&apos;ll be there!' },
+                    { value: 'no', label: 'Sorry, I can&apos;t make it' },
                   ].map((opt) => (
                     <label
                       key={opt.value}
                       className={`p-3 border-2 rounded-lg cursor-pointer text-center transition-all ${
                         form.attending === opt.value
-                          ? "border-burgundy bg-burgundy/5 text-burgundy"
-                          : "border-neutral/20 hover:border-neutral/40"
+                          ? 'border-burgundy bg-burgundy/5 text-burgundy'
+                          : 'border-neutral/20 hover:border-neutral/40'
                       }`}
                     >
                       <input
@@ -138,18 +129,16 @@ function RSVPPage({ group }) {
               </div>
 
               {/* Conditional fields for "yes" responses */}
-              {form.attending === "yes" && (
+              {form.attending === 'yes' && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
+                  animate={{ opacity: 1, height: 'auto' }}
                   transition={{ duration: 0.3 }}
                   className="space-y-6 pt-4 border-t border-neutral/10"
                 >
                   {/* Email */}
                   <div>
-                    <label className="block mb-2 font-medium text-navy">
-                      Email Address
-                    </label>
+                    <label className="block mb-2 font-medium text-navy">Email Address</label>
                     <input
                       type="email"
                       name="email"
@@ -157,7 +146,7 @@ function RSVPPage({ group }) {
                       onChange={handleChange}
                       className="w-full border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
                       placeholder="your.email@example.com"
-                      required={form.attending === "yes"}
+                      required={form.attending === 'yes'}
                     />
                   </div>
 
@@ -167,13 +156,13 @@ function RSVPPage({ group }) {
                       Do you need pickup and drop-off from airport or railway station?
                     </label>
                     <div className="grid grid-cols-2 gap-3">
-                      {["yes", "no"].map((opt) => (
+                      {['yes', 'no'].map((opt) => (
                         <label
                           key={opt}
                           className={`p-3 border rounded-lg cursor-pointer text-center transition-all ${
                             form.needsPickup === opt
-                              ? "border-navy bg-navy/5 text-navy"
-                              : "border-neutral/20 hover:border-neutral/40"
+                              ? 'border-navy bg-navy/5 text-navy'
+                              : 'border-neutral/20 hover:border-neutral/40'
                           }`}
                         >
                           <input
@@ -192,10 +181,10 @@ function RSVPPage({ group }) {
                   </div>
 
                   {/* Travel Dates */}
-                  {form.needsPickup === "yes" && (
+                  {form.needsPickup === 'yes' && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      animate={{ opacity: 1, height: 'auto' }}
                       transition={{ duration: 0.3 }}
                       className="bg-neutral/5 rounded-lg p-4"
                     >
@@ -237,13 +226,13 @@ function RSVPPage({ group }) {
                       Will you be bringing a guest?
                     </label>
                     <div className="grid grid-cols-2 gap-3">
-                      {["yes", "no"].map((opt) => (
+                      {['yes', 'no'].map((opt) => (
                         <label
                           key={opt}
                           className={`p-3 border rounded-lg cursor-pointer text-center transition-all ${
                             form.guest === opt
-                              ? "border-burgundy bg-burgundy/5 text-burgundy"
-                              : "border-neutral/20 hover:border-neutral/40"
+                              ? 'border-burgundy bg-burgundy/5 text-burgundy'
+                              : 'border-neutral/20 hover:border-neutral/40'
                           }`}
                         >
                           <input
@@ -283,13 +272,13 @@ function RSVPPage({ group }) {
                       Need help with outfit choices?
                     </label>
                     <div className="grid grid-cols-2 gap-3">
-                      {["yes", "no"].map((opt) => (
+                      {['yes', 'no'].map((opt) => (
                         <label
                           key={opt}
                           className={`p-3 border rounded-lg cursor-pointer text-center transition-all ${
                             form.outfitHelp === opt
-                              ? "border-navy bg-navy/5 text-navy"
-                              : "border-neutral/20 hover:border-neutral/40"
+                              ? 'border-navy bg-navy/5 text-navy'
+                              : 'border-neutral/20 hover:border-neutral/40'
                           }`}
                         >
                           <input
@@ -323,9 +312,7 @@ function RSVPPage({ group }) {
 
           {/* Footer note */}
           <div className="text-center mt-6">
-            <p className="text-navy/60 text-sm">
-              We can't wait to celebrate with you! 💕
-            </p>
+            <p className="text-navy/60 text-sm">We can&apos;t wait to celebrate with you! 💕</p>
           </div>
         </div>
       </main>
