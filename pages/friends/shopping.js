@@ -275,31 +275,7 @@ export default function ShoppingPage() {
           </div>
 
           {/* General Tips */}
-          <div className="text-center">
-            <div className="bg-navy/5 rounded-xl p-8 max-w-3xl mx-auto">
-              <h3 className="text-xl font-serif text-navy mb-4">Shopping Tips</h3>
-              <div className="grid md:grid-cols-2 gap-4 text-sm text-navy/80 text-left">
-                <div>
-                  <h4 className="font-medium text-navy mb-2">For Traditional Wear:</h4>
-                  <ul className="space-y-1 text-xs">
-                    <li>• Visit stores with your measurements ready</li>
-                    <li>• Allow 2-3 weeks for alterations</li>
-                    <li>• Try on different silhouettes</li>
-                    <li>• Consider comfort for dancing</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-medium text-navy mb-2">Budget Planning:</h4>
-                  <ul className="space-y-1 text-xs">
-                    <li>• Rentals: ₹2K-25K per outfit</li>
-                    <li>• Purchase: ₹5K-50K+ per outfit</li>
-                    <li>• Don't forget accessories & shoes</li>
-                    <li>• Book alterations in advance</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </main>
 

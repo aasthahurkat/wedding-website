@@ -41,14 +41,11 @@ const getEventDescription = (event, userGroup) => {
 // Event-specific background colors based on their color palettes
 const getEventBackgroundColor = (eventId) => {
   const eventColors = {
-    'aastha-mehndi': 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200',
+    'aastha-mehndi': 'bg-gradient-to-br from-green-50 to-orange-50 border-yellow-200',
     'aastha-mamera': 'bg-gradient-to-br from-pink-50 to-amber-50 border-pink-200',
     'sangeet': 'bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200',
     'after-party': 'bg-gradient-to-br from-blue-50 to-slate-50 border-blue-200',
-    'baraat-welcome': 'bg-gradient-to-br from-yellow-50 to-orange-50 border-orange-200',
-    'baraat': 'bg-gradient-to-br from-red-50 to-amber-50 border-red-200',
-    'phere': 'bg-gradient-to-br from-red-50 to-amber-50 border-red-300',
-    'family-reception': 'bg-gradient-to-br from-red-100 to-amber-50 border-red-200',
+    'phere': 'bg-gradient-to-br from-red-100 to-amber-50 border-red-200',
     'reception': 'bg-gradient-to-br from-blue-50 to-green-50 border-blue-200'
   };
   return eventColors[eventId] || 'bg-ivory border-neutral/20';
@@ -94,21 +91,6 @@ const eventOutfitGuide = {
     description: "Keep the energy alive with late-night music, dancing, and cocktails as we toast to Aastha and Preetesh's new journey together.",
     colors: ['Midnight blues', 'Silver', 'Black with accents']
   },
-  'baraat-welcome': {
-    title: 'Groom Welcome Ceremony',
-    outfit: 'Traditional Indian attire in welcoming, bright colors',
-    description: "A warm welcome ceremony for the groom's procession, where the bride's family receives Preetesh with traditional rituals and celebration.",
-    colors: ['Sunshine yellow', 'Festive orange']
-  },
-  'baraat': {
-    title: 'Groom Procession',
-    outfit: 'Band baaja outfit with ethnic footwear - ready to celebrate!',
-    description: {
-      GROOM: "Your big moment! Experience the groom's joyous procession with music, dancing, and celebration as you arrive to take Aastha to the pheras venue. This is your time to shine!",
-      FRIENDS: "Join Preetesh's epic procession! Experience the groom's joyous baraat with music, dancing, and celebration. Come ready to dance and celebrate as we escort the groom to meet his bride!"
-    },
-    colors: ['Festive reds', 'Golden yellows', 'Royal blues']
-  },
   'phere': {
     title: 'Wedding Ceremony',
     outfit: 'Traditional Indian formal wear - this is the main event!',
@@ -118,12 +100,6 @@ const eventOutfitGuide = {
       FRIENDS: 'Witness the sacred wedding vows (pheras) around the holy fire, where Aastha and Preetesh promise a lifelong partnership. Be part of this beautiful and meaningful ceremony.'
     },
     colors: ['Traditional reds', 'Golds', 'Maroons', 'Rich silks']
-  },
-  'family-reception': {
-    title: 'Family Reception',
-    outfit: 'Elegant traditional wear for intimate family celebration',
-    description: 'An intimate celebration with immediate family and close relatives, featuring traditional blessings, dinner, and heartfelt moments with the newlyweds.',
-    colors: ['Deep burgundy', 'Rich gold']
   },
   'reception': {
     title: 'Friends Reception',
@@ -312,10 +288,18 @@ export default function OutfitsPage({ group }) {
               })}
             </div>
           </div>
+          
+          <div className="space-y-4 mb-8 mt-12">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <p className="text-amber-800 text-sm">
+                <strong>💡 Pro Tip:</strong> Bring extra outfits! Between our main events, expect smaller family rituals, lots of mingling, and those moments when you'll want to swap your heavier outfits for something breezier. Your future self will thank you. 😉
+              </p>
+            </div>
+          </div>
 
           {/* Shopping Guide Call-to-Action */}
           {current === 'friends' && (
-            <div className="text-center">
+            <div className="text-center mt-12">
               <div className="bg-burgundy/10 rounded-xl p-8 max-w-2xl mx-auto">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-burgundy/20 rounded-full mb-4">
                   <ShoppingBag className="w-8 h-8 text-burgundy" />
