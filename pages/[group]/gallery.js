@@ -42,7 +42,7 @@ export default function GalleryPage({ group }) {
       );
 
       // Test database connection
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('gallery_photos')
         .select('count', { count: 'exact', head: true });
 
@@ -54,7 +54,7 @@ export default function GalleryPage({ group }) {
 
         // Test storage bucket access
         try {
-          const { data: files, error: bucketError } = await supabase.storage
+          const { error: bucketError } = await supabase.storage
             .from('gallery-photos')
             .list('', { limit: 1 });
 
@@ -90,7 +90,7 @@ export default function GalleryPage({ group }) {
       });
 
       // Test basic connection first
-      const { data: testData, error: testError } = await supabase
+      const { error: testError } = await supabase
         .from('gallery_photos')
         .select('count', { count: 'exact', head: true });
 
