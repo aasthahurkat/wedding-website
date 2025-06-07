@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { supabase } from '../../lib/supabaseClient';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
-import { Upload, Heart, Download, Camera, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, Download, Camera, ChevronLeft, ChevronRight, X, ExternalLink, Upload } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
@@ -24,43 +24,45 @@ export default function GalleryPage({ group }) {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('unknown');
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPhotos, setTotalPhotos] = useState(0);
-  const [photosPerPage] = useState(20); // Limit photos per page for performance
-  
-  // Simple upload tracking in localStorage (no database changes needed)
-  const [deviceUploadCount, setDeviceUploadCount] = useState(0);
-  const maxUploadsPerDevice = 10;
+  const [photosPerPage] = useState(20);
+
+  // Touch handling for swipe navigation
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   useEffect(() => {
     testConnection();
     fetchPhotos();
-    
-    // Get upload count from localStorage
-    const uploadCount = parseInt(localStorage.getItem('wedding-upload-count') || '0');
-    setDeviceUploadCount(uploadCount);
   }, [currentPage]);
 
-  const incrementUploadCount = () => {
-    const newCount = deviceUploadCount + 1;
-    setDeviceUploadCount(newCount);
-    localStorage.setItem('wedding-upload-count', newCount.toString());
-  };
+  // Keyboard navigation for modal
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (selectedPhotoIndex !== null) {
+        if (e.key === 'Escape') {
+          setSelectedPhotoIndex(null);
+        } else if (e.key === 'ArrowLeft') {
+          navigatePhoto('prev');
+        } else if (e.key === 'ArrowRight') {
+          navigatePhoto('next');
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selectedPhotoIndex, photos]);
 
   const testConnection = async () => {
     try {
       console.log('Testing Supabase connection...');
-      console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set');
-      console.log(
-        'Supabase Anon Key:',
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Not set'
-      );
-
-      // Test database connection
+      
       const { error } = await supabase
         .from('gallery_photos')
         .select('count', { count: 'exact', head: true });
@@ -70,7 +72,7 @@ export default function GalleryPage({ group }) {
         setConnectionStatus(`database_error: ${error.message}`);
       } else {
         console.log('Database connection successful');
-
+        
         // Test storage bucket access
         try {
           const { error: bucketError } = await supabase.storage
@@ -149,18 +151,11 @@ export default function GalleryPage({ group }) {
         return;
       }
 
-      // Check device upload limit
-      if (deviceUploadCount >= maxUploadsPerDevice) {
-        alert(`Upload limit reached! You can only upload ${maxUploadsPerDevice} photos per device to ensure good performance for everyone.`);
-        setUploading(false);
-        return;
-      }
-
       // Limit number of files that can be uploaded at once
-      const filesToUpload = files.slice(0, Math.min(5, maxUploadsPerDevice - deviceUploadCount));
+      const filesToUpload = files.slice(0, 5);
       
       if (filesToUpload.length < files.length) {
-        alert(`Only uploading ${filesToUpload.length} photos due to device limit of ${maxUploadsPerDevice} total uploads.`);
+        alert(`Only uploading ${filesToUpload.length} photos at a time for best performance.`);
       }
 
       for (const file of filesToUpload) {
@@ -218,9 +213,6 @@ export default function GalleryPage({ group }) {
           console.error('Database error:', dbError);
           throw dbError;
         }
-        
-        // Increment local upload count
-        incrementUploadCount();
       }
       
       // Refresh photos
@@ -254,7 +246,53 @@ export default function GalleryPage({ group }) {
     }
   };
 
+  // Touch event handlers for swipe navigation
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && selectedPhotoIndex < photos.length - 1) {
+      // Swipe left = next photo
+      setSelectedPhotoIndex(selectedPhotoIndex + 1);
+    }
+    if (isRightSwipe && selectedPhotoIndex > 0) {
+      // Swipe right = previous photo
+      setSelectedPhotoIndex(selectedPhotoIndex - 1);
+    }
+  };
+
+  const navigatePhoto = (direction) => {
+    if (selectedPhotoIndex === null) return;
+    
+    const newIndex = direction === 'next' 
+      ? Math.min(photos.length - 1, selectedPhotoIndex + 1)
+      : Math.max(0, selectedPhotoIndex - 1);
+    
+    setSelectedPhotoIndex(newIndex);
+  };
+
+  const openModal = (index) => {
+    setSelectedPhotoIndex(index);
+  };
+
+  const closeModal = () => {
+    setSelectedPhotoIndex(null);
+  };
+
   const totalPages = Math.ceil(totalPhotos / photosPerPage);
+  const selectedPhoto = selectedPhotoIndex !== null ? photos[selectedPhotoIndex] : null;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -272,45 +310,49 @@ export default function GalleryPage({ group }) {
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-4">Wedding Memories</h1>
             <p className="text-navy/70 mb-4 sm:mb-6 text-sm sm:text-base px-2">
-              Share your favorite moments from our special day! Upload photos and browse memories
-              captured by family and friends.
+              Share your favorite moments from our special day! Browse memories and add your photos.
             </p>
             
             {/* Upload Guidelines */}
-            <div className="mb-6 bg-burgundy/5 rounded-lg p-4 max-w-2xl mx-auto">
+            <div className="mb-6 bg-burgundy/5 rounded-lg p-4 max-w-3xl mx-auto">
               <div className="text-center">
-                <p className="text-navy/80 text-sm mb-2">
-                  <strong>📸 Upload Guidelines:</strong>
+                <p className="text-navy/80 text-sm mb-3">
+                  <strong>📸 Share Your Photos:</strong>
                 </p>
-                <div className="text-navy/70 text-xs space-y-1">
-                  <p>• Please upload your <strong>best 1-10 photos</strong> to keep the gallery manageable</p>
-                  <p>• <strong>Photos only</strong> - no videos please</p>
-                  <p>• Each photo should be under 5MB for best performance</p>
-                  <p className="text-burgundy font-medium">Your uploads: {deviceUploadCount}/{maxUploadsPerDevice}</p>
-                </div>
+                                <div className="text-navy/70 text-xs space-y-2 leading-relaxed">
+                  <p><strong>Gallery:</strong> Upload your best 5-10 photos here for immediate display (JPG, PNG, HEIC files under 5MB each)</p>
+                 <p><strong>Google Drive:</strong> This is where you can share everything—all your photos, videos, and candid moments without any limits. We can't wait to relive the celebrations through your eyes!</p></div>
               </div>
             </div>
 
-            {/* Upload Button */}
-            <div className="mb-6 sm:mb-8 flex justify-center">
-              <label className={`inline-flex items-center px-4 sm:px-6 py-3 rounded-lg cursor-pointer transition-colors text-sm sm:text-base ${
-                deviceUploadCount >= maxUploadsPerDevice 
-                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed' 
-                  : 'bg-burgundy text-ivory hover:bg-burgundy/90'
-              }`}>
-                <Upload className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                {uploading ? 'Uploading...' : 
-                 deviceUploadCount >= maxUploadsPerDevice ? 'Upload Limit Reached' : 
-                 'Add Photos'}
+            {/* Upload Buttons */}
+            <div className="mb-8 flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+              
+              {/* Gallery Upload Button */}
+              <label className="inline-flex items-center px-6 py-3 bg-burgundy text-ivory rounded-lg cursor-pointer hover:bg-burgundy/90 transition-colors text-sm font-medium shadow-sm">
+                <Upload className="w-4 h-4 mr-2" />
+                {uploading ? 'Uploading...' : 'Add Photos to Gallery'}
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/*,.heic,.HEIC"
                   onChange={uploadPhoto}
-                  disabled={uploading || deviceUploadCount >= maxUploadsPerDevice}
+                  disabled={uploading}
                   className="hidden"
                   multiple
                 />
               </label>
+
+              {/* Google Drive Button */}
+              <a 
+                href="https://drive.google.com/drive/folders/your-folder-id" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-3 bg-navy text-ivory rounded-lg hover:bg-navy/90 transition-colors text-sm font-medium shadow-sm"
+              >
+                <ExternalLink className="w-4 h-4 mr-2" />
+                Upload to Google Drive (Coming Soon)
+              </a>
+
             </div>
           </div>
 
@@ -328,10 +370,9 @@ export default function GalleryPage({ group }) {
               <p className="text-red-800 text-sm">
                 <strong>Connection Issue:</strong> {connectionStatus}
               </p>
-              <p className="text-red-600 text-xs mt-1">
-                Photo uploads and viewing may not work properly. Please refresh the page or contact
-                support.
-              </p>
+                              <p className="text-red-600 text-xs mt-1">
+                Photo uploads and viewing may not work properly. Please refresh the page or contact support.
+                </p>
             </div>
           )}
 
@@ -339,12 +380,12 @@ export default function GalleryPage({ group }) {
           {!loading && photos.length > 0 && (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4">
-                {photos.map((photo) => (
+                {photos.map((photo, index) => (
                   <div
                     key={photo.id}
                     className="relative group bg-ivory rounded-lg overflow-hidden shadow-lg cursor-pointer"
                     style={{ aspectRatio: '1', minHeight: '120px' }}
-                    onClick={() => setSelectedPhoto(photo)}
+                    onClick={() => openModal(index)}
                   >
                     <Image
                       src={photo.url}
@@ -404,36 +445,86 @@ export default function GalleryPage({ group }) {
             <div className="text-center py-12">
               <Heart className="w-16 h-16 text-navy/30 mx-auto mb-4" />
               <h3 className="text-xl font-serif text-navy mb-2">No photos yet</h3>
-              <p className="text-navy/70">Be the first to share a beautiful memory!</p>
+              <p className="text-navy/70 mb-4">Be the first to share a beautiful memory!</p>
             </div>
           )}
 
-          {/* Photo Modal */}
+          {/* Enhanced Photo Modal */}
           {selectedPhoto && (
             <div
-              className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
-              onClick={() => setSelectedPhoto(null)}
+              className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center"
+              onClick={closeModal}
             >
-              <div className="relative max-w-4xl max-h-full">
-                <Image
-                  src={selectedPhoto.url}
-                  alt="Wedding memory"
-                  width={800}
-                  height={600}
-                  className="max-w-full max-h-full object-contain"
-                />
+              {/* Modal Content Container */}
+              <div className="relative w-full h-full flex items-center justify-center p-4 sm:p-8">
+                
+                {/* Close Button */}
                 <button
-                  onClick={() => setSelectedPhoto(null)}
-                  className="absolute top-4 right-4 text-white text-2xl bg-black/50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/70 transition-colors"
+                  onClick={closeModal}
+                  className="absolute top-4 right-4 z-60 text-white bg-black/60 hover:bg-black/80 rounded-full w-12 h-12 flex items-center justify-center transition-colors"
                 >
-                  ×
+                  <X className="w-6 h-6" />
                 </button>
-                <button
-                  onClick={() => downloadPhoto(selectedPhoto)}
-                  className="absolute bottom-4 right-4 p-3 bg-white/90 rounded-full hover:bg-white transition-colors"
+
+                {/* Navigation Buttons */}
+                {photos.length > 1 && (
+                  <>
+                    {/* Previous Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigatePhoto('prev');
+                      }}
+                      disabled={selectedPhotoIndex === 0}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 z-60 text-white bg-black/60 hover:bg-black/80 disabled:opacity-50 disabled:cursor-not-allowed rounded-full w-12 h-12 flex items-center justify-center transition-colors"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+
+                    {/* Next Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigatePhoto('next');
+                      }}
+                      disabled={selectedPhotoIndex === photos.length - 1}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 z-60 text-white bg-black/60 hover:bg-black/80 disabled:opacity-50 disabled:cursor-not-allowed rounded-full w-12 h-12 flex items-center justify-center transition-colors"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                  </>
+                )}
+
+                {/* Photo Container - Fixed sizing with swipe support */}
+                <div 
+                  className="relative w-full h-full max-w-4xl max-h-[80vh] flex items-center justify-center"
+                  onClick={(e) => e.stopPropagation()}
+                  onTouchStart={onTouchStart}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
                 >
-                  <Download className="w-5 h-5 text-navy" />
-                </button>
+                  <img
+                    src={selectedPhoto.url}
+                    alt="Wedding memory"
+                    className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                    style={{ maxWidth: '90vw', maxHeight: '80vh' }}
+                  />
+                  
+                  {/* Download Button */}
+                  <button
+                    onClick={() => downloadPhoto(selectedPhoto)}
+                    className="absolute bottom-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full transition-colors shadow-lg"
+                  >
+                    <Download className="w-5 h-5 text-navy" />
+                  </button>
+
+                  {/* Photo Counter */}
+                  {photos.length > 1 && (
+                    <div className="absolute bottom-4 left-4 px-3 py-1 bg-black/60 text-white text-sm rounded-full">
+                      {selectedPhotoIndex + 1} of {photos.length}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
