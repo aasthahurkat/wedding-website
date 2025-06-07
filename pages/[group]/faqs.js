@@ -63,7 +63,7 @@ export default function FAQPage({ group }) {
         <div className="border-l-2 border-burgundy pl-6 space-y-8">
           <p className="text-black/80 mt-1">
             {' '}
-            Here you&apos;ll find answers to the questions we get asked the most about the event and
+            Here you'll find answers to the questions we get asked the most about the event and
             RSVP. If your question isn’t here, just reach out — we’re always happy to help!
           </p>
 

@@ -47,10 +47,10 @@ const outfitData = {
     },
   ],
   tips: [
-    'Comfort is key - you&apos;ll be sitting, standing, and dancing!',
+    "Comfort is key - you'll be sitting, standing, and dancing!",
     'Indian fusion or traditional Western formal wear both welcome',
     'Consider the weather - December in Indore can be cool in evenings',
-    'Don&apos;t hesitate to ask us for shopping recommendations!',
+    "Don't hesitate to ask us for shopping recommendations!",
   ],
   stores: [
     {
@@ -76,7 +76,7 @@ const outfitData = {
     },
     {
       name: 'Manyavar Indore',
-      type: 'Men&apos;s Ethnic',
+      type: "Men's Ethnic",
       location: 'Treasure Island Mall',
       specialty: 'Sherwanis and kurtas',
       note: 'Wide range for all budgets',
@@ -109,7 +109,7 @@ const outfitData = {
       note: 'Premium rentals with accessories',
     },
     {
-      name: 'Groom&apos;s Closet',
+      name: "Groom's Closet",
       contact: '+91 87654 32108',
       specialty: 'Traditional and indo-western',
       note: 'Complete styling packages available',
@@ -247,8 +247,8 @@ export default function OutfitsPage({ group }) {
           <div className="mt-12 text-center">
             <div className="bg-burgundy/10 rounded-lg p-6 max-w-2xl mx-auto">
               <p className="text-navy/80 text-sm leading-relaxed">
-                We can&apos;t wait to see you dressed up and celebrating with us! If you have any
-                questions about outfits or need shopping recommendations, please don&apos;t hesitate
+                We can't wait to see you dressed up and celebrating with us! If you have any
+                questions about outfits or need shopping recommendations, please don't hesitate
                 to ask.
               </p>
             </div>

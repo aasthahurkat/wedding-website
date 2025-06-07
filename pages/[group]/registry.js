@@ -76,8 +76,8 @@ export default function RegistryPage() {
           </div>
           <h1 className="text-3xl font-serif text-navy mb-4">Gift Registry</h1>
           <p className="text-navy/70 max-w-2xl mx-auto mb-6">
-            Your presence at our wedding is the greatest gift of all! However, if you&apos;d like to
-            honor us with a gift, we&apos;ve registered at a few of our favorite places. Thank you
+            Your presence at our wedding is the greatest gift of all! However, if you'd like to
+            honor us with a gift, we've registered at a few of our favorite places. Thank you
             for helping us start our new chapter together.
           </p>
           <div className="flex items-center justify-center gap-2 text-burgundy">
@@ -129,9 +129,9 @@ export default function RegistryPage() {
           <div className="bg-ivory/80 rounded-lg p-6 max-w-2xl mx-auto border border-neutral/20">
             <h3 className="text-lg font-serif text-navy mb-3">A Note About Gifts</h3>
             <p className="text-navy/70 text-sm leading-relaxed">
-              We&apos;re so grateful for your love and support as we begin this new chapter. If you
-              prefer to give a monetary gift, we&apos;ve also set up options for contributions
-              toward our honeymoon fund and future home. Most importantly, we just can&apos;t wait
+              We're so grateful for your love and support as we begin this new chapter. If you
+              prefer to give a monetary gift, we've also set up options for contributions
+              toward our honeymoon fund and future home. Most importantly, we just can't wait
               to celebrate with you!
             </p>
           </div>
@@ -141,7 +141,7 @@ export default function RegistryPage() {
         <div className="mt-8 text-center">
           <div className="inline-block bg-amber-50 border border-amber-200 rounded-lg p-4">
             <p className="text-amber-800 text-sm">
-              <strong>Coming Soon:</strong> We&apos;re still finalizing our registry details. Check
+              <strong>Coming Soon:</strong> We're still finalizing our registry details. Check
               back soon for updated links and more specific wish lists!
             </p>
           </div>

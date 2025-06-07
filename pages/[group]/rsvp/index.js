@@ -74,7 +74,7 @@ function RSVPPage({ group }) {
             <Heart className="w-8 h-8 text-burgundy mx-auto mb-4" />
             <h1 className="text-3xl sm:text-4xl font-serif text-navy mb-4">RSVP</h1>
             <p className="text-navy/70">
-              Please let us know if you&apos;ll be joining us for our special day
+              Please let us know if you'll be joining us for our special day
             </p>
           </div>
 
@@ -102,8 +102,8 @@ function RSVPPage({ group }) {
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: 'yes', label: 'Yes, I&apos;ll be there!' },
-                    { value: 'no', label: 'Sorry, I can&apos;t make it' },
+                    { value: 'yes', label: "Yes, I'll be there!" },
+                    { value: 'no', label: "Sorry, I can't make it" },
                   ].map((opt) => (
                     <label
                       key={opt.value}
@@ -312,7 +312,7 @@ function RSVPPage({ group }) {
 
           {/* Footer note */}
           <div className="text-center mt-6">
-            <p className="text-navy/60 text-sm">We can&apos;t wait to celebrate with you! 💕</p>
+            <p className="text-navy/60 text-sm">We can't wait to celebrate with you! 💕</p>
           </div>
         </div>
       </main>

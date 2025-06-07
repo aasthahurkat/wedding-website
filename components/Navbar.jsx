@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NAV_ITEMS } from '../data/navItems';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Navbar({ currentGroup }) {
   const { asPath, query } = useRouter();
@@ -11,6 +11,18 @@ export default function Navbar({ currentGroup }) {
     item.allowedGroups.map((g) => g.toLowerCase()).includes(groupParam)
   );
   const [open, setOpen] = useState(false);
+
+  // Close mobile menu when scrolling
+  useEffect(() => {
+    const handleScroll = () => {
+      if (open) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [open]);
 
   return (
     <nav

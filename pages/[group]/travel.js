@@ -34,7 +34,7 @@ export default function TravelPage({ group }) {
         },
         {
           sub: 'Getting to Indore',
-          text: 'Fly into Mumbai (BOM) or Delhi (DEL) and catch a quick domestic flight to Indore (IDR). Domestic flights in India have different weight limits from international flights. We&apos;d recommend checking that before booking the flights. Once you touch down in Indore, you can grab an Uber or Ola, or give us a heads-up and we’ll arrange a pickup if that’s easier.',
+          text: "Fly into Mumbai (BOM) or Delhi (DEL) and catch a quick domestic flight to Indore (IDR). Domestic flights in India have different weight limits from international flights. We'd recommend checking that before booking the flights. Once you touch down in Indore, you can grab an Uber or Ola, or give us a heads-up and we’ll arrange a pickup if that’s easier.",
         },
       ],
     },
@@ -42,15 +42,15 @@ export default function TravelPage({ group }) {
       id: 2,
       title: 'In-City Essentials',
       description:
-        'Whether you&apos;re flying in just for the wedding or extending your stay, here’s everything you need to settle in comfortably and explore like a local:',
+        "Whether you're flying in just for the wedding or extending your stay, here’s everything you need to settle in comfortably and explore like a local:",
       content: [
         {
           sub: 'Accommodation',
-          text: 'No need to stress about where to stay on December 23 and 24—we’ve got those nights covered for you. If you&apos;re arriving earlier or staying longer, feel free to book a place that suits your plans. Not sure which neighborhood is ideal? Message us—we’re happy to suggest cozy and convenient areas close to key spots.',
+          text: "No need to stress about where to stay on December 23 and 24—we’ve got those nights covered for you. If you're arriving earlier or staying longer, feel free to book a place that suits your plans. Not sure which neighborhood is ideal? Message us—we’re happy to suggest cozy and convenient areas close to key spots.",
         },
         {
           sub: 'Stay Connected',
-          text: 'Wi-Fi isn&apos;t a given in India, so staying online might need a little prep. <br>Grab a local SIM (Airtel or Jio) right at the airport or nearby kiosks. Prefer eSIMs? Download Airalo and you’ll be connected in minutes.',
+          text: "Wi-Fi isn't a given in India, so staying online might need a little prep. <br>Grab a local SIM (Airtel or Jio) right at the airport or nearby kiosks. Prefer eSIMs? Download Airalo and you’ll be connected in minutes.",
         },
         {
           sub: 'Must Have Apps',
@@ -72,7 +72,7 @@ export default function TravelPage({ group }) {
       content: [
         {
           sub: 'Stay & Travel',
-          text: `We are heading from Indore to Goa on December 28th. We&apos;ll probably book a stay in South Goa. Feel free to book your travel and stay at your convenience. We will update this page with more information from our trip so that we can coordinate. Here&apos;s a 
+          text: `We are heading from Indore to Goa on December 28th. We'll probably book a stay in South Goa. Feel free to book your travel and stay at your convenience. We will update this page with more information from our trip so that we can coordinate. Here's a 
         <a
           href="https://chat.whatsapp.com/yourInviteCode"
           target="_blank"
@@ -114,7 +114,7 @@ export default function TravelPage({ group }) {
             onClick={() => setSelected('goa')}
             className={`${tabClasses('goa')} w-full sm:w-auto text-center`}
           >
-            New Years&apos; Trip
+            New Years' Trip
           </button>
         </div>
 
