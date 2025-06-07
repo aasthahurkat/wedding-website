@@ -7,26 +7,21 @@ export const events = [
     date: '2025-12-22',
     time: '12 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
-    location: 'Farmhouse',
-    mapQuery: 'Farmhouse, Indore',
-    outfits: ['Pink lehenga', 'Gold jewelry'],
+    location: 'TBD',
+    mapQuery: 'Indore',
     description:
-      'Join the bride in a joyous pre-wedding celebration centered around the application of henna designs.',
-    rsvpDeadline: '2025-12-01',
+      'Join the bride in a joyous pre-wedding celebration centered around the application of henna designs.', 
   },
-
   {
     id: 'aastha-mamera',
     title: 'Mayra',
     date: '2025-12-23',
     time: '11 AM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
-    location: 'Anandam',
-    mapQuery: 'Anandam, Indore',
-    outfits: ['Gold saree', 'Statement earrings'],
+    location: 'Anandam Banquet Hall',
+    mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     description:
       'A heartwarming ceremony where maternal relatives present gifts and blessings—honoring family bonds and showering the couple with love.',
-    rsvpDeadline: '2025-12-01',
   },
   {
     id: 'sangeet',
@@ -35,11 +30,9 @@ export const events = [
     time: '7 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
     location: 'Anandam Lawn',
-    mapQuery: 'Anandam Lawn, Indore',
-    outfits: ['Lehenga choli', 'Statement necklace'],
+    mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     description:
       'An unforgettable evening of spectacle and style: live music, electrifying dance performances, and dazzling family showcases all in honor of the happy couple.',
-    rsvpDeadline: '2025-12-01',
   },
   {
     id: 'after-party',
@@ -48,11 +41,9 @@ export const events = [
     time: '11 PM onwards',
     allowedGroups: ['FRIENDS'],
     location: 'Anandam Banquet Hall',
-    mapQuery: 'Anandam Banquet Hall, Indore',
-    outfits: ['Cocktail attire', 'Comfortable shoes'],
+    mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     description:
       "Keep the energy alive with late-night music, dancing, and cocktails as we toast to Aastha and Preetesh's new journey together.",
-    rsvpDeadline: '2025-12-01',
   },
   {
     id: 'baraat-welcome',
@@ -61,11 +52,9 @@ export const events = [
     time: '10 AM onwards',
     allowedGroups: ['BRIDE'],
     location: 'Anandam Lawn',
-    mapQuery: 'Anandam Lawn, Indore',
-    outfits: ['Band baaja outfit', 'Ethnic footwear'],
+    mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     description:
       "A warm welcome ceremony for the groom's procession, where the bride's family receives Preetesh with traditional rituals and celebration.",
-    rsvpDeadline: '2025-12-01',
   },
   {
     id: 'baraat',
@@ -74,11 +63,10 @@ export const events = [
     time: '10 AM onwards',
     allowedGroups: ['GROOM', 'FRIENDS'],
     location: 'Anandam Lawn',
-    mapQuery: 'Anandam Lawn, Indore',
+    mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     outfits: ['Band baaja outfit', 'Ethnic footwear'],
     description:
       "Experience the groom's joyous procession with music, dancing, and celebration as Preetesh arrives to take Aastha to the pheras venue.",
-    rsvpDeadline: '2025-12-01',
   },
   {
     id: 'phere',
@@ -87,11 +75,9 @@ export const events = [
     time: '12 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
     location: 'Anandam Lawn',
-    mapQuery: 'Anandam Lawn, Indore',
-    outfits: ['Traditional saree', 'Gold accents'],
+    mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     description:
       'The sacred wedding vows (pheras) around the holy fire, where Aastha and Preetesh promise a lifelong partnership in front of family and friends.',
-    rsvpDeadline: '2025-12-01',
   },
   {
     id: 'family-reception',
@@ -100,11 +86,10 @@ export const events = [
     time: '7 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM'],
     location: 'Anandam Banquet Hall',
-    mapQuery: 'Anandam Banquet Hall, Indore',
+    mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     outfits: ['Evening gown', 'Formal suit'],
     description:
       'An intimate celebration with immediate family and close relatives, featuring traditional blessings, dinner, and heartfelt moments with the newlyweds.',
-    rsvpDeadline: '2025-12-01',
   },
   {
     id: 'reception',
@@ -113,10 +98,9 @@ export const events = [
     time: '7 PM onwards',
     allowedGroups: ['FRIENDS'],
     location: 'Anandam Lawn',
-    mapQuery: 'Maheshwari Jankalyan Trust, Indore',
+    mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     outfits: ['Evening gown', 'Formal suit'],
     description:
       'A festive dinner and dance under the stars, complete with toasts, and a chance to celebrate with the newlyweds.',
-    rsvpDeadline: '2025-12-01',
   },
 ];

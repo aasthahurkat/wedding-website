@@ -46,12 +46,7 @@ const outfitData = {
       notes: 'Please avoid white, black, or very light colors for the main ceremony.',
     },
   ],
-  tips: [
-    "Comfort is key - you'll be sitting, standing, and dancing!",
-    'Indian fusion or traditional Western formal wear both welcome',
-    'Consider the weather - December in Indore can be cool in evenings',
-    "Don't hesitate to ask us for shopping recommendations!",
-  ],
+  
   stores: [
     {
       name: 'Manish Malhotra Indore',
@@ -178,24 +173,6 @@ export default function OutfitsPage({ group }) {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Tips Section */}
-          <div className="mt-12">
-            <div className="bg-ivory/80 rounded-lg p-6 border border-neutral/20">
-              <div className="flex items-center gap-3 mb-4">
-                <Camera className="w-6 h-6 text-burgundy" />
-                <h3 className="text-lg font-serif text-navy">Helpful Tips</h3>
-              </div>
-              <ul className="space-y-2">
-                {outfitData.tips.map((tip, index) => (
-                  <li key={index} className="flex items-start gap-2 text-navy/70">
-                    <span className="text-burgundy mt-1">•</span>
-                    <span className="text-sm">{tip}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
 
           {/* Store Recommendations (for friends only) */}
