@@ -24,27 +24,45 @@ export default async function handler(req, res) {
     email,              // added email here
   } = req.body;
 
-  if (!name || !attending || !group || !email) {    // require email too
+  if (!name || !attending || !group) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
+  // For "no" responses, only require name, attending, and group
+  if (attending === "yes" && !email) {
+    return res.status(400).json({ error: "Email is required for attendees" });
+  }
+
   try {
-    const { data, error } = await supabase.from("rsvps").insert([
-      {
-        name,
-        attending,
-        needs_pickup: needsPickup || null,
-        arrival_date: arrival || null,
-        return_date: returnDate || null,
-        guest,
-        outfit_help: outfitHelp || null,
-        whatsapp_number: whatsappNumber || null,
-        message: message || null,
-        group,
-        email,                // insert email here
-        created_at: new Date(),
-      },
-    ]);
+    // Build record based on attendance status
+    const rsvpRecord = {
+      name,
+      attending,
+      group,
+      created_at: new Date(),
+    };
+
+    if (attending === "yes") {
+      // For "yes" responses - email and whatsapp_number are required
+      rsvpRecord.email = email;
+      rsvpRecord.whatsapp_number = whatsappNumber;
+      rsvpRecord.needs_pickup = needsPickup || "no";
+      rsvpRecord.arrival = needsPickup === "yes" ? arrival : null;
+      rsvpRecord.return_date = needsPickup === "yes" ? returnDate : null;
+      rsvpRecord.guest = guest || "no";
+      rsvpRecord.outfit_help = outfitHelp || "no";
+    } else {
+      // For "no" responses - use safe defaults for NOT NULL columns
+      rsvpRecord.email = "";
+      rsvpRecord.whatsapp_number = "";  // Empty string for NOT NULL constraint
+      rsvpRecord.needs_pickup = "no";
+      rsvpRecord.arrival = null;
+      rsvpRecord.return_date = null;
+      rsvpRecord.guest = "no";
+      rsvpRecord.outfit_help = "no";
+    }
+
+    const { data, error } = await supabase.from("rsvps").insert([rsvpRecord]);
 
     if (error) throw error;
 

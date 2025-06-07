@@ -1,9 +1,13 @@
 // File: pages/[group]/events.js
 import Image from "next/image";
-import { Clock, MapPin } from 'lucide-react';
+import { Clock, MapPin, Download, FileText } from 'lucide-react';
 import React, { useState } from 'react';
 import { events } from '../../data/events';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 export async function getStaticPaths() {
   return {
@@ -25,6 +29,7 @@ export default function EventsPage({ group }) {
 
   // Track which card is flipped
   const [flippedId, setFlippedId] = useState(null);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
  // Group events by date
 const grouped = myEvents.reduce((acc, evt) => {
@@ -37,34 +42,270 @@ const grouped = myEvents.reduce((acc, evt) => {
 const sortedDates = Object
   .keys(grouped)
   .sort();
-
+// Enhanced PDF generation function with grouped card layout
+const generatePDF = async () => {
+  try {
+    setIsGeneratingPDF(true);
+    
+    // Create PDF document
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 20;
+    const contentWidth = pageWidth - (margin * 2);
+    
+    // Original color palette - burgundy and navy focused
+    const burgundy = [139, 69, 84];
+    const navy = [31, 45, 62];
+    const lightBurgundy = [180, 120, 130];
+    const cream = [252, 250, 247];
+    const gray = [120, 120, 120];
+    const lightGray = [200, 200, 200];
+    const white = [255, 255, 255];
+    
+    // Helper function for simple divider
+    const addDivider = (y, width = contentWidth * 0.4, color = burgundy) => {
+      const x = (pageWidth - width) / 2;
+      pdf.setDrawColor(...color);
+      pdf.setLineWidth(0.5);
+      pdf.line(x, y, x + width, y);
+    };
+    
+    // Title page with centered content
+    pdf.setFillColor(...cream);
+    pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+    
+    // Calculate vertical center
+    const centerY = pageHeight / 2;
+    
+    // Main frame - centered
+    const frameHeight = 100;
+    const frameY = centerY - frameHeight / 2;
+    pdf.setDrawColor(...burgundy);
+    pdf.setLineWidth(2);
+    pdf.rect(margin + 10, frameY, contentWidth - 20, frameHeight);
+    pdf.setLineWidth(0.5);
+    pdf.rect(margin + 12, frameY + 2, contentWidth - 24, frameHeight - 4);
+    
+    // Title - centered in frame
+    pdf.setTextColor(...navy);
+    pdf.setFontSize(38);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Wedding Celebration', pageWidth / 2, frameY + 30, { align: 'center' });
+    
+    // Decorative line
+    addDivider(frameY + 40, contentWidth * 0.3, burgundy);
+    
+    // Couple names
+    pdf.setTextColor(...burgundy);
+    pdf.setFontSize(28);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('Aastha & Preetesh', pageWidth / 2, frameY + 60, { align: 'center' });
+    
+    // Date and location
+    pdf.setTextColor(...navy);
+    pdf.setFontSize(16);
+    pdf.text('December 2025  •  Indore, India', pageWidth / 2, frameY + 80, { align: 'center' });
+    
+    // Schedule pages
+    pdf.addPage();
+    pdf.setFillColor(...cream);
+    pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+    
+    // Header
+    pdf.setTextColor(...navy);
+    pdf.setFontSize(28);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Schedule of Events', pageWidth / 2, 30, { align: 'center' });
+    
+    addDivider(38);
+    
+    let yPosition = 50;
+    
+    // Process events grouped by date
+    for (const date of sortedDates) {
+      const eventsForDate = grouped[date];
+      const dateObj = new Date(date + "T00:00");
+      const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
+      const monthDay = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+      const dateStr = `${dayName}, ${monthDay}`;
+      
+      // Check if we need space for date header + at least one event
+      if (yPosition > pageHeight - 80) {
+        pdf.addPage();
+        pdf.setFillColor(...cream);
+        pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+        yPosition = 30;
+      }
+      
+      // Date header - centered above events
+      pdf.setTextColor(...burgundy);
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(dateStr, pageWidth / 2, yPosition, { align: 'center' });
+      
+      yPosition += 12;
+      
+      // Events for this date
+      for (const evt of eventsForDate) {
+        // Calculate card height based on content
+        let cardHeight = 25; // Base height for name and bottom row
+        if (evt.description) {
+          const wrappedDesc = pdf.splitTextToSize(evt.description, contentWidth - 30);
+          cardHeight += wrappedDesc.length * 4 + 8;
+        }
+        
+        // Check if card fits on current page
+        if (yPosition + cardHeight > pageHeight - 30) {
+          pdf.addPage();
+          pdf.setFillColor(...cream);
+          pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+          yPosition = 30;
+        }
+        
+        // Draw event card
+        pdf.setFillColor(...white);
+        pdf.setDrawColor(...burgundy);
+        pdf.setLineWidth(0.8);
+        pdf.roundedRect(margin, yPosition, contentWidth, cardHeight, 2, 2, 'FD');
+        
+        // Event name - centered at top
+        pdf.setTextColor(...navy);
+        pdf.setFontSize(16);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(evt.title.toUpperCase(), pageWidth / 2, yPosition + 10, { align: 'center' });
+        
+        // Event description - centered
+        let currentY = yPosition + 10;
+        if (evt.description) {
+          pdf.setTextColor(...gray);
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          const wrappedDesc = pdf.splitTextToSize(evt.description, contentWidth - 30);
+          currentY += 8;
+          for (const line of wrappedDesc) {
+            pdf.text(line, pageWidth / 2, currentY, { align: 'center' });
+            currentY += 4;
+          }
+        }
+        
+        // Bottom row with time and venue
+        const bottomY = yPosition + cardHeight - 7;
+        
+        // Time on left
+        if (evt.time) {
+          pdf.setTextColor(...navy);
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          pdf.text(evt.time, margin + 10, bottomY);
+        }
+        
+        // Venue on right (with link if available)
+        if (evt.location) {
+          let venueText = evt.location;
+          if (evt.id === 'aastha-mehndi') {
+            venueText = `${evt.location} (details TBD)`;
+          }
+          
+          // If there's a link, make it clickable
+          if (evt.venueLink) {
+            pdf.setTextColor([0, 0, 255]); // Blue for links
+            pdf.textWithLink(venueText, pageWidth - margin - 10, bottomY, {
+              url: evt.venueLink,
+              align: 'right'
+            });
+          } else {
+            pdf.setTextColor(...navy);
+            pdf.text(venueText, pageWidth - margin - 10, bottomY, { align: 'right' });
+          }
+        }
+        
+        yPosition += cardHeight + 8; // Space between cards
+      }
+      
+      yPosition += 15; // Extra space between date groups
+    }
+    
+    // Add closing message if space allows
+    if (yPosition < pageHeight - 40) {
+      addDivider(yPosition, contentWidth * 0.2, burgundy);
+      
+      pdf.setTextColor(...burgundy);
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'italic');
+      pdf.text('We look forward to celebrating with you!', pageWidth / 2, yPosition + 15, { align: 'center' });
+    }
+    
+    // Page numbers on all pages except first
+    const totalPages = pdf.internal.getNumberOfPages();
+    pdf.setTextColor(...gray);
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'normal');
+    
+    for (let i = 2; i <= totalPages; i++) {
+      pdf.setPage(i);
+      pdf.text(`Page ${i} of ${totalPages}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+    }
+    
+    // Save PDF
+    pdf.save('aastha-preetesh-wedding-schedule.pdf');
+    
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    alert('Error generating PDF. Please try again.');
+  } finally {
+    setIsGeneratingPDF(false);
+  }
+};
 
   return (
-    <div className="relative bg-cream min-h-screen">
-      <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm" aria-hidden="true" />
-      <div className="relative z-10 pt-20 pb-24 px-4 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-serif text-center text-navy mb-2 capitalize">
+    <div className="flex flex-col min-h-screen">
+      <Navbar currentGroup={group} />
+      <main className="flex-1 relative bg-cream">
+        <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm" aria-hidden="true" />
+        <div className="relative z-10 pt-24 pb-12 px-4 max-w-7xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl font-serif text-center text-navy mb-2 capitalize">
           Wedding Festivities!
         </h1>
         <p className="text-center text-navy/70 mb-4">
           We’re so excited for you to join our wedding festivities! <br /> Below you will find the when and where for each celebration—just flip any plate to dive into all the details.
         </p>
 
-        <div className="text-center mb-8">
-          <a
-            href={`/${group}/rsvp`}
-            className="inline-block px-6 py-2 bg-burgundy text-ivory rounded hover:bg-burgundy/90 transition focus:outline-none focus:ring-2 focus:ring-burgundy"
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          {upper === 'FRIENDS' && (
+            <a
+              href={`/${group}/rsvp`}
+              className="inline-block px-6 py-2 bg-burgundy text-ivory rounded hover:bg-burgundy/90 transition focus:outline-none focus:ring-2 focus:ring-burgundy"
+            >
+              RSVP now!
+            </a>
+          )}
+          
+          <button
+            onClick={generatePDF}
+            disabled={isGeneratingPDF}
+            className="inline-flex items-center gap-2 px-6 py-2 bg-burgundy text-ivory rounded hover:bg-burgundy/90 transition focus:outline-none focus:ring-2 focus:ring-burgundy disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            RSVP now!
-          </a>
+            {isGeneratingPDF ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ivory"></div>
+                <span>Generating...</span>
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4" />
+                <span>Download Schedule</span>
+              </>
+            )}
+          </button>
         </div>
 
         {sortedDates.map((date) => (
-          <section key={date} className="mb-12">
-            <h2 className="text-2xl font-semibold text-navy mb-4 text-center">
+          <section key={date} className="mb-8 sm:mb-12">
+            <h2 className="text-xl sm:text-2xl font-semibold text-navy mb-4 text-center">
               {new Date(date + "T00:00").toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </h2>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {grouped[date].map((evt) => (
                 <EventCard
                   key={evt.id}
@@ -80,10 +321,14 @@ const sortedDates = Object
         {sortedDates.length === 0 && (
           <p className="text-center text-sm text-navy/70">No events available for this group.</p>
         )}
-      </div>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }
+
+EventsPage.noLayout = true;
 
 function EventCard({ evt, isFlipped, onFlip }) {
   const cardStyle = {
@@ -143,21 +388,36 @@ function EventCard({ evt, isFlipped, onFlip }) {
 
         {/* Back Face */}
   <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: '#F7F2E9' }}>
-          <div className="flex flex-col justify-between h-full p-6">
-            <div>
-              <h3 className="text-xl font-semibold text-navy mb-2">{evt.title}</h3>
-              <p className="text-sm text-navy/80 mb-4">{evt.description}</p>
-              {/* View on Map CTA */}
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evt.mapQuery)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-sm text-burgundy hover:underline space-x-1"
-              >
-                <MapPin className="w-4 h-4" />
-                <span>View on Map</span>
-              </a>
+          <div className="relative h-full p-4 sm:p-6">
+      
+            <div className="flex flex-col justify-center h-full">
+              <h3 className="text-lg sm:text-xl font-semibold text-navy mb-3">{evt.title}</h3>
               
+              {/* Time & Location Info */}
+              <div className="space-y-2 mb-4 text-sm">
+                {evt.time && (
+                  <div className="flex items-center gap-2 text-navy/90">
+                    <Clock className="w-4 h-4 text-burgundy flex-shrink-0" />
+                    <span className="font-medium">{evt.time}</span>
+                  </div>
+                )}
+                {evt.location && (
+                  <div className="flex items-center gap-2 text-navy/90">
+                    <MapPin className="w-4 h-4 text-burgundy flex-shrink-0" />
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evt.mapQuery)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="font-medium text-burgundy hover:underline"
+                    >
+                      {evt.location}
+                    </a>
+                  </div>
+                )}
+              </div>
+              
+              <p className="text-xs sm:text-sm text-navy/80">{evt.description}</p>
             </div>
           </div>
         </div>

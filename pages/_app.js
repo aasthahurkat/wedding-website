@@ -5,6 +5,7 @@ import { Playfair_Display, Oswald } from "next/font/google";
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { GroupProvider } from '../lib/context/GroupContext';
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -22,7 +23,7 @@ export default function MyApp({ Component, pageProps, router }) {
   const noLayout = Component.noLayout;
 
   return (
-    <>
+    <GroupProvider>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Aastha & Preetesh Wedding</title>
@@ -38,6 +39,6 @@ export default function MyApp({ Component, pageProps, router }) {
 
         {!noLayout && <Footer />}
       </div>
-    </>
+    </GroupProvider>
   );
 }

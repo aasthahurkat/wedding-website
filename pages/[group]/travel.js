@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MapPin, ChevronDown } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { ACCESS_GROUPS } from "../../data/accessGroups";
@@ -98,17 +99,22 @@ export default function TravelPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
       <main className="flex-1 bg-cream pt-24 px-4 mx-auto max-w-4xl space-y-12 scroll-py-32">
-        <h1 className="text-3xl font-serif text-black text-center mb-6">{title}</h1>
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <MapPin className="w-8 h-8 text-burgundy" />
+          </div>
+          <h1 className="text-3xl font-serif text-black mb-4">{title}</h1>
+        </div>
 
         {/* Tabs */}
-        <div className="flex justify-center space-x-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-2 sm:space-x-4 mb-8">
           <button
             onClick={() => setSelected("visitors")}
-            className={tabClasses("visitors")}
+            className={`${tabClasses("visitors")} w-full sm:w-auto text-center`}
           >
             Visiting Indore
           </button>
-          <button onClick={() => setSelected("goa")} className={tabClasses("goa")}>
+          <button onClick={() => setSelected("goa")} className={`${tabClasses("goa")} w-full sm:w-auto text-center`}>
             New Years' Trip
           </button>
         </div>
@@ -143,16 +149,19 @@ export default function TravelPage({ group }) {
                         dangerouslySetInnerHTML={{ __html: step.description }}
                       />
                     </summary>
-                    <div className="pl-4 mt-2 space-y-2">
+                    <div className="space-y-3 mt-4">
                       {step.content.map((item, idx) => (
-                        <details key={idx} className="group">
-                          <summary className="font-medium text-black cursor-pointer py-1">
-                            {item.sub}
+                        <details key={idx} className="group bg-ivory/30 rounded-lg border border-neutral/20" open>
+                          <summary className="font-medium text-navy cursor-pointer py-3 px-4 hover:bg-ivory/50 transition-colors rounded-lg flex justify-between items-center">
+                            <span>{item.sub}</span>
+                            <ChevronDown className="w-4 h-4 text-burgundy rotate-180 group-open:rotate-0 transition-transform" />
                           </summary>
-                          <p
-                            className="text-black/80 mt-1"
-                            dangerouslySetInnerHTML={{ __html: item.text }}
-                          />
+                          <div className="px-4 pb-3 border-t border-neutral/20 pt-3">
+                            <p
+                              className="text-navy/80 leading-relaxed"
+                              dangerouslySetInnerHTML={{ __html: item.text }}
+                            />
+                          </div>
                         </details>
                       ))}
                     </div>
@@ -175,31 +184,31 @@ export default function TravelPage({ group }) {
               {steps
                 .filter((s) => s.id < 3)
                 .map((step) => (
-                  <details key={step.id} open className="group">
-                    <summary
-                      className="cursor-default py-2 list-none marker:content-none"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <h3 className="text-xl font-semibold text-black">{step.title}</h3>
+                  <div key={step.id} className="bg-ivory/20 rounded-lg p-6 border border-neutral/20">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-semibold text-navy mb-2">{step.title}</h3>
                       <p
-                        className="text-black/80 mt-1"
+                        className="text-navy/80"
                         dangerouslySetInnerHTML={{ __html: step.description }}
                       />
-                    </summary>
-                    <div className="pl-4 mt-2 space-y-2">
+                    </div>
+                    <div className="space-y-3">
                       {step.content.map((item, idx) => (
-                        <details key={idx} className="group">
-                          <summary className="font-medium text-black cursor-pointer py-1">
-                            {item.sub}
+                        <details key={idx} className="group bg-ivory/40 rounded-lg border border-neutral/20">
+                          <summary className="font-medium text-navy cursor-pointer py-3 px-4 hover:bg-ivory/60 transition-colors rounded-lg flex justify-between items-center">
+                            <span>{item.sub}</span>
+                            <ChevronDown className="w-4 h-4 text-burgundy group-open:rotate-180 transition-transform" />
                           </summary>
-                          <p
-                            className="text-black/80 mt-1"
-                            dangerouslySetInnerHTML={{ __html: item.text }}
-                          />
+                          <div className="px-4 pb-3 border-t border-neutral/20 pt-3">
+                            <p
+                              className="text-navy/80 leading-relaxed"
+                              dangerouslySetInnerHTML={{ __html: item.text }}
+                            />
+                          </div>
                         </details>
                       ))}
                     </div>
-                  </details>
+                  </div>
                 ))}
             </div>
           </section>

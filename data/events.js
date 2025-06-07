@@ -51,7 +51,20 @@ export const events = [
     mapQuery: "Anandam Banquet Hall, Indore",
     outfits: ["Cocktail attire", "Comfortable shoes"],
     description:
-      "Keep the energy alive with late-night music, dancing, and cocktails as we toast to Aastha and Preetesh’s new journey together.",
+      "Keep the energy alive with late-night music, dancing, and cocktails as we toast to Aastha and Preetesh's new journey together.",
+    rsvpDeadline: "2025-12-01",
+  },
+  {
+    id: "baraat-welcome",
+    title: "Baraat Welcome",
+    date: "2025-12-24",
+    time: "10 AM onwards",
+    allowedGroups: ["BRIDE"],
+    location: "Anandam Lawn",
+    mapQuery: "Anandam Lawn, Indore",
+    outfits: ["Band baaja outfit", "Ethnic footwear"],
+    description:
+      "A warm welcome ceremony for the groom's procession, where the bride's family receives Preetesh with traditional rituals and celebration.",
     rsvpDeadline: "2025-12-01",
   },
   {
@@ -59,12 +72,12 @@ export const events = [
     title: "Baraat",
     date: "2025-12-24",
     time: "10 AM onwards",
-    allowedGroups: ["BRIDE", "GROOM", "FRIENDS"],
+    allowedGroups: ["GROOM", "FRIENDS"],
     location: "Anandam Lawn",
     mapQuery: "Anandam Lawn, Indore",
     outfits: ["Band baaja outfit", "Ethnic footwear"],
     description:
-      "Experience the groom’s joyous procession with music, dancing, and celebration as Preetesh arrives to take Aastha to the pheras venue.",
+      "Experience the groom's joyous procession with music, dancing, and celebration as Preetesh arrives to take Aastha to the pheras venue.",
     rsvpDeadline: "2025-12-01",
   },
   {
@@ -78,6 +91,19 @@ export const events = [
     outfits: ["Traditional saree", "Gold accents"],
     description:
       "The sacred wedding vows (pheras) around the holy fire, where Aastha and Preetesh promise a lifelong partnership in front of family and friends.",
+    rsvpDeadline: "2025-12-01",
+  },
+  {
+    id: "family-reception",
+    title: "Family Reception",
+    date: "2025-12-24",
+    time: "7 PM onwards",
+    allowedGroups: ["BRIDE", "GROOM"],
+    location: "Anandam Banquet Hall",
+    mapQuery: "Anandam Banquet Hall, Indore",
+    outfits: ["Evening gown", "Formal suit"],
+    description:
+      "An intimate celebration with immediate family and close relatives, featuring traditional blessings, dinner, and heartfelt moments with the newlyweds.",
     rsvpDeadline: "2025-12-01",
   },
   {

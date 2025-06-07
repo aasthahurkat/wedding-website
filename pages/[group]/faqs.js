@@ -1,5 +1,6 @@
 // File: pages/[group]/faqs.js
 import React, { useState } from "react";
+import { HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { ACCESS_GROUPS } from "../../data/accessGroups";
@@ -22,18 +23,26 @@ export async function getStaticProps({ params }) {
 // Single FAQ Item component
 function FAQItem({ question, children, isOpen, onToggle }) {
   return (
-    <div className="border-b border-gray-300 last:border-b-0">
+    <div className="bg-ivory/50 rounded-lg mb-4 border border-neutral/20 shadow-sm hover:shadow-md transition-shadow">
       <button
         onClick={onToggle}
-        className="w-full text-left py-4 flex justify-between items-center font-semibold text-navy hover:text-burgundy"
+        className="w-full text-left p-4 flex justify-between items-center font-semibold text-navy hover:text-burgundy transition-colors"
         aria-expanded={isOpen}
       >
-        {question}
-        <span className={`transform transition-transform duration-200 ${isOpen ? "rotate-90" : ""}`}>
-          ▶
-        </span>
+        <span className="pr-4">{question}</span>
+        <div className="flex-shrink-0">
+          {isOpen ? (
+            <ChevronUp className="w-5 h-5 text-burgundy transition-transform duration-200" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-navy transition-transform duration-200" />
+          )}
+        </div>
       </button>
-      {isOpen && <div className="pb-4 text-gray-700">{children}</div>}
+      {isOpen && (
+        <div className="px-4 pb-4 text-navy/80 leading-relaxed border-t border-neutral/10 pt-3 mt-1">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
@@ -45,13 +54,18 @@ export default function FAQPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
       <main className="flex-1 bg-cream pt-24 px-4 mx-auto max-w-4xl scroll-py-32">
-        <h1 className="text-3xl font-serif text-navy text-center mb-6">FAQs</h1>
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <HelpCircle className="w-8 h-8 text-burgundy" />
+          </div>
+          <h1 className="text-3xl font-serif text-navy mb-4">FAQs</h1>
+        </div>
         <div className="border-l-2 border-burgundy pl-6 space-y-8">
 <p className="text-black/80 mt-1"> Here you'll find answers to the questions we get asked the most about the event and RSVP. If your question isn’t here, just reach out — we’re always happy to help!</p>
 
           {/* RSVP and Invitations */}
           <section>
-            <h2 className="text-xl font-semibold text-black">RSVP & Invitations</h2>
+            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">RSVP & Invitations</h2>
             <FAQItem
               question="Do I need to RSVP?"
               isOpen={openIndex === 0}
@@ -62,7 +76,7 @@ export default function FAQPage({ group }) {
 
           {/* Lodging */}
           <section>
-            <h2 className="text-xl font-semibold text-black">Lodging</h2>
+            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">Lodging</h2>
             <FAQItem
               question="Where can I stay for the wedding dates?"
               isOpen={openIndex === 1}
@@ -81,7 +95,7 @@ export default function FAQPage({ group }) {
 
           {/* Event Timeline & Venues */}
           <section>
-            <h2 className="text-xl font-semibold text-black">Event Timeline & Venues</h2>
+            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">Event Timeline & Venues</h2>
             <FAQItem
               question="Where and when is each ceremony?"
               isOpen={openIndex === 3}
@@ -102,7 +116,7 @@ export default function FAQPage({ group }) {
 
           {/* Packing & Dress Code */}
           <section>
-            <h2 className="text-xl font-semibold text-black">Packing & Dress Code</h2>
+            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">Packing & Dress Code</h2>
             <FAQItem
               question="What should I wear to each event?"
               isOpen={openIndex === 4}
@@ -121,7 +135,7 @@ export default function FAQPage({ group }) {
 
           {/* Gift Registry & Gifting */}
           <section>
-            <h2 className="text-xl font-semibold text-black">Gifts & Registry</h2>
+            <h2 className="text-xl font-semibold text-navy mb-4 pb-2 border-b-2 border-burgundy">Gifts & Registry</h2>
             <FAQItem
               question="Do you have a gift registry?"
               isOpen={openIndex === 6}

@@ -1,7 +1,7 @@
 // data/navItems.js
 
 export const NAV_ITEMS = [
-  // everyone
+  // everyone - core information first
   {
     key: "home",
     label: "Home",
@@ -14,24 +14,17 @@ export const NAV_ITEMS = [
     href: "/[group]/events",
     allowedGroups: ["BRIDE", "GROOM", "FRIENDS"],
   },
-  // bride & groom only
-  {
-    key: "outfits",
-    label: "Outfits",
-    href: "/[group]/outfits",
-    allowedGroups: ["BRIDE", "GROOM"],
-  },
-  // friends only
+   {
+     key: "outfits",
+     label: "Outfits",
+     href: "/[group]/outfits",
+     allowedGroups: ["BRIDE", "GROOM", "FRIENDS"],
+   },
+   //friends only - action items
   {
     key: "rsvp",
     label: "RSVP",
     href: "/[group]/rsvp",
-    allowedGroups: ["FRIENDS"],
-  },
-  {
-    key: "outfits",
-    label: "Outfits",
-    href: "/[group]/outfits",
     allowedGroups: ["FRIENDS"],
   },
   {
@@ -40,6 +33,19 @@ export const NAV_ITEMS = [
     href: "/[group]/travel",
     allowedGroups: ["FRIENDS"],
   },
+   {
+     key: "registry",
+     label: "Registry",
+     href: "/[group]/registry",
+     allowedGroups: ["FRIENDS"],
+   },
+  // everyone - memories and info
+  {
+    key: "gallery",
+    label: "Gallery",
+    href: "/[group]/gallery",
+    allowedGroups: ["BRIDE", "GROOM", "FRIENDS"],
+  },
   {
     key: "faqs",
     label: "FAQs",
@@ -47,3 +53,4 @@ export const NAV_ITEMS = [
     allowedGroups: ["FRIENDS"],
   },
 ];
+

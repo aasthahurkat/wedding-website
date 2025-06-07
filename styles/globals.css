@@ -155,7 +155,51 @@
   .util--rotate-y-180 { transform: rotateY(180deg); }
 }
 
-/* 6) Site-wide watercolor overlay behind content */
+/* 6) Better mobile experience */
+@layer utilities {
+  /* Better touch targets on mobile */
+  .mobile-touch {
+    min-height: 48px;
+    min-width: 48px;
+    touch-action: manipulation;
+  }
+  
+  /* Smooth scrolling */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+  
+  /* Better focus indicators */
+  .focus-ring:focus-visible {
+    outline: 2px solid theme('colors.burgundy');
+    outline-offset: 2px;
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+  
+  /* Prevent text size adjustment on orientation change */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Better button spacing on mobile */
+  .mobile-btn {
+    @apply py-3 px-6 text-base;
+    min-height: 48px;
+  }
+  
+  /* Improved card flipping on mobile */
+  .mobile-card-flip {
+    min-height: 200px;
+  }
+}
+
+/* 7) Site-wide watercolor overlay behind content */
 body::before {
   content: "";
   position: fixed;
@@ -164,4 +208,9 @@ body::before {
   opacity: 0.12;
   pointer-events: none;
   z-index: -1;
+}
+
+/* Smooth scrolling for the whole page */
+html {
+  scroll-behavior: smooth;
 }
