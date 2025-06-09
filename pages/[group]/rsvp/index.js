@@ -270,11 +270,9 @@ function RSVPPage({ group }) {
                         name="countryCode"
                         value={form.countryCode}
                         onChange={handleChange}
-                        className="w-1/4 border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
+                        className="w-24 border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
                         placeholder="+91"
-                        pattern="\\+[0-9]+"
-                        autoComplete="tel-country-code"
-                        inputMode="numeric"
+                        title="Country code (e.g. +91 for India, +1 for USA)"
                         required={form.attending === 'yes'}
                       />
                       <input
@@ -282,11 +280,14 @@ function RSVPPage({ group }) {
                         name="mobileNumber"
                         value={form.mobileNumber}
                         onChange={handleChange}
-                        className="w-3/4 border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
-                        placeholder="Mobile number"
+                        className="flex-1 border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
+                        placeholder="Mobile number without country code"
                         required={form.attending === 'yes'}
                       />
                     </div>
+                    <p className="mt-1 text-sm text-navy/60">
+                      Include country code with + (e.g. +91 for India, +1 for USA)
+                    </p>
                   </div>
 
                   {/* Outfit Help */}
