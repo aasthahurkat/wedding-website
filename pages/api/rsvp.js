@@ -6,33 +6,40 @@ const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 export default async function handler(req, res) {
+  // Log request method for debugging
+  console.log('Request method:', req.method);
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const {
-    name,
-    attending,
-    needsPickup,
-    arrival,
-    returnDate,
-    guest,
-    outfitHelp,
-    whatsappNumber,
-    group,
-    email, // added email here
-  } = req.body;
-
-  if (!name || !attending || !group) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
-
-  // For "no" responses, only require name, attending, and group
-  if (attending === 'yes' && !email) {
-    return res.status(400).json({ error: 'Email is required for attendees' });
-  }
-
   try {
+    // Log the received data for debugging
+    console.log('Received request body:', req.body);
+
+    const {
+      name,
+      attending,
+      needsPickup,
+      arrival,
+      returnDate,
+      guest,
+      outfitHelp,
+      whatsappNumber,
+      group,
+      email,
+      message,
+    } = req.body;
+
+    if (!name || !attending || !group) {
+      return res.status(400).json({ error: 'Missing required fields', missing: { name: !name, attending: !attending, group: !group } });
+    }
+
+    // For "no" responses, only require name, attending, and group
+    if (attending === 'yes' && !email) {
+      return res.status(400).json({ error: 'Email is required for attendees' });
+    }
+
     // Build record based on attendance status
     const rsvpRecord = {
       name,
@@ -50,6 +57,7 @@ export default async function handler(req, res) {
       rsvpRecord.return_date = needsPickup === 'yes' ? returnDate : null;
       rsvpRecord.guest = guest || 'no';
       rsvpRecord.outfit_help = outfitHelp || 'no';
+      rsvpRecord.message = message || '';
     } else {
       // For "no" responses - use safe defaults for NOT NULL columns
       rsvpRecord.email = '';
@@ -59,15 +67,26 @@ export default async function handler(req, res) {
       rsvpRecord.return_date = null;
       rsvpRecord.guest = 'no';
       rsvpRecord.outfit_help = 'no';
+      rsvpRecord.message = '';
     }
+
+    // Log the record we're about to insert
+    console.log('Attempting to insert record:', rsvpRecord);
 
     const { error } = await supabase.from('rsvps').insert([rsvpRecord]);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase insert error:', error);
+      throw error;
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Supabase insert error:', error);
-    return res.status(500).json({ error: 'Database error' });
+    console.error('Server error:', error);
+    return res.status(500).json({ 
+      error: 'Database error',
+      details: error.message,
+      code: error.code 
+    });
   }
 }

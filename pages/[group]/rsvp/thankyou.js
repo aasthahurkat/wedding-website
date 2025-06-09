@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Heart, PartyPopper } from 'lucide-react';
+import { Heart, PartyPopper, Plane, Sparkles } from 'lucide-react';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 
@@ -18,7 +18,9 @@ export default function ThankYouExcited() {
             <PartyPopper className="w-8 h-8 text-burgundy mx-auto mb-4" />
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">We're So Excited!</h1>
+          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">
+            We're So Excited!
+          </h1>
 
           <p className="text-navy/80 mb-8 leading-relaxed">
             Thank you for your RSVP! We can't wait to celebrate with you.
@@ -29,16 +31,18 @@ export default function ThankYouExcited() {
           <div className="space-y-4 mb-8">
             <Link
               href={`/${group}/travel`}
-              className="inline-block w-full sm:w-auto px-8 py-3 bg-burgundy text-white font-medium rounded-lg hover:bg-burgundy/90 transition-colors"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3 bg-burgundy text-white font-medium rounded-lg hover:bg-burgundy/90 transition-colors"
             >
-              View Travel Information
+              <Plane className="w-4 h-4" />
+              <span>Travel Information</span>
             </Link>
 
             <Link
               href={`/${group}/outfits`}
-              className="inline-block w-full sm:w-auto px-8 py-3 bg-navy text-white font-medium rounded-lg hover:bg-navy/90 transition-colors ml-0 sm:ml-4"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3 bg-burgundy text-white font-medium rounded-lg hover:bg-burgundy/90 transition-colors ml-0 sm:ml-4"
             >
-              Check Outfit Guidelines
+              <Sparkles className="w-4 h-4" />
+              <span>Outfit Recommendations</span>
             </Link>
           </div>
 
@@ -52,9 +56,10 @@ export default function ThankYouExcited() {
               href="https://wa.me/your-whatsapp-group-link"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors gap-2"
             >
-              Join WhatsApp Group
+              <span>Join WhatsApp Group</span>
+              <span className="transition-transform hover:translate-x-1">→</span>
             </a>
           </div>
 

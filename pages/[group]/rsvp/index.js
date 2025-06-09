@@ -31,8 +31,10 @@ function RSVPPage({ group }) {
     arrival: '',
     returnDate: '',
     guest: '',
-    whatsappNumber: '',
+    countryCode: '+91',
+    mobileNumber: '',
     outfitHelp: '',
+    message: '',
   });
 
   const handleChange = (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -40,17 +42,24 @@ function RSVPPage({ group }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const payload = {
+        ...form,
+        group,
+        whatsappNumber: `${form.countryCode} ${form.mobileNumber}`.trim(),
+      };
       const response = await fetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, group }),
+        body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
       if (!response.ok) {
-        alert(data.message || `HTTP ${response.status}: Something went wrong.`);
+        const data = await response.json().catch(() => ({})); // Gracefully handle non-JSON responses
+        alert(data.message || `HTTP ${response.status}: Something went wrong. The server returned an unexpected response.`);
         return;
       }
+      
+      const data = await response.json();
 
       if (form.attending === 'yes') {
         router.push(`/${group}/rsvp/thankyou`);
@@ -107,7 +116,7 @@ function RSVPPage({ group }) {
                   ].map((opt) => (
                     <label
                       key={opt.value}
-                      className={`p-3 border-2 rounded-lg cursor-pointer text-center transition-all ${
+                      className={`p-2 sm:p-3 border-2 rounded-lg cursor-pointer text-center transition-all flex justify-center items-center ${
                         form.attending === opt.value
                           ? 'border-burgundy bg-burgundy/5 text-burgundy'
                           : 'border-neutral/20 hover:border-neutral/40'
@@ -122,7 +131,7 @@ function RSVPPage({ group }) {
                         className="sr-only"
                         required
                       />
-                      <span className="font-medium">{opt.label}</span>
+                      <span className="font-medium text-sm sm:text-base">{opt.label}</span>
                     </label>
                   ))}
                 </div>
@@ -255,15 +264,29 @@ function RSVPPage({ group }) {
                     <label className="block mb-2 font-medium text-navy">
                       WhatsApp Contact Number
                     </label>
-                    <input
-                      type="text"
-                      name="whatsappNumber"
-                      value={form.whatsappNumber}
-                      onChange={handleChange}
-                      className="w-full border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
-                      placeholder="+1 (555) 123-4567"
-                      required
-                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        name="countryCode"
+                        value={form.countryCode}
+                        onChange={handleChange}
+                        className="w-1/4 border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
+                        placeholder="+91"
+                        pattern="\\+[0-9]+"
+                        autoComplete="tel-country-code"
+                        inputMode="numeric"
+                        required={form.attending === 'yes'}
+                      />
+                      <input
+                        type="tel"
+                        name="mobileNumber"
+                        value={form.mobileNumber}
+                        onChange={handleChange}
+                        className="w-3/4 border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
+                        placeholder="Mobile number"
+                        required={form.attending === 'yes'}
+                      />
+                    </div>
                   </div>
 
                   {/* Outfit Help */}
@@ -294,6 +317,21 @@ function RSVPPage({ group }) {
                         </label>
                       ))}
                     </div>
+                  </div>
+
+                  {/* Message Field */}
+                  <div>
+                    <label className="block mb-2 font-medium text-navy">
+                      Anything else you'd like to let us know?
+                    </label>
+                    <textarea
+                      name="message"
+                      value={form.message}
+                      onChange={handleChange}
+                      rows="3"
+                      className="w-full border border-neutral/30 rounded-lg py-3 px-4 focus:outline-none focus:border-burgundy transition-colors"
+                      placeholder="e.g. food allergies, travel details, or just a sweet message!"
+                    />
                   </div>
                 </motion.div>
               )}

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Heart, MessageCircleHeart } from 'lucide-react';
+import { Heart, MessageCircleHeart, Camera } from 'lucide-react';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 
@@ -18,7 +18,9 @@ export default function ThankYouMissYou() {
             <MessageCircleHeart className="w-8 h-8 text-burgundy mx-auto mb-4" />
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">We'll Miss You!</h1>
+          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">
+            We'll Miss You!
+          </h1>
 
           <p className="text-navy/80 mb-8 leading-relaxed">
             Thank you for letting us know. We completely understand and wish you could be there with
@@ -35,9 +37,11 @@ export default function ThankYouMissYou() {
             </p>
             <Link
               href={`/${group}/gallery`}
-              className="inline-block px-6 py-2 bg-burgundy text-white rounded-lg hover:bg-burgundy/90 transition-colors"
+              className="inline-flex items-center px-6 py-2 bg-burgundy text-white rounded-lg hover:bg-burgundy/90 transition-colors gap-2"
             >
-              View Our Gallery
+              <Camera className="w-4 h-4" />
+              <span>View Our Gallery</span>
+              <span className="transition-transform hover:translate-x-1">→</span>
             </Link>
           </div>
 
