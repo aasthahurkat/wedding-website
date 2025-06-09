@@ -2,6 +2,7 @@
 import Head from 'next/head';
 import { AnimatePresence, LayoutGroup } from 'framer-motion';
 import { Playfair_Display, Oswald } from 'next/font/google';
+import { Analytics } from "@vercel/analytics/next"
 import '../styles/globals.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -39,6 +40,7 @@ export default function MyApp({ Component, pageProps, router }) {
 
         {!noLayout && <Footer />}
       </div>
+      <Analytics />
     </GroupProvider>
   );
 }
