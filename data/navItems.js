@@ -33,12 +33,13 @@ export const NAV_ITEMS = [
     href: '/[group]/travel',
     allowedGroups: ['FRIENDS'],
   },
-  {
-    key: 'registry',
-    label: 'Registry',
-    href: '/[group]/registry',
-    allowedGroups: ['FRIENDS'],
-  },
+  // TEMPORARILY COMMENTED OUT - UNCOMMENT BEFORE FINAL LAUNCH
+  // {
+  //   key: 'registry',
+  //   label: 'Registry',
+  //   href: '/[group]/registry',
+  //   allowedGroups: ['FRIENDS'],
+  // },
   {
     key: 'faqs',
     label: 'FAQs',

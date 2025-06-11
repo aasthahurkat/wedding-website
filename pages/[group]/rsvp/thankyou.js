@@ -6,7 +6,7 @@ import Footer from '../../../components/Footer';
 
 export default function ThankYouExcited() {
   const router = useRouter();
-  const group = (router.query.group || '').toLowerCase();
+  const group = (router.query.group || 'friends').toLowerCase();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -38,11 +38,11 @@ export default function ThankYouExcited() {
             </Link>
 
             <Link
-              href={`/${group}/outfits`}
+              href={`/${group}/events`}
               className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3 bg-burgundy text-white font-medium rounded-lg hover:bg-burgundy/90 transition-colors ml-0 sm:ml-4"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Outfit Recommendations</span>
+              <span>Event Details</span>
             </Link>
           </div>
 
@@ -53,7 +53,7 @@ export default function ThankYouExcited() {
               WhatsApp.
             </p>
             <a
-              href="https://wa.me/your-whatsapp-group-link"
+              href="https://chat.whatsapp.com/EJLeFbnpySEIAm4LyiDYF3"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors gap-2"

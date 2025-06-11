@@ -2,8 +2,8 @@
 
 export const events = [
   {
-    id: 'aastha-mehndi',
-    title: 'HENNA',
+    id: 'mehndi',
+    title: 'Mehndi',
     date: '2025-12-22',
     time: '12 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
@@ -16,7 +16,7 @@ export const events = [
     }
   },
   {
-    id: 'aastha-mamera',
+    id: 'mayra',
     title: {
       BRIDE: 'Mayra',
       GROOM: 'Mayra Ceremony', 

@@ -34,7 +34,6 @@ function RSVPPage({ group }) {
     guest: '',
     countryCode: '+91',
     mobileNumber: '',
-    outfitHelp: '',
     message: '',
   });
 
@@ -293,36 +292,6 @@ function RSVPPage({ group }) {
                     <p className="mt-1 text-sm text-navy/60">
                       Include country code with + (e.g. +91 for India, +1 for USA)
                     </p>
-                  </div>
-
-                  {/* Outfit Help */}
-                  <div>
-                    <label className="block mb-3 font-medium text-navy">
-                      Need help with outfit choices?
-                    </label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {['yes', 'no'].map((opt) => (
-                        <label
-                          key={opt}
-                          className={`p-4 sm:p-3 min-h-[48px] border rounded-lg cursor-pointer text-center transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                            form.outfitHelp === opt
-                              ? 'border-navy bg-navy/5 text-navy shadow-md'
-                              : 'border-neutral/20 hover:border-navy/30 hover:bg-navy/5'
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="outfitHelp"
-                            value={opt}
-                            checked={form.outfitHelp === opt}
-                            onChange={handleChange}
-                            className="sr-only"
-                            required
-                          />
-                          <span className="font-medium capitalize">{opt}</span>
-                        </label>
-                      ))}
-                    </div>
                   </div>
 
                   {/* Message Field */}

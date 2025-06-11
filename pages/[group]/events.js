@@ -276,7 +276,7 @@ export default function EventsPage({ group }) {
             Get ready to celebrate with us across multiple magical events! <br /> Below you will find
             the When and Where for each celebration— 
             <span className="text-burgundy">
-               just flip any plate
+               just tap to flip any plate
             </span>
              {' '}to dive into all the details.
           </p>
@@ -388,7 +388,7 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
         {/* Front Face */}
         <div style={faceStyle}>
           <Image
-            src={`/images/named-plates/stretched_${evt.id}.png`}
+            src={`/images/final-event-plates/${evt.id}.png`}
             alt={getEventTitle(evt, userGroup)}
             fill
             className="object-cover"

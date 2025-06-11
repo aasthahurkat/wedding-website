@@ -6,7 +6,7 @@ import Footer from '../../../components/Footer';
 
 export default function ThankYouMissYou() {
   const router = useRouter();
-  const group = (router.query.group || '').toLowerCase();
+  const group = (router.query.group || 'friends').toLowerCase();
 
   return (
     <div className="flex flex-col min-h-screen">

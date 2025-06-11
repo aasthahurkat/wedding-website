@@ -85,7 +85,7 @@ export default function TravelPage({ group }) {
       content: [
         {
           sub: 'Stay & Travel',
-          text: `We are heading from Indore to Goa on December 28th. We'll probably book a stay in South Goa. Feel free to book your travel and stay at your convenience. We will update this page with more information from our trip so that we can coordinate. Here's a <a href="https://chat.whatsapp.com/yourInviteCode" target="_blank" rel="noopener noreferrer" class="text-burgundy hover:underline">link to the WhatsApp group</a> for discussing the trip - if you would like to join.`,
+          text: `We are heading from Indore to Goa on December 28th. We'll probably book a stay in South Goa. Feel free to book your travel and stay at your convenience. We will update this page with more information from our trip so that we can coordinate. Here's a <a href="https://chat.whatsapp.com/IAus6S5U3eW6lyaVRXSE8Z" target="_blank" rel="noopener noreferrer" class="text-burgundy hover:underline">link to the WhatsApp group</a> for discussing the trip - if you would like to join.`,
         },
       ],
     },

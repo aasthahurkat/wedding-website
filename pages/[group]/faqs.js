@@ -184,10 +184,14 @@ export default function FAQPage({ group }) {
       question: "What should I wear to each event?",
       content: (
         <>
-          We have a complete wardrobe guide on our Outfits page with event-specific recommendations! 
-          You don't have to stick to any strict theme—any lovely outfit you feel great in will work. 
-          Need help with shopping or tailoring? Let us know in your RSVP and we can suggest stores and 
-          coordinate quick alterations.
+          We will have information on our{' '}
+          <a
+            href={`/${group}/outfits`}
+            className="text-burgundy hover:underline font-medium"
+          >
+            Outfits page
+          </a>
+          {' '}soon with event-specific recommendations! You don't have to stick to any strict theme—any lovely outfit you feel great in will work. Need help with shopping or tailoring? Let us know in your RSVP and we can suggest stores and coordinate quick alterations.
         </>
       )
     },
@@ -213,49 +217,43 @@ export default function FAQPage({ group }) {
       content: (
         <>
           <p>
-            Your presence at our wedding is truly the greatest gift we could ask for! Whatever you think would be best for us would be wonderful. But if you'd like some inspiration, we've put together some ideas{' '}
-            <a
-              href={`/${group}/registry`}
-              className="text-burgundy hover:underline font-medium"
-            >
-              here
-            </a>
-            {' '}for those who've asked. Honestly though, just having you there to celebrate with us means the world.
+            Your presence at our wedding is truly the greatest gift we could ask for! Whatever you think would be best for us would be wonderful. We will put together some ideas as a gift registry soon for those who've asked. Honestly though, just having you there to celebrate with us means the world.
           </p>
         </>
       )
     },
-    {
-      id: 7,
-      category: 'gifts',
-      question: "If someone wants to send something, where should it go?",
-      content: (
-        <>
-          <p>
-            If you'd like to send something, we'd love to have it delivered to our Seattle apartment (just drop us a line for the address) or to our parents' homes in Indore:
-          </p>
+    // TEMPORARILY COMMENTED OUT - UNCOMMENT BEFORE FINAL LAUNCH
+    // {
+    //   id: 7,
+    //   category: 'gifts',
+    //   question: "If someone wants to send something, where should it go?",
+    //   content: (
+    //     <>
+    //       <p>
+    //         If you'd like to send something, we'd love to have it delivered to our Seattle apartment (just drop us a line for the address) or to our parents' homes in Indore:
+    //       </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 mt-4">
-            <div className="bg-white/50 p-3 rounded-lg">
-              <strong>Aastha Hurkat</strong>
-              <br />
-              c/o Ramniwas Hurkat
-              <br />
-              132 Hilink City
-              <br />
-              Chhota Bangarda Road, Indore 452005
-            </div>
-            <div className="bg-white/50 p-3 rounded-lg">
-              <strong>Preetesh Patodi</strong>
-              <br />
-              c/o Neetesh Patodi
-              <br />
-              111 Ramchandra Nagar, Indore 452001
-            </div>
-          </div>
-        </>
-      )
-    },
+    //       <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 mt-4">
+    //         <div className="bg-white/50 p-3 rounded-lg">
+    //           <strong>Aastha Hurkat</strong>
+    //           <br />
+    //           c/o Ramniwas Hurkat
+    //           <br />
+    //           132 Hilink City
+    //           <br />
+    //           Chhota Bangarda Road, Indore 452005
+    //         </div>
+    //         <div className="bg-white/50 p-3 rounded-lg">
+    //           <strong>Preetesh Patodi</strong>
+    //           <br />
+    //           c/o Neetesh Patodi
+    //           <br />
+    //           111 Ramchandra Nagar, Indore 452001
+    //         </div>
+    //       </div>
+    //     </>
+    //   )
+    // },
     
     // Photo Sharing
     {

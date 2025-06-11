@@ -5,6 +5,9 @@ const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
+// Function to send notification
+// Notification system removed for clean launch
+
 export default async function handler(req, res) {
   // Log request method for debugging
   console.log('Request method:', req.method);
@@ -24,7 +27,6 @@ export default async function handler(req, res) {
       arrival,
       returnDate,
       guest,
-      outfitHelp,
       whatsappNumber,
       group,
       email,
@@ -56,7 +58,6 @@ export default async function handler(req, res) {
       rsvpRecord.arrival = needsPickup === 'yes' ? arrival : null;
       rsvpRecord.return_date = needsPickup === 'yes' ? returnDate : null;
       rsvpRecord.guest = guest || 'no';
-      rsvpRecord.outfit_help = outfitHelp || 'no';
       rsvpRecord.message = message || '';
     } else {
       // For "no" responses - use safe defaults for NOT NULL columns
@@ -66,7 +67,6 @@ export default async function handler(req, res) {
       rsvpRecord.arrival = null;
       rsvpRecord.return_date = null;
       rsvpRecord.guest = 'no';
-      rsvpRecord.outfit_help = 'no';
       rsvpRecord.message = '';
     }
 
@@ -79,6 +79,8 @@ export default async function handler(req, res) {
       console.error('Supabase insert error:', error);
       throw error;
     }
+
+    // Notification system removed for simplicity
 
     return res.status(200).json({ success: true });
   } catch (error) {
