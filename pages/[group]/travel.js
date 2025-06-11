@@ -154,7 +154,7 @@ export default function TravelPage({ group }) {
                 </div>
                 
                 <p className="text-navy/80 leading-relaxed mb-8">
-                  It's so rare to have all your friends from different chapters of our lives in one
+                  It's so rare to have all our friends from different chapters of our lives in one
                   place, and with the wedding just before New Year's, we couldn't think of a better
                   time to keep the celebration rolling. We'll be in Goa from{' '}
                   <strong>December 28th, 2025 to January 2nd, 2026</strong> unwinding and shaking off
