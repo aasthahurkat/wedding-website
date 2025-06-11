@@ -314,10 +314,12 @@ export default function GalleryPage({ group }) {
                 <p className="text-navy/80 text-sm mb-3">
                   <strong>📸 Share Your Photos:</strong>
                 </p>
-                                <div className="text-navy/70 text-xs space-y-2 leading-relaxed">
-                  <p><strong>Gallery:</strong> Upload your best 5-10 photos here for immediate display (JPG, PNG, HEIC files under 5MB each)</p>
-                <p><strong>Google Drive:</strong> This is where you can share everything—all your photos, videos, and candid moments without any limits. We can't wait to relive the celebrations through your eyes!</p>
-              </div>
+                <div className="text-navy/70 text-xs space-y-2 leading-relaxed">
+                  {isChampion && (
+                    <p><strong>Gallery:</strong> Upload your best 5-10 photos here for immediate display (JPG, PNG, HEIC files under 5MB each)</p>
+                  )}
+                  <p><strong>Google Drive:</strong> Share all your photos, videos, and candid moments with us! Upload everything to our shared drive - we can't wait to see the celebrations through your eyes!</p>
+                </div>
               </div>
             </div>
 
