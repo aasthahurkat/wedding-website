@@ -55,7 +55,11 @@ export default function TravelPage({ group }) {
       content: [
         {
           sub: 'Accommodation',
-          text: "No need to stress about where to stay on December 23 and 24—we've got those nights covered for you. If you're arriving earlier or staying longer, feel free to book a place that suits your plans. Not sure which neighborhood is ideal? Message us—we're happy to suggest cozy and convenient areas close to key spots.",
+          text: `No need to stress about where to stay on December 23 and 24—we've got those nights covered for you. If you're arriving earlier or staying longer, feel free to book a place that suits your plans. <br><br>
+          <strong>Recommended Hotels:</strong><br>
+          • <a href="https://www.shreemaya.com/" target="_blank" rel="noopener noreferrer" class="text-burgundy hover:underline font-medium">Hotel Shreemaya</a> - Luxury hotel with excellent service<br>
+          • <a href="https://www.lemontreehotels.com/lemon-tree-hotel/indore/hotel-indore" target="_blank" rel="noopener noreferrer" class="text-burgundy hover:underline font-medium">Lemon Tree Hotel</a> - Contemporary hotel with great hospitality<br><br>
+          Not sure which neighborhood is ideal? Message us—we're happy to suggest cozy and convenient areas close to key spots.`,
         },
         {
           sub: 'Stay Connected',

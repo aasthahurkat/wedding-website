@@ -1,6 +1,6 @@
 // File: pages/[group]/faqs.js
 import React, { useState } from 'react';
-import { HelpCircle, ChevronDown, ChevronUp, Calendar, Gift, Home, Crown } from 'lucide-react';
+import { HelpCircle, ChevronDown, ChevronUp, Calendar, Gift, Home, Crown, Camera } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
@@ -41,6 +41,10 @@ const categoryStyles = {
   gifts: {
     headerColor: 'text-emerald-700',
     icon: Gift,
+  },
+  photos: {
+    headerColor: 'text-pink-700',
+    icon: Camera,
   }
 };
 
@@ -129,8 +133,25 @@ export default function FAQPage({ group }) {
       question: "What if I'm arriving early or sticking around later—any recs?",
       content: (
         <>
-          If you need extra nights, our go-to spots are Hotel ShreeMaya or LemonTree, or you can
-          hunt down a cozy Superhost Airbnb in Vijay Nagar or South Tukoganj.
+          If you need extra nights, our go-to spots are{' '}
+          <a
+            href="https://www.shreemaya.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-burgundy hover:underline font-medium"
+          >
+            Hotel Shreemaya
+          </a>{' '}
+          or{' '}
+          <a
+            href="https://www.lemontreehotels.com/lemon-tree-hotel/indore/hotel-indore"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-burgundy hover:underline font-medium"
+          >
+            Lemon Tree Hotel
+          </a>
+          , or you can hunt down a cozy Superhost Airbnb in Vijay Nagar or South Tukoganj.
         </>
       )
     },
@@ -164,7 +185,7 @@ export default function FAQPage({ group }) {
       content: (
         <>
           We have a complete wardrobe guide on our Outfits page with event-specific recommendations! 
-          You don't have to stick to any strict theme—any lovely Indian outfit you feel great in will work. 
+          You don't have to stick to any strict theme—any lovely outfit you feel great in will work. 
           Need help with shopping or tailoring? Let us know in your RSVP and we can suggest stores and 
           coordinate quick alterations.
         </>
@@ -188,24 +209,30 @@ export default function FAQPage({ group }) {
     {
       id: 6,
       category: 'gifts',
-      question: "Do you have a gift registry?",
+      question: "What if I'd like to give a gift?",
       content: (
         <>
-          We'll be adding a Registry page to our website soon—feel free to browse once it's
-          live, but honestly, having you there in person is the best gift we could ask for!
+          <p>
+            Your presence at our wedding is truly the greatest gift we could ask for! Whatever you think would be best for us would be wonderful. But if you'd like some inspiration, we've put together some ideas{' '}
+            <a
+              href={`/${group}/registry`}
+              className="text-burgundy hover:underline font-medium"
+            >
+              here
+            </a>
+            {' '}for those who've asked. Honestly though, just having you there to celebrate with us means the world.
+          </p>
         </>
       )
     },
     {
       id: 7,
       category: 'gifts',
-      question: "Where should I send gifts?",
+      question: "If someone wants to send something, where should it go?",
       content: (
         <>
-          <p>Your presence at our wedding is truly the greatest gift we could ask for!</p>
           <p>
-            If you'd like to send something extra, we'd love to have it delivered to our Seattle
-            apartment (just drop us a line for the address) or to our parents' homes in Indore:
+            If you'd like to send something, we'd love to have it delivered to our Seattle apartment (just drop us a line for the address) or to our parents' homes in Indore:
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 mt-4">
@@ -228,6 +255,50 @@ export default function FAQPage({ group }) {
           </div>
         </>
       )
+    },
+    
+    // Photo Sharing
+    {
+      id: 8,
+      category: 'photos',
+      question: "How can I share wedding photos with you?",
+      content: (
+        <>
+          <p>
+            We'd absolutely love to see the wedding through your eyes! We have a special Gallery where everyone can view our favorite wedding moments.
+          </p>
+          <p className="mt-3">
+            <strong>How to share your photos:</strong>
+          </p>
+          <ul className="list-disc list-inside mt-2 space-y-1 ml-4">
+            <li>Upload your photos to our shared Google Drive folder</li>
+            <li>All photos will remain accessible to everyone in the shared folder</li>
+            <li>We'll also feature a rotating selection of photos here on the website to keep page loading smooth and showcase different perspectives</li>
+            <li>This way, everyone can enjoy the full collection on the Drive while we highlight various moments on the site</li>
+          </ul>
+          <p className="mt-3">
+            Your photos help us capture the complete story of our special day from every angle!
+          </p>
+        </>
+      )
+    },
+    {
+      id: 9,
+      category: 'photos',
+      question: "What kind of photos should I share?",
+      content: (
+        <>
+          <p>
+            Honestly, we want to see it all! Every moment you captured means something to us. Whether it's the chaos of getting ready, candid reactions during the ceremonies, or everyone dancing their hearts out—we want to see our celebrations through your eyes.
+          </p>
+          <p className="mt-3">
+            Candid moments, group shots, behind-the-scenes madness, detail pics of the decorations and outfits, dance floor energy, ritual moments we might have missed—whatever caught your attention is exactly what we want to relive. Even the blurry, imperfect shots often capture the best emotions and memories.
+          </p>
+          <p className="mt-3">
+            Share whatever made you smile, laugh, or feel the joy of our festivities. That's our wedding story right there!
+          </p>
+        </>
+      )
     }
   ];
 
@@ -237,7 +308,8 @@ export default function FAQPage({ group }) {
     lodging: allFAQs.filter(faq => faq.category === 'lodging'),
     events: allFAQs.filter(faq => faq.category === 'events'),
     dressCode: allFAQs.filter(faq => faq.category === 'dressCode'),
-    gifts: allFAQs.filter(faq => faq.category === 'gifts')
+    gifts: allFAQs.filter(faq => faq.category === 'gifts'),
+    photos: allFAQs.filter(faq => faq.category === 'photos')
   };
 
   return (
@@ -344,6 +416,23 @@ export default function FAQPage({ group }) {
                 </FAQItem>
               ))}
             </CategorySection>
+
+            {/* Photo Sharing */}
+            <CategorySection 
+              title="Photo Sharing" 
+              category="photos"
+            >
+              {faqsByCategory.photos.map((faq) => (
+                <FAQItem
+                  key={faq.id}
+                  question={faq.question}
+                  isOpen={openIndex === faq.id}
+                  onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                >
+                  {faq.content}
+                </FAQItem>
+              ))}
+            </CategorySection>
           </div>
         </div>
       </main>
@@ -354,3 +443,4 @@ export default function FAQPage({ group }) {
 }
 
 FAQPage.noLayout = true;
+

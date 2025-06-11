@@ -39,17 +39,17 @@ export const NAV_ITEMS = [
     href: '/[group]/registry',
     allowedGroups: ['FRIENDS'],
   },
-  // everyone - memories and info
-  {
-    key: 'gallery',
-    label: 'Gallery',
-    href: '/[group]/gallery',
-    allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
-  },
   {
     key: 'faqs',
     label: 'FAQs',
     href: '/[group]/faqs',
     allowedGroups: ['FRIENDS'],
+  },
+  // gallery for viewing photos (at the end)
+  {
+    key: 'gallery',
+    label: 'Gallery',
+    href: '/[group]/gallery',
+    allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
   },
 ];

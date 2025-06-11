@@ -23,6 +23,7 @@ export async function getStaticProps({ params }) {
 
 function RSVPPage({ group }) {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     name: '',
     attending: '',
@@ -41,6 +42,8 @@ function RSVPPage({ group }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
     try {
       const payload = {
         ...form,
@@ -69,6 +72,8 @@ function RSVPPage({ group }) {
     } catch (err) {
       console.error('Unexpected error:', err);
       alert('Sorry, there was a problem submitting your RSVP. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -116,10 +121,10 @@ function RSVPPage({ group }) {
                   ].map((opt) => (
                     <label
                       key={opt.value}
-                      className={`p-2 sm:p-3 border-2 rounded-lg cursor-pointer text-center transition-all flex justify-center items-center ${
+                      className={`p-4 sm:p-3 min-h-[48px] border-2 rounded-lg cursor-pointer text-center transition-all duration-200 flex justify-center items-center hover:scale-105 hover:shadow-md ${
                         form.attending === opt.value
-                          ? 'border-burgundy bg-burgundy/5 text-burgundy'
-                          : 'border-neutral/20 hover:border-neutral/40'
+                          ? 'border-burgundy bg-burgundy/5 text-burgundy shadow-md'
+                          : 'border-neutral/20 hover:border-burgundy/30 hover:bg-burgundy/5'
                       }`}
                     >
                       <input
@@ -168,10 +173,10 @@ function RSVPPage({ group }) {
                       {['yes', 'no'].map((opt) => (
                         <label
                           key={opt}
-                          className={`p-3 border rounded-lg cursor-pointer text-center transition-all ${
+                          className={`p-4 sm:p-3 min-h-[48px] border rounded-lg cursor-pointer text-center transition-all duration-200 hover:scale-105 hover:shadow-md ${
                             form.needsPickup === opt
-                              ? 'border-navy bg-navy/5 text-navy'
-                              : 'border-neutral/20 hover:border-neutral/40'
+                              ? 'border-navy bg-navy/5 text-navy shadow-md'
+                              : 'border-neutral/20 hover:border-navy/30 hover:bg-navy/5'
                           }`}
                         >
                           <input
@@ -238,10 +243,10 @@ function RSVPPage({ group }) {
                       {['yes', 'no'].map((opt) => (
                         <label
                           key={opt}
-                          className={`p-3 border rounded-lg cursor-pointer text-center transition-all ${
+                          className={`p-4 sm:p-3 min-h-[48px] border rounded-lg cursor-pointer text-center transition-all duration-200 hover:scale-105 hover:shadow-md ${
                             form.guest === opt
-                              ? 'border-burgundy bg-burgundy/5 text-burgundy'
-                              : 'border-neutral/20 hover:border-neutral/40'
+                              ? 'border-burgundy bg-burgundy/5 text-burgundy shadow-md'
+                              : 'border-neutral/20 hover:border-burgundy/30 hover:bg-burgundy/5'
                           }`}
                         >
                           <input
@@ -299,10 +304,10 @@ function RSVPPage({ group }) {
                       {['yes', 'no'].map((opt) => (
                         <label
                           key={opt}
-                          className={`p-3 border rounded-lg cursor-pointer text-center transition-all ${
+                          className={`p-4 sm:p-3 min-h-[48px] border rounded-lg cursor-pointer text-center transition-all duration-200 hover:scale-105 hover:shadow-md ${
                             form.outfitHelp === opt
-                              ? 'border-navy bg-navy/5 text-navy'
-                              : 'border-neutral/20 hover:border-neutral/40'
+                              ? 'border-navy bg-navy/5 text-navy shadow-md'
+                              : 'border-neutral/20 hover:border-navy/30 hover:bg-navy/5'
                           }`}
                         >
                           <input
@@ -341,9 +346,17 @@ function RSVPPage({ group }) {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-burgundy text-white font-semibold py-3 px-6 rounded-lg hover:bg-burgundy/90 transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full bg-burgundy text-white font-semibold py-4 px-6 rounded-lg hover:bg-burgundy/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 min-h-[48px] relative"
                 >
-                  Submit RSVP
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      <span>Submitting...</span>
+                    </div>
+                  ) : (
+                    'Submit RSVP'
+                  )}
                 </button>
               </div>
             </form>

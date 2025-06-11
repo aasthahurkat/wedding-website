@@ -15,7 +15,7 @@ Get your values from: https://supabase.com/dashboard/project/[your-project]/sett
 In your Supabase SQL Editor, run this query to create the gallery table:
 
 ```sql
--- Create the gallery_photos table (EXACT field names required)
+-- Create the gallery_photos table with approval system
 CREATE TABLE gallery_photos (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -24,26 +24,45 @@ CREATE TABLE gallery_photos (
   file_type TEXT,
   url TEXT NOT NULL,
   file_path TEXT,
-  uploaded_by TEXT
+  uploaded_by TEXT NOT NULL,
+  uploader_name TEXT,
+  uploader_email TEXT,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  approved_at TIMESTAMP WITH TIME ZONE,
+  approved_by TEXT,
+  rejection_reason TEXT
 );
 
 -- Enable Row Level Security
 ALTER TABLE gallery_photos ENABLE ROW LEVEL SECURITY;
 
--- Create policies to allow everyone to read photos
-CREATE POLICY "Allow public read access" ON gallery_photos
+-- Create policies - only show approved photos to public
+CREATE POLICY "Allow public read approved photos" ON gallery_photos
+  FOR SELECT USING (status = 'approved');
+
+-- Allow anyone to insert photos (they'll be pending by default)
+CREATE POLICY "Allow public insert pending photos" ON gallery_photos
+  FOR INSERT WITH CHECK (status = 'pending');
+
+-- Only admin can update photo status
+CREATE POLICY "Allow admin update status" ON gallery_photos
+  FOR UPDATE USING (true);
+
+-- Allow admin to see all photos
+CREATE POLICY "Allow admin read all photos" ON gallery_photos
   FOR SELECT USING (true);
-
--- Create policies to allow everyone to insert photos
-CREATE POLICY "Allow public insert access" ON gallery_photos
-  FOR INSERT WITH CHECK (true);
-
--- Create policies to allow everyone to delete their own photos (optional)
-CREATE POLICY "Allow delete access" ON gallery_photos
-  FOR DELETE USING (true);
 ```
 
-## 3. Storage Bucket Setup
+## 3. Admin Panel Setup
+
+Create an admin environment variable for yourself:
+
+```bash
+# Add to your .env.local
+ADMIN_EMAIL=your-email@example.com
+```
+
+## 4. Storage Bucket Setup
 
 1. Go to Storage in your Supabase dashboard
 2. Create a new bucket called `gallery-photos`
@@ -63,7 +82,7 @@ CREATE POLICY "Anyone can delete" ON storage.objects FOR DELETE USING (bucket_id
 
 **CRITICAL**: The bucket name must be exactly `gallery-photos` (not `wedding-gallery` or `wedding-photos`). The code is configured to use this specific bucket name.
 
-## 4. Supabase Free Tier Limits
+## 5. Supabase Free Tier Limits
 
 Your free tier includes:
 
@@ -85,7 +104,7 @@ Your free tier includes:
 3. **Firebase Storage** - 1GB storage, 10GB bandwidth/month
 4. **Vercel Blob** - 500GB bandwidth on hobby plan
 
-## 5. Troubleshooting
+## 6. Troubleshooting
 
 ### "Row violates row-level security policy" Error:
 
@@ -135,7 +154,7 @@ images: {
 }
 ```
 
-## 6. Security Considerations
+## 7. Security Considerations
 
 The current setup allows anyone to upload/delete photos. For production, consider:
 
@@ -145,7 +164,7 @@ The current setup allows anyone to upload/delete photos. For production, conside
 4. **Rate limiting**: Already implemented in middleware
 5. **Content moderation**: Consider adding image scanning
 
-## 7. Monitoring Usage
+## 8. Monitoring Usage
 
 Monitor your Supabase usage at:
 

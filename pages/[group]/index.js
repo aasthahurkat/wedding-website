@@ -51,18 +51,18 @@ export default function HomePage() {
 
               <div className="prose prose-md mx-auto space-y-4">
                 <div className="space-y-4">
-                  We’re so excited to finally share this little corner of the internet with you—a
+                  We're so excited to finally share this little corner of the internet with you—a
                   space that holds all the details, emotions, and joyful chaos leading up to our big
                   day. <br />
                   <p>
-                    In December 2025, we’re coming home to Indore—where our roots are, where our
+                    In December 2025, we're coming home to Indore—where our roots are, where our
                     families are, and where this beautiful new chapter will begin. This site will be your guide to everything: the celebrations, the colors,
-                    the outfits, and a few surprises we’ve planned along the way.{' '}
+                    the outfits, and a few surprises we've planned along the way.{' '}
                   </p>
-                  We’ve built this site with love (and a little nerdy fun)—you might spot bits of us
-                  in the design, in the themes, and in the words. It’s not just a schedule. It’s our
+                  We've built this site with love (and a little nerdy fun)—you might spot bits of us
+                  in the design, in the themes, and in the words. It's not just a schedule. It's our
                   story, shared with the people who matter most.
-                  <p> We can’t wait to dance, laugh, cry (a little), and celebrate with you. </p>
+                  <p> We can't wait to dance, laugh, cry (a little), and celebrate with you. </p>
                 </div>
 
                 <p className="mt-6">
@@ -74,7 +74,7 @@ export default function HomePage() {
 
               <a
                 href={`/${access}/events`}
-                className="mt-8 inline-block px-8 py-3 bg-burgundy text-ivory rounded-full shadow hover:bg-burgundy-dark"
+                className="mt-8 inline-block px-8 py-4 min-h-[48px] bg-burgundy text-ivory rounded-full shadow-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
               >
                 View Events
               </a>
@@ -98,18 +98,18 @@ export default function HomePage() {
 
                 <div className="prose prose-lg max-w-[50ch] space-y-4">
                   <p>
-                    We’re so excited to finally share this little corner of the internet with you—a
+                    We're so excited to finally share this little corner of the internet with you—a
                     space that holds all the details, emotions, and joyful chaos leading up to our
                     big day. <br />
                     <p>
-                      In December 2025, we’re coming home to Indore—where our roots are, where our
+                      In December 2025, we're coming home to Indore—where our roots are, where our
                       families are, and where this beautiful new chapter will begin. This site will be your guide to everything: the celebrations, the
-                      colors, the outfits, and a few surprises we’ve planned along the way.{' '}
+                      colors, the outfits, and a few surprises we've planned along the way.{' '}
                     </p>
-                    We’ve built this site with love (and a little nerdy fun)—you might spot bits of
-                    us in the design, in the themes, and in the words. It’s not just a schedule.
-                    It’s our story, shared with the people who matter most.
-                    <p> We can’t wait to dance, laugh, cry (a little), and celebrate with you. </p>
+                    We've built this site with love (and a little nerdy fun)—you might spot bits of
+                    us in the design, in the themes, and in the words. It's not just a schedule.
+                    It's our story, shared with the people who matter most.
+                    <p> We can't wait to dance, laugh, cry (a little), and celebrate with you. </p>
                   </p>
 
                   <p className="mt-6 leading-snug">
@@ -121,7 +121,7 @@ export default function HomePage() {
 
                 <a
                   href={`/${access}/events`}
-                  className="mt-8 inline-block px-8 py-3 bg-burgundy text-ivory rounded-full shadow hover:bg-burgundy-dark"
+                  className="mt-8 inline-block px-8 py-4 min-h-[48px] bg-burgundy text-ivory rounded-full shadow-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
                 >
                   View Events
                 </a>

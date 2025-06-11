@@ -72,6 +72,8 @@ export default function EventsPage({ group }) {
 
   // Memoized PDF generation function with lazy loading
   const generatePDF = useCallback(async () => {
+    if (isGeneratingPDF) return; // Prevent multiple clicks
+    
     try {
       setIsGeneratingPDF(true);
 
@@ -272,14 +274,18 @@ export default function EventsPage({ group }) {
           </h1>
           <p className="text-center text-navy/70 mb-4">
             Get ready to celebrate with us across multiple magical events! <br /> Below you will find
-            the When and Where for each celebration—just flip any plate to dive into all the details.
+            the When and Where for each celebration— 
+            <span className="text-burgundy">
+               just flip any plate
+            </span>
+             {' '}to dive into all the details.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             {upper === 'FRIENDS' && (
               <a
                 href={`/${group}/rsvp`}
-                className="inline-block px-6 py-2 bg-burgundy text-ivory rounded hover:bg-burgundy/90 transition focus:outline-none focus:ring-2 focus:ring-burgundy"
+                className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
               >
                 RSVP now!
               </a>
@@ -288,7 +294,7 @@ export default function EventsPage({ group }) {
             <button
               onClick={generatePDF}
               disabled={isGeneratingPDF}
-              className="inline-flex items-center gap-2 px-6 py-2 bg-burgundy text-ivory rounded hover:bg-burgundy/90 transition focus:outline-none focus:ring-2 focus:ring-burgundy disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
             >
               {isGeneratingPDF ? (
                 <>
@@ -372,7 +378,7 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
 
   return (
     <div
-      className="w-full"
+      className="w-full hover-hover:hover:scale-105 transition-transform duration-200"
       style={cardStyle}
       onClick={onFlip}
       role="button"

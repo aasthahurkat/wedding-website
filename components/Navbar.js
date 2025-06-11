@@ -1,4 +1,3 @@
-// components/Navbar.jsx
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NAV_ITEMS } from '../data/navItems';
@@ -37,6 +36,7 @@ export default function Navbar({ currentGroup }) {
           {filteredItems.map((item) => {
             const href = item.href.replace('[group]', groupParam);
             const isActive = asPath === href;
+
             return (
               <Link
                 key={item.key}
@@ -75,6 +75,7 @@ export default function Navbar({ currentGroup }) {
           <div className="space-y-1 px-4 pb-4">
             {filteredItems.map((item) => {
               const href = item.href.replace('[group]', groupParam);
+
               return (
                 <Link
                   key={item.key}
@@ -91,4 +92,4 @@ export default function Navbar({ currentGroup }) {
       )}
     </nav>
   );
-}
+} 

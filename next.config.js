@@ -5,17 +5,23 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.supabase.co',
+        hostname: 'yneuslauisvgqauyqnzd.supabase.co',
         port: '',
         pathname: '/storage/v1/object/public/**',
       },
-    ],
-    domains: [
-      'yneuslauisvgqauyqnzd.supabase.co', // Fallback for older Next.js versions
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp'],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: false,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   // Add security headers
   async headers() {
@@ -50,10 +56,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  // Disable server components for now as they're causing issues
-  experimental: {
-    serverActions: false,
   },
 };
 

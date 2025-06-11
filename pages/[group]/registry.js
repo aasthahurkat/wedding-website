@@ -76,9 +76,7 @@ export default function RegistryPage() {
           </div>
           <h1 className="text-3xl font-serif text-navy mb-4">Gift Registry</h1>
           <p className="text-navy/70 max-w-2xl mx-auto mb-6">
-            Your presence at our wedding is the greatest gift of all! However, if you'd like to
-            honor us with a gift, we've registered at a few of our favorite places. Thank you
-            for helping us start our new chapter together.
+            For those who've asked for some inspiration, we've put together a few ideas below. We're just excited to celebrate with you!
           </p>
           <div className="flex items-center justify-center gap-2 text-burgundy">
             <Heart className="w-5 h-5" />

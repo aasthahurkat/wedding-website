@@ -21,6 +21,9 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        'hover-hover': { 'raw': '(hover: hover)' },
+      },
       colors: {
         // Base palette
         ivory: '#F8F4F0',
