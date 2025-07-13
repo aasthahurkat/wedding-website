@@ -33,12 +33,13 @@ export const NAV_ITEMS = [
     href: '/[group]/travel',
     allowedGroups: ['FRIENDS', 'GUESTS'],
   },
-  {
-    key: 'shopping',
-    label: 'Shopping',
-    href: '/[group]/shopping',
-    allowedGroups: ['FRIENDS'],
-  },
+  // Shopping guide accessible only through outfits page call-to-action
+  // {
+  //   key: 'shopping',
+  //   label: 'Shopping',
+  //   href: '/[group]/shopping',
+  //   allowedGroups: ['FRIENDS'],
+  // },
   // TEMPORARILY COMMENTED OUT - UNCOMMENT BEFORE FINAL LAUNCH
   // {
   //   key: 'registry',
