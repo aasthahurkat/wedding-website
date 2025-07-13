@@ -2,9 +2,33 @@ import { ShoppingBag, MapPin, Globe, Clock, Phone, Star, ArrowLeft } from 'lucid
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { ACCESS_GROUPS } from '../../data/accessGroups';
 
-export default function ShoppingPage() {
+export async function getStaticPaths() {
+  return {
+    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const group = params.group?.toLowerCase() || '';
+  
+  // Only allow friends to access shopping page
+  if (group !== 'friends') {
+    return { notFound: true };
+  }
+  
+  if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
+    return { notFound: true };
+  }
+  
+  return { props: { group } };
+}
+
+export default function ShoppingPage({ group }) {
   const router = useRouter();
+  
   const localStores = [
     {
       name: "Ranas Fashion",
@@ -104,7 +128,7 @@ export default function ShoppingPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar currentGroup="friends" />
+      <Navbar currentGroup={group} />
 
       <main className="flex-1 relative bg-cream">
         <div
@@ -115,7 +139,7 @@ export default function ShoppingPage() {
           {/* Back Button */}
           <div className="mb-8">
             <button 
-              onClick={() => router.push('/friends/outfits')}
+              onClick={() => router.push(`/${group}/outfits`)}
               className="inline-flex items-center gap-2 text-burgundy hover:text-burgundy/80 transition-colors group"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -201,21 +225,24 @@ export default function ShoppingPage() {
                     </div>
                   </div>
                   
-                  <p className="text-sm text-navy/70 mb-3">{store.specialty}</p>
-                  
-                  <div className="flex items-center gap-2 text-xs text-navy/60 mb-4">
-                    <Clock className="w-3 h-3" />
-                    Delivery: {store.delivery}
+                  <div className="space-y-2 mb-4">
+                    <p className="text-sm text-navy/70">
+                      <strong>Specialty:</strong> {store.specialty}
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-navy/70">
+                      <Clock className="w-3 h-3" />
+                      Delivery: {store.delivery}
+                    </div>
                   </div>
                   
                   <a
                     href={store.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-burgundy/10 text-burgundy rounded-lg hover:bg-burgundy/20 transition text-sm"
+                    className="inline-flex items-center gap-2 text-sm text-burgundy hover:text-burgundy/80 transition"
                   >
                     <Globe className="w-3 h-3" />
-                    Visit Website
+                    Visit Store
                   </a>
                 </div>
               ))}
@@ -228,20 +255,14 @@ export default function ShoppingPage() {
               <ShoppingBag className="w-6 h-6 text-burgundy" />
               Rental Options
             </h2>
-            <div className="space-y-4 mb-8">
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                <p className="text-amber-800 text-sm">
-                  <strong>💡 Pro Tip:</strong> Rental is perfect for heavy lehengas or designer pieces you'll wear once. 
-                  Book 2-3 weeks in advance and always have a backup option!
-                </p>
-              </div>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               {rentalOptions.map((rental, idx) => (
                 <div key={idx} className="bg-ivory rounded-lg shadow-sm p-6 border border-neutral/20 hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-semibold text-navy">{rental.name}</h3>
+                    <div>
+                      <h3 className="text-lg font-semibold text-navy">{rental.name}</h3>
+                      <p className="text-burgundy/80 text-sm">{rental.location}</p>
+                    </div>
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                       <span className="text-sm text-navy/80">{rental.rating}</span>
@@ -250,38 +271,49 @@ export default function ShoppingPage() {
                   
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-2 text-sm text-navy/70">
-                      <MapPin className="w-3 h-3" />
-                      {rental.location}
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-navy/70">
                       <Phone className="w-3 h-3" />
                       {rental.phone}
                     </div>
+                    <p className="text-sm text-navy/70">
+                      <strong>Specialty:</strong> {rental.specialty}
+                    </p>
+                    <p className="text-sm text-navy/70">
+                      <strong>Price Range:</strong> {rental.priceRange}
+                    </p>
                   </div>
-                  
-                  <p className="text-xs text-navy/60 mb-2">
-                    <strong>Specialty:</strong> {rental.specialty}
-                  </p>
-                  <p className="text-xs text-burgundy font-medium mb-4">
-                    {rental.priceRange}
-                  </p>
-                  
-                  <button className="w-full px-4 py-2 bg-burgundy/10 text-burgundy rounded-lg hover:bg-burgundy/20 transition text-sm">
-                    Contact for Booking
-                  </button>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* General Tips */}
-          
+          {/* Tips Section */}
+          <div className="bg-ivory rounded-lg shadow-sm p-8 border border-neutral/20">
+            <h2 className="text-2xl font-serif text-navy mb-6">Shopping Tips</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-navy mb-3">For Women</h3>
+                <ul className="space-y-2 text-sm text-navy/70">
+                  <li>• Lehengas and sarees are perfect for traditional events</li>
+                  <li>• Consider the weather - December can be cool in Indore</li>
+                  <li>• Comfortable footwear is essential for long celebrations</li>
+                  <li>• Accessorize with traditional jewelry</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-navy mb-3">For Men</h3>
+                <ul className="space-y-2 text-sm text-navy/70">
+                  <li>• Sherwanis and kurta-pajamas for traditional events</li>
+                  <li>• Formal suits for reception and cocktail events</li>
+                  <li>• Comfortable shoes for dancing and celebrations</li>
+                  <li>• Consider renting for one-time wear</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 
       <Footer />
     </div>
   );
-}
-
-ShoppingPage.noLayout = true; 
+} 
