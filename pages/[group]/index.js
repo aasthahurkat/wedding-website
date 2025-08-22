@@ -48,20 +48,26 @@ export default function HomePage() {
                     alt="Indore license plate reading MP09 INDORE — December 2025"
                     className="w-40 mx-auto mb-3"
                   />
-                  <div className="text-sm text-burgundy mb-3">श्री गणेशाय नमः</div>
-                  <p className="mb-3">
-                    We’re absolutely thrilled to invite you to a day that’s been in our hearts for years:
+                 <p className="mb-2">
+                    With the blessings of our elders and the grace of God,
+                    we cordially invite you to celebrate the auspicious occasion of
+                    the wedding celebrations of our beloved children
                   </p>
                   <p className="mb-1">
-                    <span className="text-xl font-serif text-burgundy">Aastha</span>, daughter of Ramniwas & Preeti Hurkat
+                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ramniwas Hurkat & Mrs. Preeti Hurkat
                   </p>
-                  <p className="mb-1 font-medium">and</p>
-                  <p className="mb-3">
-                    <span className="text-xl font-serif text-burgundy">Preetesh</span>, son of Neetesh & Preeti Patodi
+                  <p className="mb-1 font-medium">with</p>
+                  <p className="mb-2">
+                    <span className="text-xl font-serif text-burgundy">Preetesh</span> <br /> son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
                   </p>
-                  <p className="mb-3">
-                    Surrounded by the grace of God and guided by our ancestors’ blessings, we’ll gather to witness their sacred vows.<br />
-                    Then—let the fun begin! Expect good food, cheerful music, and plenty of tears of joy (and maybe a few happy dance-offs). We can’t wait to share every moment with you.
+                  <p className="mb-2">
+                    In the divine presence of our family deities and with the blessings of our ancestors,<br />
+                    we invite you to join us in this sacred union.
+                  </p>
+          
+                  <p className="mb-2">
+                    Kindly grace the occasion with your presence.<br />
+                    Your blessings are humbly solicited.
                   </p>
                 </div>
               ) : (
