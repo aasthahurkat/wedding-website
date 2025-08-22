@@ -41,36 +41,64 @@ export default function HomePage() {
           {/* Mobile/Tablet: single-column, centered welcome */}
           <section className="md:hidden bg-ivory px-4 py-12">
             <div className="max-w-prose mx-auto space-y-4 text-center">
-              <img
-                src="/images/indore-plate.png"
-                alt="Indore license plate reading MP09 INDORE — December 2025"
-                className="w-40 mx-auto mb-4"
-              />
-
-              <h1 className="text-3xl font-serif text-navy">Welcome to our wedding website!</h1>
-
-              <div className="prose prose-md mx-auto space-y-4">
-                <div className="space-y-4">
-                  We're so excited to finally share this little corner of the internet with you—a
-                  space that holds all the details, emotions, and joyful chaos leading up to our big
-                  day. <br />
-                  <p>
-                    In December 2025, we're coming home to Indore—where our roots are, where our
-                    families are, and where this beautiful new chapter will begin. This site will be your guide to everything: the celebrations, the colors,
-                    the outfits, and a few surprises we've planned along the way.{' '}
+              {access === 'bride' ? (
+                <div className="max-w-[50ch] mx-auto text-center">
+                  <img
+                    src="/images/indore-plate.png"
+                    alt="Indore license plate reading MP09 INDORE — December 2025"
+                    className="w-40 mx-auto mb-3"
+                  />
+                  <div className="text-sm text-burgundy mb-3">श्री गणेशाय नमः</div>
+                  <p className="mb-3">
+                    We’re absolutely thrilled to invite you to a day that’s been in our hearts for years:
                   </p>
-                  We've built this site with love (and a little nerdy fun)—you might spot bits of us
-                  in the design, in the themes, and in the words. It's not just a schedule. It's our
-                  story, shared with the people who matter most.
-                  <p> We can't wait to dance, laugh, cry (a little), and celebrate with you. </p>
+                  <p className="mb-1">
+                    <span className="text-xl font-serif text-burgundy">Aastha</span>, daughter of Ramniwas & Preeti Hurkat
+                  </p>
+                  <p className="mb-1 font-medium">and</p>
+                  <p className="mb-3">
+                    <span className="text-xl font-serif text-burgundy">Preetesh</span>, son of Neetesh & Preeti Patodi
+                  </p>
+                  <p className="mb-3">
+                    Surrounded by the grace of God and guided by our ancestors’ blessings, we’ll gather to witness their sacred vows.<br />
+                    Then—let the fun begin! Expect good food, cheerful music, and plenty of tears of joy (and maybe a few happy dance-offs). We can’t wait to share every moment with you.
+                  </p>
                 </div>
+              ) : (
+                // Original content for other groups
+                <>
+                  <img
+                    src="/images/indore-plate.png"
+                    alt="Indore license plate reading MP09 INDORE — December 2025"
+                    className="w-40 mx-auto mb-4"
+                  />
 
-                <p className="mt-6">
-                  With love,
-                  <br />
-                  Aastha &amp; Preetesh
-                </p>
-              </div>
+                  <h1 className="text-3xl font-serif text-navy">Welcome to our wedding website!</h1>
+
+                  <div className="prose prose-md mx-auto space-y-4">
+                    <div className="space-y-4">
+                      We're so excited to finally share this little corner of the internet with you—a
+                      space that holds all the details, emotions, and joyful chaos leading up to our big
+                      day. <br />
+                      <p>
+                        In December 2025, we're coming home to Indore—where our roots are, where our
+                        families are, and where this beautiful new chapter will begin. This site will be your guide to everything: the celebrations, the colors,
+                        the outfits, and a few surprises we've planned along the way.{' '}
+                      </p>
+                      We've built this site with love (and a little nerdy fun)—you might spot bits of us
+                      in the design, in the themes, and in the words. It's not just a schedule. It's our
+                      story, shared with the people who matter most.
+                      <p> We can't wait to dance, laugh, cry (a little), and celebrate with you. </p>
+                    </div>
+
+                    <p className="mt-6">
+                      With love,
+                      <br />
+                      Aastha &amp; Preetesh
+                    </p>
+                  </div>
+                </>
+              )}
 
               <a
                 href={`/${access}/events`}
@@ -86,38 +114,74 @@ export default function HomePage() {
             <div className="container mx-auto flex items-center gap-12">
               {/* Left column */}
               <div className="w-1/2 flex flex-col items-center text-center">
-                <img
-                  src="/images/indore-plate.png"
-                  alt="Indore license plate reading MP09 INDORE — December 2025"
-                  className="h-28 mb-4"
-                />
-
-                <h1 className="text-4xl font-serif text-navy mb-6">
-                  Welcome to our wedding website!
-                </h1>
-
-                <div className="prose prose-lg max-w-[50ch] space-y-4">
-                  <p>
-                    We're so excited to finally share this little corner of the internet with you—a
-                    space that holds all the details, emotions, and joyful chaos leading up to our
-                    big day. <br />
-                    <p>
-                      In December 2025, we're coming home to Indore—where our roots are, where our
-                      families are, and where this beautiful new chapter will begin. This site will be your guide to everything: the celebrations, the
-                      colors, the outfits, and a few surprises we've planned along the way.{' '}
-                    </p>
-                    We've built this site with love (and a little nerdy fun)—you might spot bits of
-                    us in the design, in the themes, and in the words. It's not just a schedule.
-                    It's our story, shared with the people who matter most.
-                    <p> We can't wait to dance, laugh, cry (a little), and celebrate with you. </p>
+                {access === 'bride' ? (
+                  // Traditional English Wedding Invitation for Bride
+                  <div className="max-w-[50ch] mx-auto text-center">
+                  <img
+                    src="/images/indore-plate.png"
+                    alt="Indore license plate reading MP09 INDORE — December 2025"
+                    className="w-40 mx-auto mb-3"
+                  />
+                  <div className="text-sm text-burgundy mb-2">श्री गणेशाय नमः</div>
+                  <p className="mb-2">
+                    With the blessings of our elders and the grace of God,
+                    we cordially invite you to celebrate the auspicious occasion of
+                    the wedding celebrations of our beloved children
                   </p>
-
-                  <p className="mt-6 leading-snug">
-                    With love,
-                    <br />
-                    Aastha &amp; Preetesh
+                  <p className="mb-1">
+                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ramniwas Hurkat & Mrs. Preeti Hurkat
+                  </p>
+                  <p className="mb-1 font-medium">with</p>
+                  <p className="mb-2">
+                    <span className="text-xl font-serif text-burgundy">Preetesh</span> <br /> son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
+                  </p>
+                  <p className="mb-2">
+                    In the divine presence of our family deities and with the blessings of our ancestors,<br />
+                    we invite you to join us in this sacred union.
+                  </p>
+          
+                  <p className="mb-2">
+                    Kindly grace the occasion with your presence.<br />
+                    Your blessings are humbly solicited.
                   </p>
                 </div>
+                ) : (
+                  // Original content for other groups
+                  <>
+                    <img
+                      src="/images/indore-plate.png"
+                      alt="Indore license plate reading MP09 INDORE — December 2025"
+                      className="h-28 mb-4"
+                    />
+
+                    <h1 className="text-4xl font-serif text-navy mb-6">
+                      Welcome to our wedding website!
+                    </h1>
+
+                    <div className="prose prose-lg max-w-[50ch] space-y-4">
+                      <p>
+                        We're so excited to finally share this little corner of the internet with you—a
+                        space that holds all the details, emotions, and joyful chaos leading up to our
+                        big day. <br />
+                        <p>
+                          In December 2025, we're coming home to Indore—where our roots are, where our
+                          families are, and where this beautiful new chapter will begin. This site will be your guide to everything: the celebrations, the
+                          colors, the outfits, and a few surprises we've planned along the way.{' '}
+                        </p>
+                        We've built this site with love (and a little nerdy fun)—you might spot bits of
+                        us in the design, in the themes, and in the words. It's not just a schedule.
+                        It's our story, shared with the people who matter most.
+                        <p> We can't wait to dance, laugh, cry (a little), and celebrate with you. </p>
+                      </p>
+
+                      <p className="mt-6 leading-snug">
+                        With love,
+                        <br />
+                        Aastha &amp; Preetesh
+                      </p>
+                    </div>
+                  </>
+                )}
 
                 <a
                   href={`/${access}/events`}

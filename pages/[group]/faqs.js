@@ -163,16 +163,28 @@ export default function FAQPage({ group }) {
       question: "Where and when is each ceremony?",
       content: (
         <>
-          Except for our December 22nd events, all wedding ceremonies take place at{' '}
-          <a
-            href="https://www.google.com/maps/place/Shri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust/@22.6420739,75.8978692,17z/data=!4m17!1m10!3m9!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!2sShri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust!8m2!3d22.64203!4d75.8978915!10e5!14m1!1BCgIYEw!16s%2Fg%2F11h3l5csyj!3m5!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!8m2!3d22.64203!4d75.8978915!16s%2Fg%2F11h3l5csyj?entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-burgundy hover:underline"
-          >
-            Shri Anandam, Maheshwari Jankalyan Trust
-          </a>
-          . For exact dates and times, check out our Events page.
+          {group === 'guests' ? (
+            <>All wedding ceremonies take place at{' '}
+            <a
+              href="https://www.google.com/maps/place/Shri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust/@22.6420739,75.8978692,17z/data=!4m17!1m10!3m9!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!2sShri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust!8m2!3d22.64203!4d75.8978915!10e5!14m1!1BCgIYEw!16s%2Fg%2F11h3l5csyj!3m5!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!8m2!3d22.64203!4d75.8978915!16s%2Fg%2F11h3l5csyj?entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-burgundy hover:underline"
+            >
+              Shri Anandam, Maheshwari Jankalyan Trust
+            </a>. For exact dates and times, check out our Events page.</>
+          ) : (
+            <>Except for our December 22nd events, all wedding ceremonies take place at{' '}
+            <a
+              href="https://www.google.com/maps/place/Shri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust/@22.6420739,75.8978692,17z/data=!4m17!1m10!3m9!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!2sShri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust!8m2!3d22.64203!4d75.8978915!10e5!14m1!1BCgIYEw!16s%2Fg%2F11h3l5csyj!3m5!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!8m2!3d22.64203!4d75.8978915!16s%2Fg%2F11h3l5csyj?entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-burgundy hover:underline"
+            >
+              Shri Anandam, Maheshwari Jankalyan Trust
+            </a>
+            . For exact dates and times, check out our Events page.</>
+          )}
         </>
       )
     },
@@ -347,22 +359,24 @@ export default function FAQPage({ group }) {
               ))}
             </CategorySection>
 
-            {/* Lodging */}
-            <CategorySection 
-              title="Lodging" 
-              category="lodging"
-            >
-              {faqsByCategory.lodging.map((faq) => (
-                <FAQItem
-                  key={faq.id}
-                  question={faq.question}
-                  isOpen={openIndex === faq.id}
-                  onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
-                >
-                  {faq.content}
-                </FAQItem>
-              ))}
-            </CategorySection>
+            {/* Lodging (hidden for Guests) */}
+            {group !== 'guests' && (
+              <CategorySection 
+                title="Lodging" 
+                category="lodging"
+              >
+                {faqsByCategory.lodging.map((faq) => (
+                  <FAQItem
+                    key={faq.id}
+                    question={faq.question}
+                    isOpen={openIndex === faq.id}
+                    onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                  >
+                    {faq.content}
+                  </FAQItem>
+                ))}
+              </CategorySection>
+            )}
 
             {/* Event Timeline & Venues */}
             <CategorySection 

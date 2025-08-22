@@ -31,6 +31,16 @@ const getEventTitle = (event, userGroup) => {
   return event.title?.FRIENDS || event.title?.BRIDE || event.title?.GROOM || '';
 };
 
+const getEventImage = (event, userGroup) => {
+  if (typeof event.image === 'string') {
+    return event.image;
+  }
+  if (typeof event.image === 'object' && event.image !== null) {
+    return event.image[userGroup] || event.image.FRIENDS || event.image.BRIDE || event.image.GROOM;
+  }
+  return event.id;
+};
+
 export async function getStaticPaths() {
   return {
     paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
@@ -388,7 +398,7 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
         {/* Front Face */}
         <div style={faceStyle}>
           <Image
-            src={`/images/final-event-plates/${evt.id}.png`}
+            src={`/images/final-event-plates/${getEventImage(evt, userGroup)}.png`}
             alt={getEventTitle(evt, userGroup)}
             fill
             className="object-cover"
