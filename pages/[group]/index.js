@@ -54,11 +54,40 @@ export default function HomePage() {
                     the wedding celebrations of our beloved children
                   </p>
                   <p className="mb-1">
-                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ramniwas Hurkat & Mrs. Preeti Hurkat
+                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
                   </p>
                   <p className="mb-1 font-medium">with</p>
                   <p className="mb-2">
                     <span className="text-xl font-serif text-burgundy">Preetesh</span> <br /> son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
+                  </p>
+                  <p className="mb-2">
+                    In the divine presence of our family deities and with the blessings of our ancestors,<br />
+                    we invite you to join us in this sacred union.
+                  </p>
+          
+                  <p className="mb-2">
+                    Kindly grace the occasion with your presence.<br />
+                    Your blessings are humbly solicited.
+                  </p>
+                </div>
+              ) : access === 'groom' ? (
+                <div className="max-w-[50ch] mx-auto text-center">
+                  <img
+                    src="/images/indore-plate.png"
+                    alt="Indore license plate reading MP09 INDORE — December 2025"
+                    className="w-40 mx-auto mb-3"
+                  />
+                  <p className="mb-2">
+                    With the blessings of our elders and the grace of God,
+                    we cordially invite you to celebrate the auspicious occasion of
+                    the wedding celebrations of our beloved children
+                  </p>
+                  <p className="mb-1">
+                    <span className="text-xl font-serif text-burgundy">Preetesh</span> <br /> son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
+                  </p>
+                  <p className="mb-1 font-medium">with</p>
+                  <p className="mb-2">
+                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
                   </p>
                   <p className="mb-2">
                     In the divine presence of our family deities and with the blessings of our ancestors,<br />
@@ -135,11 +164,42 @@ export default function HomePage() {
                     the wedding celebrations of our beloved children
                   </p>
                   <p className="mb-1">
-                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ramniwas Hurkat & Mrs. Preeti Hurkat
+                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
                   </p>
                   <p className="mb-1 font-medium">with</p>
                   <p className="mb-2">
                     <span className="text-xl font-serif text-burgundy">Preetesh</span> <br /> son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
+                  </p>
+                  <p className="mb-2">
+                    In the divine presence of our family deities and with the blessings of our ancestors,<br />
+                    we invite you to join us in this sacred union.
+                  </p>
+          
+                  <p className="mb-2">
+                    Kindly grace the occasion with your presence.<br />
+                    Your blessings are humbly solicited.
+                  </p>
+                </div>
+                ) : access === 'groom' ? (
+                  // Traditional English Wedding Invitation for Groom (names swapped)
+                  <div className="max-w-[50ch] mx-auto text-center">
+                  <img
+                    src="/images/indore-plate.png"
+                    alt="Indore license plate reading MP09 INDORE — December 2025"
+                    className="w-40 mx-auto mb-3"
+                  />
+                  <div className="text-sm text-burgundy mb-2">श्री गणेशाय नमः</div>
+                  <p className="mb-2">
+                    With the blessings of our elders and the grace of God,
+                    we cordially invite you to celebrate the auspicious occasion of
+                    the wedding celebrations of our beloved children
+                  </p>
+                  <p className="mb-1">
+                    <span className="text-xl font-serif text-burgundy">Preetesh</span> <br /> son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
+                  </p>
+                  <p className="mb-1 font-medium">with</p>
+                  <p className="mb-2">
+                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
                   </p>
                   <p className="mb-2">
                     In the divine presence of our family deities and with the blessings of our ancestors,<br />
