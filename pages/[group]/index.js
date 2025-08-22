@@ -48,6 +48,7 @@ export default function HomePage() {
                     alt="Indore license plate reading MP09 INDORE — December 2025"
                     className="w-40 mx-auto mb-3"
                   />
+                  <div className="text-sm text-burgundy mb-2">श्री गणेशाय नमः</div>
                  <p className="mb-2">
                     With the blessings of our elders and the grace of God,
                     we cordially invite you to celebrate the auspicious occasion of
@@ -77,6 +78,7 @@ export default function HomePage() {
                     alt="Indore license plate reading MP09 INDORE — December 2025"
                     className="w-40 mx-auto mb-3"
                   />
+                  <div className="text-sm text-burgundy mb-2">श्री गणेशाय नमः</div>
                   <p className="mb-2">
                     With the blessings of our elders and the grace of God,
                     we cordially invite you to celebrate the auspicious occasion of
