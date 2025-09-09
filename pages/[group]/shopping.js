@@ -316,4 +316,6 @@ export default function ShoppingPage({ group }) {
       <Footer />
     </div>
   );
-} 
+}
+
+ShoppingPage.noLayout = true; 

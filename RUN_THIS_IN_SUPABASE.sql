@@ -6,7 +6,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Create enum types
-CREATE TYPE user_group AS ENUM ('BRIDE', 'GROOM', 'FRIENDS');
+CREATE TYPE user_group AS ENUM ('BRIDE', 'GROOM', 'FRIENDS', 'INVITEES', 'GUESTS');
 CREATE TYPE photo_provider AS ENUM ('CLOUDINARY', 'AWS_S3', 'LOCAL');
 
 -- Users table with proper group-based access
@@ -62,7 +62,7 @@ CREATE TABLE public.photos (
   caption TEXT,
   
   -- Access control
-  visible_to_groups user_group[] DEFAULT ARRAY['BRIDE', 'GROOM', 'FRIENDS']::user_group[],
+  visible_to_groups user_group[] DEFAULT ARRAY['BRIDE', 'GROOM', 'FRIENDS', 'INVITEES', 'GUESTS']::user_group[],
   is_featured BOOLEAN DEFAULT FALSE,
   is_approved BOOLEAN DEFAULT TRUE,
   

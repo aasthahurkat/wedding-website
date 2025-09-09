@@ -31,6 +31,16 @@ const getEventTitle = (event, userGroup) => {
   return event.title?.FRIENDS || event.title?.BRIDE || event.title?.GROOM || '';
 };
 
+const getEventImage = (event, userGroup) => {
+  if (typeof event.image === 'string') {
+    return event.image;
+  }
+  if (typeof event.image === 'object' && event.image !== null) {
+    return event.image[userGroup] || event.image.FRIENDS || event.image.BRIDE || event.image.GROOM;
+  }
+  return event.id;
+};
+
 export async function getStaticPaths() {
   return {
     paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
@@ -282,7 +292,7 @@ export default function EventsPage({ group }) {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            {upper === 'FRIENDS' && (
+            {(upper === 'FRIENDS' || upper === 'INVITEES' || upper === 'GUESTS') && (
               <a
                 href={`/${group}/rsvp`}
                 className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
@@ -291,23 +301,34 @@ export default function EventsPage({ group }) {
               </a>
             )}
 
-            <button
-              onClick={generatePDF}
-              disabled={isGeneratingPDF}
-              className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
-            >
-              {isGeneratingPDF ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ivory"></div>
-                  <span>Generating...</span>
-                </>
-              ) : (
-                <>
-                  <Download className="w-4 h-4" />
-                  <span>Download Schedule</span>
-                </>
-              )}
-            </button>
+            {(upper === 'BRIDE' || upper === 'GROOM') && (
+              <a
+                href={`/${group}/outfits`}
+                className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+              >
+                View outfit guide
+              </a>
+            )}
+
+            {upper !== 'BRIDE' && upper !== 'GROOM' && (
+              <button
+                onClick={generatePDF}
+                disabled={isGeneratingPDF}
+                className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
+              >
+                {isGeneratingPDF ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ivory"></div>
+                    <span>Generating...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-4 h-4" />
+                    <span>Download Schedule</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
 
           {sortedDates.map((date) => (
@@ -388,7 +409,7 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
         {/* Front Face */}
         <div style={faceStyle}>
           <Image
-            src={`/images/final-event-plates/${evt.id}.png`}
+            src={`/images/final-event-plates/${getEventImage(evt, userGroup)}.png`}
             alt={getEventTitle(evt, userGroup)}
             fill
             className="object-cover"
