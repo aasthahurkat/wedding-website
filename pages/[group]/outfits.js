@@ -62,88 +62,40 @@ const getEventBackgroundColor = (eventId) => {
 const eventOutfitGuide = {
   'mehndi': {
     title: 'Mehndi',
-    outfit: 'Bright and comfortable styles in breathable fabrics like cotton or linen.',
-    description: {
-      BRIDE: 'Join in a joyous pre-wedding celebration centered around the application of beautiful henna designs. This intimate gathering will be filled with laughter, traditional music, and the artistry of intricate mehndi patterns.',
-      GROOM: 'Join in a joyous pre-wedding celebration centered around the application of henna designs. Come celebrate this beautiful tradition with music and festivities.',
-      FRIENDS: 'Join the bride in a joyous pre-wedding celebration centered around the application of henna designs. Experience the beautiful tradition of mehndi with music, laughter, and celebration!'
-    },
+    outfit: 'Bright, joyful attire in breathable fabrics — think flowy silhouettes, vibrant prints, and styles that keep you comfortable for an afternoon of fun and celebration.',
     colors: ['Shades of Yellow', 'Shades of Green']
   },
   'mayra': {
     title: 'Mayra',
-    outfit: 'Elegant and traditional Indian wear in Bandhani print.',
-    description: {
-      BRIDE: 'A heartwarming ceremony where maternal relatives present gifts and blessings—honoring family bonds and showering the couple with love.',
-      GROOM: 'A heartwarming ceremony where maternal relatives present gifts and blessings—honoring family bonds and showering the couple with love.',
-      FRIENDS: 'A heartwarming ceremony where maternal relatives present gifts and blessings. Friends are welcome to join or enjoy a casual mixer happening simultaneously—choose your vibe!',
-      GUESTS: 'A heartwarming ceremony where maternal relatives present gifts and blessings. Guests are welcome to join or enjoy a casual mixer happening simultaneously—choose your vibe!'
-    },
+    outfit: 'Traditional Indian wear in bright, festive tones. Bandhani prints are a beautiful choice for the Mayra, adding a touch of heritage and elegance.',
     colors: ['Shades of Pink', 'Shades of Orange', 'Shades of Red']
   },
   'sangeet': {
     title: 'Sangeet Night',
-    outfit: 'Something festive with a touch of sparkle that\'s comfortable enough for dancing!',
-    description: {
-      BRIDE: 'An unforgettable evening of spectacle and style: live music, electrifying dance performances, and dazzling family showcases. Your chance to shine on the dance floor before the big day!',
-      GROOM: 'An unforgettable evening of spectacle and style: live music, electrifying dance performances, and dazzling family showcases. Time to show off those dance moves!',
-      FRIENDS: 'Get ready to party! An unforgettable evening of live music, electrifying dance performances, and dazzling showcases. Come dressed to impress and ready to dance the night away!',
-      GUESTS: 'Get ready to party! An unforgettable evening of live music, electrifying dance performances, and dazzling showcases. Come dressed to impress and ready to dance the night away!'
-    },
+    outfit: 'Dress for celebration! Think vibrant, festive attire with embellishments or sparkle. Choose something elegant yet comfortable that\'s comfortable for dancing!',
     colors: ['Jewel Tones', 'Gold', 'Silver']
-  },
-  'baraat-welcome': {
-    title: 'Baraat Welcome',
-    outfit: 'Traditional and festive attire. Comfortable ethnic footwear (like juttis or mojaris) is a great idea!',
-    description: "A warm welcome ceremony for the groom's procession, where the bride's family receives Preetesh with traditional rituals and celebration.",
-    colors: ['Royal Blue', 'Red', 'Dusty Rose', 'Mint']
-  },
-  'baraat': {
-    title: 'Baraat',
-    outfit: 'Traditional and festive attire. As this covers both the procession and ceremony, comfortable footwear is a great idea!',
-    description: {
-      GROOM: "Your big moment! Experience the groom's joyous procession with music, dancing, and celebration as you arrive to take Aastha to the pheras venue. This is your time to shine!",
-      FRIENDS: "Join Preetesh's epic procession! Experience the groom's joyous baraat with music, dancing, and celebration. Come ready to dance and celebrate as we escort the groom to meet his bride!",
-      GUESTS: "Join Preetesh's epic procession! Experience the groom's joyous baraat with music, dancing, and celebration. Come ready to dance and celebrate as we escort the groom to meet his bride!"
-    },
-    colors: ['Red', 'Maroon', 'Blush Pink', 'Soft Pastels']
-  },
-  'phere': {
-    title: 'Wedding Ceremony',
-    outfit: 'Formal Indian or Western attire is perfect. We kindly request guests avoid wearing black for the ceremony itself.',
-    description: {
-      BRIDE: 'The most sacred moment - your wedding vows (pheras) around the holy fire, where you and Preetesh promise a lifelong partnership surrounded by the love of family and friends.',
-      GROOM: 'The most sacred moment - your wedding vows (pheras) around the holy fire, where you and Aastha promise a lifelong partnership surrounded by the love of family and friends.',
-      FRIENDS: 'Witness the sacred wedding vows (pheras) around the holy fire, where Aastha and Preetesh promise a lifelong partnership. Be part of this beautiful and meaningful ceremony.',
-      GUESTS: 'Witness the sacred wedding vows (pheras) around the holy fire, where Aastha and Preetesh promise a lifelong partnership. Be part of this beautiful and meaningful ceremony.'
-    },
-    colors: ['Red', 'Maroon', 'Blush Pink', 'Soft Pastels']
   },
   'baraat-phere': {
     title: 'Baraat & Phere',
-    outfit: 'Traditional attire for the morning block; one outfit works for both. Comfortable footwear recommended.',
-    description: 'Procession and ceremony happen back-to-back — dress festive and comfortable.',
+    outfit: 'Traditional Indian attire is recommended — vibrant sarees, lehengas, sherwanis, or kurtas. Comfortable footwear will make it easier to join in the joy of the procession and rituals.',
     colors: ['Red', 'Maroon', 'Blush Pink', 'Soft Pastels']
   },
   'baraat-welcome-phere': {
     title: 'Baraat Welcome & Phere',
-    outfit: 'Traditional attire for the morning block; one outfit works for both. Comfortable footwear recommended.',
-    description: 'Welcome and ceremony happen back-to-back — dress festive and comfortable.',
+    outfit: 'Traditional Indian attire is recommended — vibrant sarees, lehengas, sherwanis, or kurtas. Comfortable footwear will make it easier to join in the joy of the procession and rituals.',
     colors: ['Red', 'Maroon', 'Blush Pink', 'Soft Pastels']
   },
   'family-reception': {
     title: 'Family Reception',
     outfit: 'Elegant formalwear for an intimate family celebration.',
-    description: 'An intimate celebration with immediate family and close relatives, featuring traditional blessings, dinner, and heartfelt moments with the newlyweds.',
     colors: ['Blush', 'Ivory', 'Gold']
   },
-  'reception': {
-    title: 'Friends Reception',
-    outfit: 'Formal evening wear. For him: sharp suit or tuxedo. For her: elegant gown or cocktail saree.',
-    description: 'A festive dinner and dance under the stars, complete with toasts, and a chance to celebrate with the newlyweds.',
-    colors: ['Navy', 'Burgundy', 'Black']
-  }
-};
+    'reception': {
+      title: 'Friends Reception',
+      outfit: 'Festive evening wear. Options include sharp suits, tuxedos, elegant gowns, cocktail sarees — or simply whatever makes you feel polished and ready to celebrate.',
+      colors: ['Navy', 'Burgundy', 'Black']
+    }
+  };
 
 export default function OutfitsPage({ group }) {
   const router = useRouter();
@@ -190,8 +142,6 @@ export default function OutfitsPage({ group }) {
     for (const e of accessibleEvents) {
       if (idsToSkip.has(e.id)) continue;
 
-      // Hide Late Night Celebrations (after-party) tile entirely
-      if (e.id === 'after-party') continue;
 
       if (upperGroup === 'BRIDE') {
         // Combine baraat-welcome + family-reception into baraat-welcome-phere
@@ -216,7 +166,7 @@ export default function OutfitsPage({ group }) {
           idsToSkip.add('phere');
           continue;
         }
-      } else if (upperGroup === 'FRIENDS' || upperGroup === 'GUESTS') {
+      } else if (upperGroup === 'FRIENDS' || upperGroup === 'INVITEES' || upperGroup === 'GUESTS') {
         // Combine baraat + phere into baraat-phere, ensure reception comes after
         if ((e.id === 'baraat' || e.id === 'phere') &&
             accessibleEvents.some(ev => ev.id === 'baraat') &&
@@ -337,8 +287,8 @@ export default function OutfitsPage({ group }) {
             </div>
           </div>
 
-          {/* Shopping Guide Call-to-Action */}
-          {current === 'friends' && (
+          {/* Shopping Guide Call-to-Action - COMMENTED OUT FOR NOW */}
+          {/* {current === 'friends' && (
             <div className="text-center mt-12">
               <div className="bg-burgundy/10 rounded-xl p-8 max-w-2xl mx-auto">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-burgundy/20 rounded-full mb-4">
@@ -358,7 +308,7 @@ export default function OutfitsPage({ group }) {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
 
         </div>
       </main>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, ChevronDown, Plane, Smartphone, Home, Shield, Users, ExternalLink } from 'lucide-react';
+import { MapPin, ChevronDown, Plane, Smartphone, Home, Shield } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
@@ -20,9 +20,12 @@ export async function getStaticProps({ params }) {
 }
 
 export default function TravelPage({ group }) {
-  const [selected, setSelected] = useState('goa');
+  const [selected, setSelected] = useState('visitors');
   const [openSections, setOpenSections] = useState({});
   const title = `Travel & Logistics`;
+  
+  // Only show Goa trip for friends and invitees, not guests
+  const showGoaTrip = group !== 'guests';
   
   const toggleSection = (sectionKey) => {
     setOpenSections(prev => ({
@@ -81,6 +84,7 @@ export default function TravelPage({ group }) {
     },
     {
       id: 3,
+      title: 'New Year\'s Trip to Goa',
       description: '',
       content: [
         {
@@ -91,12 +95,7 @@ export default function TravelPage({ group }) {
     },
   ];
 
-  const tabClasses = (tab) =>
-    `px-6 py-3 rounded-lg cursor-pointer transition-all duration-200 font-medium ${
-      selected === tab 
-        ? 'bg-burgundy text-ivory shadow-md' 
-        : 'text-navy bg-burgundy/10 hover:bg-burgundy/20'
-    }`;
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -112,37 +111,47 @@ export default function TravelPage({ group }) {
             </div>
             <h1 className="text-3xl font-serif text-navy mb-4">{title}</h1>
             <p className="text-navy/70 max-w-2xl mx-auto">
-              Your complete guide to getting here, staying connected, and joining us in Goa
+              Your complete guide to getting here, staying connected, and {showGoaTrip ? 'joining us in Goa' : 'making the most of Indore'}
             </p>
           </div>
 
-          {/* Tabs */}
-          <div className="flex flex-col sm:flex-row justify-center gap-3 mb-12">
-            <button
-              onClick={() => setSelected('visitors')}
-              className={`${tabClasses('visitors')} w-full sm:w-auto text-center`}
-            >
-              <span className="flex items-center justify-center gap-2">
-                <Plane className="w-4 h-4" />
-                Visiting Indore
-              </span>
-            </button>
-            <button
-              onClick={() => setSelected('goa')}
-              className={`${tabClasses('goa')} w-full sm:w-auto text-center`}
-            >
-              <span className="flex items-center justify-center gap-2">
-                <MapPin className="w-4 h-4" />
-                New Year's Trip
-              </span>
-            </button>
-          </div>
+          {/* Tabs - only show if Goa trip is available */}
+          {showGoaTrip && (
+            <div className="flex flex-col sm:flex-row justify-center gap-3 mb-12">
+              <button
+                onClick={() => setSelected('visitors')}
+                className={`px-6 py-3 rounded-lg cursor-pointer transition-all duration-200 font-medium w-full sm:w-auto text-center ${
+                  selected === 'visitors' 
+                    ? 'bg-burgundy text-ivory shadow-md' 
+                    : 'text-navy bg-burgundy/10 hover:bg-burgundy/20'
+                }`}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <Plane className="w-4 h-4" />
+                  Visiting Indore
+                </span>
+              </button>
+              <button
+                onClick={() => setSelected('goa')}
+                className={`px-6 py-3 rounded-lg cursor-pointer transition-all duration-200 font-medium w-full sm:w-auto text-center ${
+                  selected === 'goa' 
+                    ? 'bg-burgundy text-ivory shadow-md' 
+                    : 'text-navy bg-burgundy/10 hover:bg-burgundy/20'
+                }`}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  New Year's Trip
+                </span>
+              </button>
+            </div>
+          )}
 
           {/* CONTENT */}
           <div className="w-full">
             
-            {/* Goa Section */}
-            {selected === 'goa' && (
+            {/* Goa Section - only for friends and invitees */}
+            {showGoaTrip && selected === 'goa' && (
               <section className="border-l-2 border-blue-500 pl-6">
                 {/* Centered Goa Plate */}
                 <div className="text-center mb-8">
@@ -176,7 +185,7 @@ export default function TravelPage({ group }) {
                               className="w-full text-left flex items-center justify-between py-2 border-b border-blue-200 hover:border-blue-400 transition-colors"
                             >
                               <h3 className="font-semibold text-navy flex items-center gap-2">
-                                <Users className="w-5 h-5 text-blue-600" />
+                                <MapPin className="w-5 h-5 text-blue-600" />
                                 {item.sub}
                               </h3>
                               <ChevronDown 
@@ -196,8 +205,8 @@ export default function TravelPage({ group }) {
               </section>
             )}
 
-            {/* Visitors Section */}
-            {selected === 'visitors' && (
+            {/* Indore Section */}
+            {(!showGoaTrip || selected === 'visitors') && (
               <section className="border-l-2 border-amber-500 pl-6">
                 <p className="text-navy/80 leading-relaxed mb-8">
                   We know you can find everything on the internet these days, but we've done the
@@ -220,7 +229,7 @@ export default function TravelPage({ group }) {
                       {/* Collapsible sub-items */}
                       <div className="space-y-4">
                         {step.content.map((item, idx) => {
-                          const sectionKey = `visitors-${step.id}-${idx}`;
+                          const sectionKey = `${step.id}-${idx}`;
                           const isOpen = openSections[sectionKey];
                           
                           return (
