@@ -292,12 +292,21 @@ export default function EventsPage({ group }) {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            {upper === 'FRIENDS' && (
+            {(upper === 'FRIENDS' || upper === 'INVITEES' || upper === 'GUESTS') && (
               <a
                 href={`/${group}/rsvp`}
                 className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
               >
                 RSVP now!
+              </a>
+            )}
+
+            {(upper === 'BRIDE' || upper === 'GROOM') && (
+              <a
+                href={`/${group}/outfits`}
+                className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+              >
+                View outfit guide
               </a>
             )}
 
