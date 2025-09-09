@@ -154,6 +154,6 @@ export const events = [
     allowedGroups: ['FRIENDS'],
     location: 'Anandam Banquet Hall',
     mapQuery: 'Indore',
-    description: 'The party continues! An intimate late-night celebration for close friends who want to keep the energy going.',
+    description: 'The party continues! An intimate late-night celebration for those who want to keep the energy going.',
   },
 ];
