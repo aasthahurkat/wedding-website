@@ -359,22 +359,24 @@ export default function FAQPage({ group }) {
               ))}
             </CategorySection>
 
-            {/* Lodging */}
-            <CategorySection 
-              title="Lodging" 
-              category="lodging"
-            >
-              {faqsByCategory.lodging.map((faq) => (
-                <FAQItem
-                  key={faq.id}
-                  question={faq.question}
-                  isOpen={openIndex === faq.id}
-                  onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
-                >
-                  {faq.content}
-                </FAQItem>
-              ))}
-            </CategorySection>
+            {/* Lodging (hidden for Invitees) */}
+            {group !== 'invitees' && (
+              <CategorySection 
+                title="Lodging" 
+                category="lodging"
+              >
+                {faqsByCategory.lodging.map((faq) => (
+                  <FAQItem
+                    key={faq.id}
+                    question={faq.question}
+                    isOpen={openIndex === faq.id}
+                    onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                  >
+                    {faq.content}
+                  </FAQItem>
+                ))}
+              </CategorySection>
+            )}
 
             {/* Event Timeline & Venues */}
             <CategorySection 

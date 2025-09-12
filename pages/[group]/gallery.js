@@ -63,10 +63,10 @@ export default function GalleryPage({ group }) {
   useEffect(() => {
     if (token) {
       const validTokens = {
-        'aastha-family-champion': 'Aastha Family Champion',
-        'preetesh-family-champion': 'Preetesh Family Champion',
-        'friends-champion-1': 'Friends Champion 1',
-        'friends-champion-2': 'Friends Champion 2'
+        'shreyas-sakshi': 'Shreyas & Sakshi',
+        'kajal-niyati': 'Kajal & Niyati',
+        'rajdeep': 'Rajdeep',
+        'cousins': 'Cousins'
       };
 
       if (validTokens[token]) {
