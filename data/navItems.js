@@ -31,7 +31,7 @@ export const NAV_ITEMS = [
     key: 'travel',
     label: 'Travel',
     href: '/[group]/travel',
-    allowedGroups: ['FRIENDS', 'INVITEES', 'GUESTS'],
+    allowedGroups: ['FRIENDS', 'GUESTS'],
   },
   // Shopping guide accessible only through outfits page call-to-action
   // {
