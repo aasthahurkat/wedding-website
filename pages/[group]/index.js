@@ -35,7 +35,7 @@ export default function HomePage() {
           {/* Mobile/Tablet: full-screen hero (always show photo) */}
           <section
             className="md:hidden h-screen bg-center bg-cover"
-            style={{ backgroundImage: "url('/images/welcome-photo.JPG')" }}
+            style={{ backgroundImage: `url(${access === 'bride' ? "/images/welcome-photo-bride.png" : "/images/welcome-photo.JPG"})` }}
           />
 
           {/* Mobile/Tablet: single-column, centered welcome */}
@@ -297,7 +297,7 @@ export default function HomePage() {
               {/* Right column */}
               <div className="w-1/2">
                 <img
-                  src="/images/welcome-photo.JPG"
+                  src={access === 'bride' ? "/images/welcome-photo-bride.png" : "/images/welcome-photo.JPG"}
                   alt="Aastha & Preetesh smiling by the water"
                   className="rounded-lg shadow-lg w-full object-cover aspect-[4/5]"
                 />
