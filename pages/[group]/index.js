@@ -32,7 +32,7 @@ export default function HomePage() {
         <Navbar currentGroup={access} />
 
         <div className="flex-grow">
-          {/* Mobile/Tablet: full-screen hero */}
+          {/* Mobile/Tablet: full-screen hero (always show photo) */}
           <section
             className="md:hidden h-screen bg-center bg-cover"
             style={{ backgroundImage: "url('/images/welcome-photo.JPG')" }}
@@ -43,33 +43,41 @@ export default function HomePage() {
             <div className="max-w-prose mx-auto space-y-4 text-center">
               {access === 'bride' ? (
                 <div className="max-w-[50ch] mx-auto text-center">
-                  <img
-                    src="/images/indore-plate.png"
-                    alt="Indore license plate reading MP09 INDORE — December 2025"
-                    className="w-40 mx-auto mb-3"
-                  />
-                  <div className="text-sm text-burgundy mb-2">श्री गणेशाय नमः</div>
-                 <p className="mb-2">
-                    With the blessings of our elders and the grace of God,
-                    we cordially invite you to celebrate the auspicious occasion of
-                    the wedding celebrations of our beloved children
-                  </p>
-                  <p className="mb-1">
-                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
-                  </p>
-                  <p className="mb-1 font-medium">with</p>
-                  <p className="mb-2">
-                    <span className="text-xl font-serif text-burgundy">Preetesh</span> <br /> son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
-                  </p>
-                  <p className="mb-2">
-                    In the divine presence of our family deities and with the blessings of our ancestors,<br />
-                    we invite you to join us in this sacred union.
-                  </p>
-          
-                  <p className="mb-2">
-                    Kindly grace the occasion with your presence.<br />
-                    Your blessings are humbly solicited.
-                  </p>
+                  <div
+                    className="rounded-xl border shadow-sm mx-auto text-navy/90"
+                    style={{
+                      borderColor: '#C5A15D',
+                      backgroundImage: "url('/images/ivory-watercolor.png')",
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <div className="px-5 py-6 sm:px-6 sm:py-7 space-y-3">
+                      <div className="text-sm text-burgundy tracking-wide">श्रीमते रामानुजाय नमः</div>
+                      <div className="text-sm text-burgundy tracking-wide">श्री गणेशाय नमः</div>
+
+                      <div className="text-base leading-relaxed text-navy/90 text-justify whitespace-pre-line">
+                        सर्वेश्वर भगवान श्री पद्मावती वेंकटेशजी एवम अनन्त श्री विभूषित स्वामीजी श्री केशवाचार्यजी <span className="font-medium">बालक स्वामीजी</span> महाराज की कृपा से आपको आमंत्रित करने का शुभ अवसर प्राप्त हुआ है
+                      </div>
+
+                      <div className="text-2xl font-serif text-burgundy">आस्था</div>
+                      <div className="text-sm text-navy/80">सुपौत्री (श्री लक्ष्मीनारायणजी पार्वती देवी हुरकट) · सुपुत्री राम प्रीति हुरकट</div>
+
+                      <div className="text-sm text-navy/70">एवं</div>
+
+                      <div className="text-2xl font-serif text-burgundy">प्रीतेश</div>
+                      <div className="text-sm text-navy/80">सुपौत्र ( बड़े पापा ओर दादी का नाम) · सुपुत्र नीतेशजी प्रीतिजी पटौदी</div>
+
+                      <div className="text-base leading-relaxed text-navy/90 text-justify whitespace-pre-line">
+                        अग्निदेव एवम अनन्त देवताओं तथा आचार्य श्री की पावन उपस्थिति एवम पूर्वजों के आशीर्वाद के साथ विवाह के पवित्र बंधन में बंधने जा रहे है। हमें सादर आपको इस पवित्र मिलन समारोह में आमंत्रित करने का सौभाग्य प्राप्त हुआ है। कृपया अपनी गरिमामयी उपस्थिति एवम आशीर्वाद से हमें गौरवान्वित करें।
+                      </div>
+
+                      <div className="pt-2 text-sm text-navy/80">
+                        विनीत<br />
+                        श्रीमती पार्वती देवी हुरकट · राम प्रीति निष्ठा हेमांक हुरकट एवम परिवार
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : access === 'groom' ? (
                 <div className="max-w-[50ch] mx-auto text-center">
@@ -137,12 +145,22 @@ export default function HomePage() {
                 </>
               )}
 
-              <a
-                href={`/${access}/events`}
-                className="mt-8 inline-block px-8 py-4 min-h-[48px] bg-burgundy text-ivory rounded-full shadow-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
-              >
-                View Events
-              </a>
+              <div className="mt-8 flex items-center justify-center gap-3">
+                <a
+                  href={`/${access}/events`}
+                  className="inline-block px-6 py-3 min-h-[44px] bg-burgundy text-ivory rounded-full shadow-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+                >
+                  View Events
+                </a>
+                {access === 'bride' && (
+                  <a
+                    href={`/${access}/family`}
+                    className="inline-block px-6 py-3 min-h-[44px] bg-burgundy text-ivory rounded-full shadow-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+                  >
+                    Hosts & Family
+                  </a>
+                )}
+              </div>
             </div>
           </section>
 
@@ -152,36 +170,43 @@ export default function HomePage() {
               {/* Left column */}
               <div className="w-1/2 flex flex-col items-center text-center">
                 {access === 'bride' ? (
-                  // Traditional English Wedding Invitation for Bride
-                  <div className="max-w-[50ch] mx-auto text-center">
-                  <img
-                    src="/images/indore-plate.png"
-                    alt="Indore license plate reading MP09 INDORE — December 2025"
-                    className="w-40 mx-auto mb-3"
-                  />
-                  <div className="text-sm text-burgundy mb-2">श्री गणेशाय नमः</div>
-                  <p className="mb-2">
-                    With the blessings of our elders and the grace of God,
-                    we cordially invite you to celebrate the auspicious occasion of
-                    the wedding celebrations of our beloved children
-                  </p>
-                  <p className="mb-1">
-                    <span className="text-xl font-serif text-burgundy">Aastha</span> <br /> daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
-                  </p>
-                  <p className="mb-1 font-medium">with</p>
-                  <p className="mb-2">
-                    <span className="text-xl font-serif text-burgundy">Preetesh</span> <br /> son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
-                  </p>
-                  <p className="mb-2">
-                    In the divine presence of our family deities and with the blessings of our ancestors,<br />
-                    we invite you to join us in this sacred union.
-                  </p>
-          
-                  <p className="mb-2">
-                    Kindly grace the occasion with your presence.<br />
-                    Your blessings are humbly solicited.
-                  </p>
-                </div>
+                  // Printed-invite style panel for Bride
+                  <div className="max-w-[52ch] mx-auto text-center">
+                    <div
+                      className="rounded-xl border shadow-sm mx-auto text-navy/90"
+                      style={{
+                        borderColor: '#C5A15D',
+                        backgroundImage: "url('/images/ivory-watercolor.png')",
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                    >
+                      <div className="px-6 py-8 space-y-3">
+                        <div className="text-sm text-burgundy tracking-wide">श्रीमते रामानुजाय नमः</div>
+                        <div className="text-sm text-burgundy tracking-wide">श्री गणेशाय नमः</div>
+
+                        <div className="text-base leading-relaxed text-justify whitespace-pre-line">
+                          सर्वेश्वर भगवान श्री पद्मावती वेंकटेशजी एवम अनन्त श्री विभूषित स्वामीजी श्री केशवाचार्यजी <span className="font-medium">बालक स्वामीजी</span> महाराज की कृपा से आपको आमंत्रित करने का शुभ अवसर प्राप्त हुआ है
+                        </div>
+
+                        <div className="text-2xl font-serif text-burgundy">आस्था</div>
+                        <div className="text-sm text-navy/80">सुपौत्री (श्री लक्ष्मीनारायणजी पार्वती देवी हुरकट) · सुपुत्री राम प्रीति हुरकट</div>
+
+                        <div className="text-sm text-navy/70">एवं</div>
+
+                        <div className="text-2xl font-serif text-burgundy">प्रीतेश</div>
+                        <div className="text-sm text-navy/80">सुपौत्र ( बड़े पापा ओर दादी का नाम) · सुपुत्र नीतेशजी प्रीतिजी पटौदी</div>
+
+                        <div className="text-base leading-relaxed text-justify whitespace-pre-line">
+                          अग्निदेव एवम अनन्त देवताओं तथा आचार्य श्री की पावन उपस्थिति एवम पूर्वजों के आशीर्वाद के साथ विवाह के पवित्र बंधन में बंधने जा रहे है। हमें सादर आपको इस पवित्र मिलन समारोह में आमंत्रित करने का सौभाग्य प्राप्त हुआ है। कृपया अपनी गरिमामयी उपस्थिति एवम आशीर्वाद से हमें गौरवान्वित करें।
+                        </div>
+
+                        <div className="pt-2 text-sm text-navy/80">
+                          विनीत — श्रीमती पार्वती देवी हुरकट · राम प्रीति निष्ठा हेमांक हुरकट एवम परिवार
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 ) : access === 'groom' ? (
                   // Traditional English Wedding Invitation for Groom (names swapped)
                   <div className="max-w-[50ch] mx-auto text-center">
@@ -251,12 +276,22 @@ export default function HomePage() {
                   </>
                 )}
 
-                <a
-                  href={`/${access}/events`}
-                  className="mt-8 inline-block px-8 py-4 min-h-[48px] bg-burgundy text-ivory rounded-full shadow-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
-                >
-                  View Events
-                </a>
+                <div className="mt-8 flex items-center justify-center gap-4">
+                  <a
+                    href={`/${access}/events`}
+                    className="inline-block px-6 py-3 min-h-[44px] bg-burgundy text-ivory rounded-full shadow-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+                  >
+                    View Events
+                  </a>
+                  {access === 'bride' && (
+                    <a
+                      href={`/${access}/family`}
+                      className="inline-block px-6 py-3 min-h-[44px] bg-burgundy text-ivory rounded-full shadow-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+                    >
+                      Hosts & Family
+                    </a>
+                  )}
+                </div>
               </div>
 
               {/* Right column */}
