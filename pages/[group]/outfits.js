@@ -6,6 +6,7 @@ import { Crown, Sparkles, Camera, Clock, Palette, Lightbulb, ShoppingBag } from 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import React from 'react'; // Added for React.useMemo
+import { getGroupTheme } from '../../lib/groupThemes';
 
 export async function getStaticPaths() {
   return {
@@ -58,6 +59,23 @@ const getEventBackgroundColor = (eventId) => {
   return eventColors[eventId] || 'bg-gradient-to-br from-ivory to-cream border-neutral/20';
 };
 
+const getThemedEventBackgroundColor = (eventId) => {
+  const themed = {
+    mehndi: 'bg-gradient-to-br from-[#ecf4ff] via-[#fef6d2] to-[#d6f0d5] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    mayra: 'bg-gradient-to-br from-[#ecf4ff] via-[#fde2ef] to-[#ffe7cc] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    sangeet: 'bg-gradient-to-br from-[#ecf4ff] via-[#e7ddff] to-[#f0f4ff] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    'after-party': 'bg-gradient-to-br from-[#e4efff] via-[#d9e3ff] to-[#ecf4ff] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    'baraat-welcome': 'bg-gradient-to-br from-[#ecf4ff] via-[#ffe9df] to-[#fdf0f2] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    baraat: 'bg-gradient-to-br from-[#ecf4ff] via-[#fff4de] to-[#ffe5e2] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    phere: 'bg-gradient-to-br from-[#ecf4ff] via-[#ffe5e8] to-[#fff2da] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    'family-reception': 'bg-gradient-to-br from-[#ecf4ff] via-[#f5f5f5] to-white border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    reception: 'bg-gradient-to-br from-[#e0f0ff] via-[#e8fbff] to-[#ecf4ff] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    'baraat-phere': 'bg-gradient-to-br from-[#ecf4ff] via-[#ffe9df] to-[#f7f1ff] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+    'baraat-welcome-phere': 'bg-gradient-to-br from-[#ecf4ff] via-[#ffe3ec] to-[#fff2da] border border-[#8ecae6]/30 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm',
+  };
+  return themed[eventId] || 'bg-gradient-to-br from-[#ecf4ff] to-white border border-[#8ecae6]/25 shadow-[0_16px_36px_rgba(15,48,95,0.14)] backdrop-blur-sm';
+};
+
 // Event-specific outfit recommendations
 const eventOutfitGuide = {
   'mehndi': {
@@ -101,6 +119,13 @@ export default function OutfitsPage({ group }) {
   const router = useRouter();
   const current = group || router.query.group;
   const upperGroup = current.toUpperCase();
+  const { themed: isThemed } = getGroupTheme(current);
+
+  const contentWrapperClass = 'max-w-6xl mx-auto';
+
+  const outfitCopyClass = isThemed
+    ? 'text-[#1E4675] text-sm bg-white/70 border border-[#71B7E7]/20 p-3 rounded-lg backdrop-blur-sm'
+    : 'text-navy/80 text-sm bg-neutral/5 p-3 rounded-lg';
 
   // Filter events based on group access
   const accessibleEvents = events.filter(event => 
@@ -194,7 +219,7 @@ export default function OutfitsPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={current} />
-      <main className="flex-1 relative bg-cream">
+      <main className={`flex-1 relative ${isThemed ? '' : 'bg-cream'}`}>
         {/* Custom CSS for animations */}
         <style jsx>{`
           @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
@@ -208,8 +233,11 @@ export default function OutfitsPage({ group }) {
           .tooltip-trigger:hover .tooltip { visibility: visible; opacity: 1; transform: translateY(0); }
         `}</style>
 
-        <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm" aria-hidden="true" />
-        <div className="relative z-10 pt-24 pb-12 px-4 max-w-6xl mx-auto">
+        {!isThemed && (
+          <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm" aria-hidden="true" />
+        )}
+        <div className="relative z-10 pt-24 pb-12 px-4">
+          <div className={contentWrapperClass}>
           {/* Header */}
           <div className="text-center mb-8 sm:mb-12">
             <div className="flex justify-center mb-4">
@@ -235,11 +263,14 @@ export default function OutfitsPage({ group }) {
               {displayEvents.map((event) => {
                 const outfitInfo = eventOutfitGuide[event.id];
                 if (!outfitInfo) return null;
+                const cardBackground = isThemed
+                  ? getThemedEventBackgroundColor(event.id)
+                  : getEventBackgroundColor(event.id);
 
                 return (
                   <div
                     key={event.id}
-                    className={`rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 ${getEventBackgroundColor(event.id)}`}
+                    className={`rounded-xl p-6 hover:shadow-xl transition-all duration-300 ${cardBackground}`}
                   >
                     <div className="text-center mb-4">
                       <h3 className="text-xl font-serif text-navy mb-2">
@@ -252,7 +283,7 @@ export default function OutfitsPage({ group }) {
                         <Crown className="w-4 h-4" />
                         Recommended Outfit
                       </h4>
-                      <p className="text-navy/80 text-sm bg-neutral/5 p-3 rounded-lg">
+                      <p className={outfitCopyClass}>
                         {outfitInfo.outfit}
                       </p>
                     </div>
@@ -310,6 +341,7 @@ export default function OutfitsPage({ group }) {
             </div>
           )} */}
 
+          </div>
         </div>
       </main>
 

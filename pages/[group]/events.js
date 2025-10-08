@@ -4,6 +4,7 @@ import { Clock, MapPin, Download } from 'lucide-react';
 import React, { useState, useMemo, useCallback } from 'react';
 import { events } from '../../data/events';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
+import { getGroupTheme } from '../../lib/groupThemes';
 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -57,7 +58,35 @@ export async function getStaticProps({ params }) {
 
 export default function EventsPage({ group }) {
   const upper = group.toUpperCase();
-  
+  const { themed: isThemed } = getGroupTheme(group);
+
+  const pdfPalette = useMemo(() => {
+    if (isThemed) {
+      return {
+        primary: [29, 79, 132],
+        accent: [113, 183, 231],
+        surface: [239, 248, 255],
+        muted: [96, 115, 138],
+        deep: [15, 48, 95],
+        white: [255, 255, 255],
+      };
+    }
+    return {
+      primary: [31, 45, 62],
+      accent: [139, 69, 84],
+      surface: [252, 250, 247],
+      muted: [120, 120, 120],
+      deep: [139, 69, 84],
+      white: [255, 255, 255],
+    };
+  }, [isThemed]);
+
+  const contentWrapperClass = 'max-w-7xl mx-auto';
+
+  const ctaButtonClass = isThemed
+    ? 'inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[48px] rounded-full bg-gradient-to-r from-[#1D4F84] to-[#71B7E7] text-white shadow-[0_18px_40px_rgba(15,48,95,0.25)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_24px_50px_rgba(15,48,95,0.32)] focus:outline-none focus:ring-2 focus:ring-[#71B7E7] focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none'
+    : 'inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none';
+
   // Memoize filtered events to prevent unnecessary recalculations
   const myEvents = useMemo(() => 
     events.filter((e) => e.allowedGroups.includes(upper)), 
@@ -97,15 +126,10 @@ export default function EventsPage({ group }) {
       const margin = 20;
       const contentWidth = pageWidth - margin * 2;
 
-      // Original color palette - burgundy and navy focused
-      const burgundy = [139, 69, 84];
-      const navy = [31, 45, 62];
-      const cream = [252, 250, 247];
-      const gray = [120, 120, 120];
-      const white = [255, 255, 255];
+      const { primary, accent, surface, muted, deep, white } = pdfPalette;
 
       // Helper function for simple divider
-      const addDivider = (y, width = contentWidth * 0.4, color = burgundy) => {
+      const addDivider = (y, width = contentWidth * 0.4, color = accent) => {
         const x = (pageWidth - width) / 2;
         pdf.setDrawColor(...color);
         pdf.setLineWidth(0.5);
@@ -113,7 +137,7 @@ export default function EventsPage({ group }) {
       };
 
       // Title page with centered content
-      pdf.setFillColor(...cream);
+      pdf.setFillColor(...surface);
       pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
       // Calculate vertical center
@@ -122,39 +146,39 @@ export default function EventsPage({ group }) {
       // Main frame - centered
       const frameHeight = 100;
       const frameY = centerY - frameHeight / 2;
-      pdf.setDrawColor(...burgundy);
+      pdf.setDrawColor(...accent);
       pdf.setLineWidth(2);
       pdf.rect(margin + 10, frameY, contentWidth - 20, frameHeight);
       pdf.setLineWidth(0.5);
       pdf.rect(margin + 12, frameY + 2, contentWidth - 24, frameHeight - 4);
 
       // Title - centered in frame
-      pdf.setTextColor(...navy);
+      pdf.setTextColor(...primary);
       pdf.setFontSize(38);
       pdf.setFont('helvetica', 'bold');
       pdf.text('Wedding Celebration', pageWidth / 2, frameY + 30, { align: 'center' });
 
       // Decorative line
-      addDivider(frameY + 40, contentWidth * 0.3, burgundy);
+      addDivider(frameY + 40, contentWidth * 0.3, accent);
 
       // Couple names
-      pdf.setTextColor(...burgundy);
+      pdf.setTextColor(...accent);
       pdf.setFontSize(28);
       pdf.setFont('helvetica', 'normal');
       pdf.text('Aastha & Preetesh', pageWidth / 2, frameY + 60, { align: 'center' });
 
       // Date and location
-      pdf.setTextColor(...navy);
+      pdf.setTextColor(...primary);
       pdf.setFontSize(16);
       pdf.text('December 2025  •  Indore, India', pageWidth / 2, frameY + 80, { align: 'center' });
 
       // Schedule pages
       pdf.addPage();
-      pdf.setFillColor(...cream);
+      pdf.setFillColor(...surface);
       pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
       // Header
-      pdf.setTextColor(...navy);
+      pdf.setTextColor(...primary);
       pdf.setFontSize(28);
       pdf.setFont('helvetica', 'bold');
       pdf.text('Schedule of Events', pageWidth / 2, 30, { align: 'center' });
@@ -174,13 +198,13 @@ export default function EventsPage({ group }) {
         // Check if we need space for date header + at least one event
         if (yPosition > pageHeight - 80) {
           pdf.addPage();
-          pdf.setFillColor(...cream);
+          pdf.setFillColor(...surface);
           pdf.rect(0, 0, pageWidth, pageHeight, 'F');
           yPosition = 30;
         }
 
         // Date header - centered above events
-        pdf.setTextColor(...burgundy);
+        pdf.setTextColor(...accent);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
         pdf.text(dateStr, pageWidth / 2, yPosition, { align: 'center' });
@@ -207,12 +231,12 @@ export default function EventsPage({ group }) {
 
           // Draw event card
           pdf.setFillColor(...white);
-          pdf.setDrawColor(...burgundy);
+          pdf.setDrawColor(...accent);
           pdf.setLineWidth(0.8);
           pdf.roundedRect(margin, yPosition, contentWidth, cardHeight, 2, 2, 'FD');
 
           // Event name - centered at top
-          pdf.setTextColor(...navy);
+          pdf.setTextColor(...primary);
           pdf.setFontSize(16);
           pdf.setFont('helvetica', 'bold');
           pdf.text(getEventTitle(evt, upper).toUpperCase(), pageWidth / 2, yPosition + 10, { align: 'center' });
@@ -221,7 +245,7 @@ export default function EventsPage({ group }) {
           let currentY = yPosition + 10;
           const eventDescription = getEventDescription(evt, upper);
           if (eventDescription) {
-            pdf.setTextColor(...gray);
+            pdf.setTextColor(...muted);
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
             const wrappedDesc = pdf.splitTextToSize(eventDescription, contentWidth - 30);
@@ -237,7 +261,7 @@ export default function EventsPage({ group }) {
 
           // Time on left
           if (evt.time) {
-            pdf.setTextColor(...navy);
+            pdf.setTextColor(...primary);
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
             pdf.text(evt.time, margin + 10, bottomY);
@@ -245,7 +269,7 @@ export default function EventsPage({ group }) {
 
           // Venue on right (with link if available)
           if (evt.location) {
-            pdf.setTextColor(...navy);
+            pdf.setTextColor(...primary);
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
             const venueText = evt.location;
@@ -267,96 +291,92 @@ export default function EventsPage({ group }) {
     } finally {
       setIsGeneratingPDF(false);
     }
-  }, [grouped, sortedDates, group]);
+  }, [grouped, sortedDates, group, pdfPalette, isGeneratingPDF]);
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
       
-      <main className="flex-1 relative bg-cream">
-        <div
-          className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm"
-          aria-hidden="true"
-        />
-        <div className="relative z-10 pt-24 pb-12 px-4 max-w-7xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl font-serif text-center text-navy mb-2 capitalize">
-            Wedding Festivities!
-          </h1>
-          <p className="text-center text-navy/70 mb-4">
-            Get ready to celebrate with us across multiple magical events! <br /> Below you will find
-            the When and Where for each celebration— 
-            <span className="text-burgundy">
-               just tap to flip any plate
-            </span>
-             {' '}to dive into all the details.
-          </p>
+      <main className={`flex-1 relative ${isThemed ? '' : 'bg-cream'}`}>
+        {!isThemed && (
+          <div
+            className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm"
+            aria-hidden="true"
+          />
+        )}
+        <div className="relative z-10 pt-24 pb-12 px-4">
+          <div className={contentWrapperClass}>
+            <h1 className="text-2xl sm:text-3xl font-serif text-center text-navy mb-4 capitalize">
+              Wedding Festivities!
+            </h1>
+            <p className="text-center text-navy/70 mb-6">
+              Get ready to celebrate with us across multiple magical events! <br /> Below you will find
+              the When and Where for each celebration—{' '}
+              <span className="text-burgundy">just tap to flip any plate</span> to dive into all the details.
+            </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            {(upper === 'FRIENDS' || upper === 'INVITEES' || upper === 'GUESTS') && (
-              <a
-                href={`/${group}/rsvp`}
-                className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
-              >
-                RSVP now!
-              </a>
-            )}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              {(upper === 'FRIENDS' || upper === 'INVITEES' || upper === 'GUESTS') && (
+                <a href={`/${group}/rsvp`} className={ctaButtonClass}>
+                  RSVP now!
+                </a>
+              )}
 
-            {(upper === 'BRIDE' || upper === 'GROOM') && (
-              <a
-                href={`/${group}/outfits`}
-                className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
-              >
-                View outfit guide
-              </a>
-            )}
+              {(upper === 'BRIDE' || upper === 'GROOM') && (
+                <a href={`/${group}/outfits`} className={ctaButtonClass}>
+                  View outfit guide
+                </a>
+              )}
 
-            {upper !== 'BRIDE' && upper !== 'GROOM' && (
-              <button
-                onClick={generatePDF}
-                disabled={isGeneratingPDF}
-                className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
-              >
-                {isGeneratingPDF ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ivory"></div>
-                    <span>Generating...</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-4 h-4" />
-                    <span>Download Schedule</span>
-                  </>
-                )}
-              </button>
+              {upper !== 'BRIDE' && upper !== 'GROOM' && (
+                <button
+                  onClick={generatePDF}
+                  disabled={isGeneratingPDF}
+                  className={ctaButtonClass}
+                >
+                  {isGeneratingPDF ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                      <span>Generating...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" />
+                      <span>Download Schedule</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+
+            {sortedDates.map((date) => (
+              <section key={date} className="mb-8 sm:mb-12">
+                <h2 className="text-xl sm:text-2xl font-semibold text-navy mb-4 text-center">
+                  {new Date(date + 'T00:00').toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </h2>
+                <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                  {grouped[date].map((evt) => (
+                    <EventCard
+                      key={evt.id}
+                      evt={evt}
+                      userGroup={upper}
+                      isFlipped={flippedId === evt.id}
+                      onFlip={() => setFlippedId(flippedId === evt.id ? null : evt.id)}
+                      isThemed={isThemed}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))}
+
+            {sortedDates.length === 0 && (
+              <p className="text-center text-sm text-navy/70">No events available for this group.</p>
             )}
           </div>
-
-          {sortedDates.map((date) => (
-            <section key={date} className="mb-8 sm:mb-12">
-              <h2 className="text-xl sm:text-2xl font-semibold text-navy mb-4 text-center">
-                {new Date(date + 'T00:00').toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                })}
-              </h2>
-              <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                {grouped[date].map((evt) => (
-                  <EventCard
-                    key={evt.id}
-                    evt={evt}
-                    userGroup={upper}
-                    isFlipped={flippedId === evt.id}
-                    onFlip={() => setFlippedId(flippedId === evt.id ? null : evt.id)}
-                  />
-                ))}
-              </div>
-            </section>
-          ))}
-
-          {sortedDates.length === 0 && (
-            <p className="text-center text-sm text-navy/70">No events available for this group.</p>
-          )}
         </div>
       </main>
       <Footer />
@@ -365,7 +385,7 @@ export default function EventsPage({ group }) {
 }
 
 // Memoized EventCard component for better performance
-const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
+const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip, isThemed }) => {
   const cardStyle = {
     width: '100%',
     paddingBottom: '50%',
@@ -394,8 +414,12 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
     backfaceVisibility: 'hidden',
     borderRadius: '0.5rem',
     overflow: 'hidden',
-    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    boxShadow: isThemed
+      ? '0 20px 48px rgba(15, 48, 95, 0.18)'
+      : '0 4px 6px rgba(0,0,0,0.1)',
   };
+
+  const backFaceColor = isThemed ? 'rgba(239, 248, 255, 0.94)' : '#F7F2E9';
 
   return (
     <div
@@ -420,7 +444,7 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
         </div>
 
         {/* Back Face */}
-        <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: '#F7F2E9' }}>
+        <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: backFaceColor }}>
           <div className="relative h-full p-4 sm:p-6">
             <div className="flex flex-col justify-center h-full">
               <h3 className="text-lg sm:text-xl font-semibold text-navy mb-3">{getEventTitle(evt, userGroup)}</h3>

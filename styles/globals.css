@@ -36,7 +36,7 @@
   }
 
   /* Body defaults */
-  body {
+body {
     @apply bg-ivory text-gray-700 font-body leading-relaxed;
   }
 
@@ -59,6 +59,111 @@
   hr.section-divider {
     @apply border-t-2 border-gold w-24 mx-auto my-6;
   }
+}
+
+/* 7) Bride/Groom Blue Theme Overrides */
+.theme-blue body {
+  background-color: #eff8ff;
+  background-image: url('/images/bride/blue-watercolor-bg-297x396.png');
+  background-repeat: repeat;
+  background-size: 520px;
+  color: #1e4675;
+}
+
+.theme-blue .bg-cream {
+  background-color: rgba(239, 248, 255, 0.92) !important;
+}
+
+.theme-blue .bg-ivory {
+  background-color: rgba(239, 248, 255, 0.85) !important;
+}
+
+.theme-blue .bg-burgundy {
+  background: linear-gradient(135deg, #1d4f84 0%, #71b7e7 100%) !important;
+  color: #eff8ff !important;
+}
+
+.theme-blue .hover\:bg-burgundy:hover {
+  background: linear-gradient(135deg, #1d4f84 0%, #71b7e7 100%) !important;
+}
+
+.theme-blue .hover\:bg-burgundy\/90:hover {
+  background: linear-gradient(135deg, #1d4f84 0%, #71b7e7 100%) !important;
+}
+
+.theme-blue .hover\:bg-neutral\/50:hover {
+  background-color: rgba(113, 183, 231, 0.1) !important;
+}
+
+.theme-blue .bg-burgundy\/10 {
+  background-color: rgba(113, 183, 231, 0.15) !important;
+}
+
+.theme-blue .bg-burgundy\/15 {
+  background-color: rgba(113, 183, 231, 0.22) !important;
+}
+
+.theme-blue .border-burgundy,
+.theme-blue .border-burgundy\/10,
+.theme-blue .border-burgundy\/20,
+.theme-blue .border-burgundy\/40 {
+  border-color: rgba(113, 183, 231, 0.45) !important;
+}
+
+.theme-blue .focus\:ring-burgundy:focus,
+.theme-blue .focus\:ring-burgundy:focus-visible {
+  --tw-ring-color: rgba(113, 183, 231, 0.6) !important;
+}
+
+.theme-blue .text-burgundy,
+.theme-blue .text-burgundy\/70,
+.theme-blue .text-burgundy\/80,
+.theme-blue .text-burgundy\/90,
+.theme-blue .hover\:text-burgundy:hover,
+.theme-blue .group:hover .group-hover\:text-burgundy {
+  color: #1d4f84 !important;
+}
+
+.theme-blue .text-primary {
+  color: #1d4f84 !important;
+}
+
+.theme-blue .hover\:text-primary:hover {
+  color: #1d4f84 !important;
+}
+
+.theme-blue .text-secondary {
+  color: #71b7e7 !important;
+}
+
+.theme-blue .border-secondary {
+  border-color: #71b7e7 !important;
+}
+
+.theme-blue .border-secondary\/60,
+.theme-blue .border-secondary\/40,
+.theme-blue .border-secondary\/20 {
+  border-color: rgba(113, 183, 231, 0.6) !important;
+}
+
+.theme-blue .text-burgundy\/60,
+.theme-blue .text-burgundy\/50,
+.theme-blue .group .group-hover\:text-burgundy {
+  color: rgba(29, 79, 132, 0.7) !important;
+}
+
+.theme-blue .text-burgundy\/40 {
+  color: rgba(29, 79, 132, 0.4) !important;
+}
+
+.theme-blue .shadow-card {
+  box-shadow: 0 18px 48px rgba(15, 48, 95, 0.15) !important;
+}
+
+.theme-blue .bg-gold\/20,
+.theme-blue .border-gold\/20 {
+  background-color: rgba(113, 183, 231, 0.12) !important;
+  border-color: rgba(113, 183, 231, 0.18) !important;
 }
 
 /* 5) Utility components */
@@ -179,6 +284,37 @@
   }
   .util--rotate-y-180 {
     transform: rotateY(180deg);
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.9s ease-out both;
+  }
+
+  @keyframes floatSlow {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -10px, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .animate-float-slow {
+    animation: floatSlow 8s ease-in-out infinite;
   }
 }
 
