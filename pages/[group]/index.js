@@ -84,11 +84,11 @@ export default function HomePage() {
           </section>
 
           {/* Mobile/Tablet: single-column, centered welcome */}
-          <section className={`md:hidden px-4 py-12 ${isThemed ? 'pt-16' : 'bg-ivory'}`}>
+          <section className={`md:hidden py-12 ${isThemed ? 'pt-16' : 'bg-ivory'}`}>
             <div className="mx-auto max-w-prose space-y-6 text-center">
               {access === 'bride' ? (
                 isThemed ? (
-                  <figure className="mx-auto w-full max-w-[420px] sm:max-w-[460px] animate-fade-up">
+                  <figure className="mx-auto w-full max-w-[520px] sm:max-w-[460px] animate-fade-up">
                     <Image
                       src="/images/bride/bride-final.svg"
                       alt="Wedding invitation for Aastha and Preetesh with blessings from elders and family deities"
