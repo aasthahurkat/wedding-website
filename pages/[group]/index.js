@@ -67,7 +67,7 @@ export default function HomePage() {
             <div
               className="absolute inset-0 bg-center bg-cover"
               style={{
-                backgroundImage: `url(${access === 'bride' ? "/images/welcome-photo-bride.png" : "/images/welcome-photo.JPG"})`,
+                backgroundImage: `url(${access === 'bride' ? "/images/welcome-photo.JPG" : "/images/welcome-photo.JPG"})`,
               }}
             />
             {isThemed && (
@@ -508,7 +508,7 @@ export default function HomePage() {
                   }`}
                 >
                   <img
-                    src={access === 'bride' ? "/images/welcome-photo-bride.png" : "/images/welcome-photo.JPG"}
+                    src={access === 'bride' ? "/images/welcome-photo.JPG" : "/images/welcome-photo.JPG"}
                     alt="Aastha & Preetesh smiling by the water"
                     className="h-full w-full object-cover aspect-[2/3]"
                   />
