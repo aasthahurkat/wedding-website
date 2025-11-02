@@ -109,7 +109,7 @@ export default function FAQPage({ group }) {
         <>
           It's not mandatory, but it will make it so much easier for us to get a headcount and
           sort out the logistics and accommodations, so if you could RSVP by{' '}
-          <strong>NOVEMBER 15</strong> on our RSVP page, we'd really appreciate it!
+          <strong>NOVEMBER 23</strong> on our RSVP page, we'd really appreciate it!
         </>
       )
     },
