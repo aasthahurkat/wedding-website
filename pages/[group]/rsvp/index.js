@@ -80,7 +80,11 @@ function RSVPPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className="flex-1 bg-cream pt-24 pb-12">
+      <main className="flex-1 bg-cream pt-24 pb-12" style={group === 'bride' ? {
+        backgroundImage: "url('/blue-watercolor-bg.svg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      } : {}}>
         <div className="max-w-2xl mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-8">
@@ -338,7 +342,7 @@ function RSVPPage({ group }) {
         </div>
       </main>
 
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }

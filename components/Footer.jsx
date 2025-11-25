@@ -1,20 +1,25 @@
 // components/Footer.jsx
-export default function Footer() {
+export default function Footer({ variant, currentGroup }) {
+  const normalizedGroup = (currentGroup || '').toLowerCase();
+  const computedVariant =
+    variant ??
+    (normalizedGroup === 'bride' ? 'bride' : 'default');
+
+  const isBride = computedVariant === 'bride';
+  const backgroundClass = isBride ? 'bg-sky-600 text-white' : 'bg-primary text-cream';
+  const linkClass = isBride
+    ? 'underline decoration-white/80 hover:decoration-white'
+    : 'underline';
+
   return (
     <footer
       role="contentinfo"
-      className="
-        bg-primary 
-        bg-cover 
-        bg-center 
-        py-4 sm:py-6 
-        text-center
-      "
+      className={`${backgroundClass} bg-cover bg-center py-4 sm:py-6 text-center`}
     >
-      <div className="container font-body text-cream text-sm sm:text-base">
+      <div className="container font-body text-sm sm:text-base">
         <p>
           Questions?{' '}
-          <a href="mailto:aasthahurkat@gmail.com" className="underline">
+          <a href="mailto:aasthahurkat@gmail.com" className={linkClass}>
             Get in&nbsp;touch
           </a>
         </p>

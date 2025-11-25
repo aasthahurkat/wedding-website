@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NAV_ITEMS } from '../data/navItems';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export default function Navbar({ currentGroup }) {
   const { asPath, query } = useRouter();
@@ -10,6 +10,32 @@ export default function Navbar({ currentGroup }) {
     item.allowedGroups.map((g) => g.toLowerCase()).includes(groupParam)
   );
   const [open, setOpen] = useState(false);
+
+  const theme = useMemo(() => {
+    if (groupParam === 'bride') {
+      return {
+        navBackground: 'bg-sky-100/90',
+        mobileBackground: 'bg-sky-100/95',
+        linkText: 'text-sky-900',
+        linkHover: 'hover:text-sky-700 hover:bg-sky-50',
+        activeText: 'text-sky-700',
+        activeBorder: 'border-sky-700',
+        hamburgerBar: 'bg-sky-600',
+        focusRing: 'focus:ring-sky-500',
+      };
+    }
+
+    return {
+      navBackground: 'bg-ivory/90',
+      mobileBackground: 'bg-ivory/95',
+      linkText: 'text-card-black',
+      linkHover: 'hover:text-primary hover:bg-neutral/50',
+      activeText: 'text-secondary',
+      activeBorder: 'border-secondary',
+      hamburgerBar: 'bg-primary',
+      focusRing: 'focus:ring-primary',
+    };
+  }, [groupParam]);
 
   // Close mobile menu when scrolling
   useEffect(() => {
@@ -27,7 +53,7 @@ export default function Navbar({ currentGroup }) {
     <nav
       role="navigation"
       translate="no"
-      className="fixed inset-x-0 top-0 bg-ivory/90 backdrop-blur-sm shadow-card z-30 notranslate"
+      className={`fixed inset-x-0 top-0 backdrop-blur-sm shadow-card z-30 notranslate ${theme.navBackground}`}
     >
       <div className="container flex items-center justify-between py-4">
         {/* Branding or Logo could go here if needed */}
@@ -46,8 +72,8 @@ export default function Navbar({ currentGroup }) {
                   px-3 py-2 text-sm sm:text-base font-medium rounded-md transition-colors duration-200
                   ${
                     isActive
-                      ? 'text-secondary border-b-2 border-secondary'
-                      : 'text-card-black hover:text-primary hover:bg-neutral/50'
+                      ? `${theme.activeText} border-b-2 ${theme.activeBorder}`
+                      : `${theme.linkText} ${theme.linkHover}`
                   }
                 `}
               >
@@ -59,20 +85,20 @@ export default function Navbar({ currentGroup }) {
 
         {/* Mobile Hamburger */}
         <button
-          className="md:hidden p-2 focus:outline-none focus:ring-2 focus:ring-primary rounded"
+          className={`md:hidden p-2 focus:outline-none focus:ring-2 ${theme.focusRing} rounded`}
           onClick={() => setOpen((prev) => !prev)}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
         >
-          <span className="block w-6 h-0.5 bg-primary mb-1"></span>
-          <span className="block w-6 h-0.5 bg-primary mb-1"></span>
-          <span className="block w-6 h-0.5 bg-primary"></span>
+          <span className={`block w-6 h-0.5 ${theme.hamburgerBar} mb-1`}></span>
+          <span className={`block w-6 h-0.5 ${theme.hamburgerBar} mb-1`}></span>
+          <span className={`block w-6 h-0.5 ${theme.hamburgerBar}`}></span>
         </button>
       </div>
 
       {/* Mobile Drawer */}
       {open && (
-        <div className="md:hidden bg-ivory/95 backdrop-blur-sm shadow-inner">
+        <div className={`md:hidden backdrop-blur-sm shadow-inner ${theme.mobileBackground}`}>
           <div className="space-y-1 px-4 pb-4">
             {filteredItems.map((item) => {
               const href = item.href.replace('[group]', groupParam);
@@ -82,7 +108,7 @@ export default function Navbar({ currentGroup }) {
                   key={item.key}
                   href={href}
                   onClick={() => setOpen(false)}
-                  className="block px-3 py-2 text-base font-medium text-card-black rounded-md hover:text-primary hover:bg-neutral/50"
+                  className={`block px-3 py-2 text-base font-medium rounded-md ${theme.linkText} ${theme.linkHover}`}
                 >
                   {item.label}
                 </Link>

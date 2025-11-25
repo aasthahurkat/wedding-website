@@ -21,6 +21,209 @@ export default function HomePage() {
   // While loading or invalid, render nothing
   if (!router.isReady || !valid) return null;
 
+  // Special case for bride: use blue theme with same layout as friends
+  if (access === 'bride') {
+    return (
+      <>
+        <Head>
+          <title>Aastha & Preetesh Wedding</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+
+        <div className="flex flex-col min-h-screen pt-8">
+          <Navbar currentGroup={access} />
+
+          <div className="flex-grow">
+            {/* Mobile/Tablet: single-column, centered welcome */}
+            <section
+              className="md:hidden px-4 py-12"
+              style={{
+                backgroundImage: "url('/blue-watercolor-bg.svg')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <div className="max-w-prose mx-auto space-y-4 text-center">
+                <img
+                  src="/hero-image.svg"
+                  alt="Aastha & Preetesh"
+                  className="mx-auto mb-8 w-full max-w-sm drop-shadow-xl"
+                />
+
+                <img
+                  src="/images/indore-plate.png"
+                  alt="Indore license plate reading MP09 INDORE — December 2025"
+                  className="w-40 mx-auto mb-4"
+                />
+
+                <div className="space-y-6 text-center text-navy">
+                  {/* Opening blessing */}
+                  <p className="text-base leading-relaxed px-4">
+                    With hearts full of gratitude and the blessings of our elders, we joyfully invite you to witness and celebrate the sacred union of
+                  </p>
+
+                  {/* Bride */}
+                  <div className="space-y-2">
+                    <h2 className="text-4xl font-prida text-sky-600">Aastha</h2>
+                    <p className="text-sm leading-relaxed">
+                      Granddaughter of Mrs. Parvati Devi Hurkat &<br />
+                      Late Mr. Lakshminarayan ji Hurkat<br />
+                      Daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
+                    </p>
+                  </div>
+
+                  {/* Ampersand */}
+                  <div className="text-3xl font-serif text-sky-600">&</div>
+
+                  {/* Groom */}
+                  <div className="space-y-2">
+                    <h2 className="text-4xl font-prida text-sky-600">Preetesh</h2>
+                    <p className="text-sm leading-relaxed">
+                      Grandson of Mr. Suresh ji Patodi & Late<br />
+                      Mrs. Usha Patodi<br />
+                      Son of Mr. Neetesh ji Patodi & Mrs. Preeti ji Patodi
+                    </p>
+                  </div>
+
+                  {/* Message */}
+                  <p className="text-base leading-relaxed px-4 pt-2">
+                    Two souls who grew up in the warmth of family, found friendship in laughter, and discovered love in each other.  <br /> As they begin this beautiful journey together, your presence would mean the world to us. Join us in blessing this union with your love and good wishes.
+                  </p>
+
+                  {/* Lotus Divider */}
+                  <div className="pt-2 pb-1">
+                    <img
+                      src="/images/bride/center-petal.svg"
+                      alt="Decorative divider"
+                      className="w-16 h-16 mx-auto"
+                    />
+                  </div>
+
+                  {/* Closing */}
+                  <div className="space-y-1">
+                    <p className="text-sm italic">With Love,</p>
+                    <p className="text-lg font-serif">Parvati Devi Hurkat & Family</p>
+                  </div>
+                </div>
+
+                <div className="mt-8 flex flex-col items-center justify-center gap-3">
+                  <a
+                    href={`/${access}/events`}
+                    className="inline-block px-6 py-3 min-h-[44px] bg-sky-600 text-white rounded-full shadow-lg hover:bg-sky-700 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
+                  >
+                    View Events
+                  </a>
+                  <a
+                    href={`/${access}/family`}
+                    className="inline-block px-6 py-3 min-h-[44px] bg-sky-600 text-white rounded-full shadow-lg hover:bg-sky-700 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
+                  >
+                    Hosts & Family
+                  </a>
+                </div>
+              </div>
+            </section>
+
+            {/* Desktop: two-column welcome with vertical centering */}
+            <section
+              className="hidden md:block px-8 py-16"
+              style={{
+                backgroundImage: "url('/blue-watercolor-bg.svg')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <div className="container mx-auto flex items-center gap-12">
+                {/* Left column */}
+                <div className="w-1/2 flex flex-col items-center text-center">
+                  <img
+                    src="/images/indore-plate.png"
+                    alt="Indore license plate reading MP09 INDORE — December 2025"
+                    className="h-28 mb-4"
+                  />
+
+                  <div className="space-y-6 text-center text-navy max-w-[50ch]">
+                    {/* Opening blessing */}
+                    <p className="text-lg leading-relaxed">
+                      With hearts full of gratitude and the blessings of our elders, we joyfully invite you to witness and celebrate the sacred union of
+                    </p>
+
+                    {/* Bride */}
+                    <div className="space-y-3">
+                      <h2 className="text-5xl font-prida text-sky-600">Aastha</h2>
+                      <p className="text-base leading-relaxed">
+                        Granddaughter of Mrs. Parvati Devi Hurkat &<br />
+                        Late Mr. Lakshminarayan ji Hurkat<br />
+                        Daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
+                      </p>
+                    </div>
+
+                    {/* Ampersand */}
+                    <div className="text-4xl font-serif text-sky-600">&</div>
+
+                    {/* Groom */}
+                    <div className="space-y-3">
+                      <h2 className="text-5xl font-prida text-sky-600">Preetesh</h2>
+                      <p className="text-base leading-relaxed">
+                        Grandson of Mr. Suresh ji Patodi & Late<br />
+                        Mrs. Usha Patodi<br />
+                        Son of Mr. Neetesh ji Patodi & Mrs. Preeti ji Patodi
+                      </p>
+                    </div>
+
+                    {/* Message */}
+                    <p className="text-base leading-relaxed pt-4">
+                      Two souls who grew up in the warmth of family, found friendship in laughter, and discovered love in each other. As they begin this beautiful journey together, your presence would mean the world to us. Join us in blessing this union with your love and good wishes.
+                    </p>
+
+                    {/* Lotus Divider */}
+                    <div className="pt-8 pb-2">
+                      <img
+                        src="/images/bride/center-petal.svg"
+                        alt="Decorative divider"
+                        className="w-20 h-20 mx-auto opacity-70"
+                      />
+                    </div>
+
+                    {/* Closing */}
+                    <div className="space-y-2">
+                      <p className="text-base italic">With Love,</p>
+                      <p className="text-2xl font-serif">Parvati Devi Hurkat & Family</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 flex items-center justify-center gap-4">
+                    <a
+                      href={`/${access}/events`}
+                      className="inline-block px-6 py-3 min-h-[44px] bg-sky-600 text-white rounded-full shadow-lg hover:bg-sky-700 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
+                    >
+                      View Events
+                    </a>
+                    <a
+                      href={`/${access}/family`}
+                      className="inline-block px-6 py-3 min-h-[44px] bg-sky-600 text-white rounded-full shadow-lg hover:bg-sky-700 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
+                    >
+                      Hosts & Family
+                    </a>
+                  </div>
+                </div>
+
+                {/* Right column */}
+                <div className="w-1/2 flex justify-center">
+                  <img
+                    src="/hero-image.svg"
+                    alt="Aastha & Preetesh"
+                    className="w-full max-w-[380px] h-auto drop-shadow-xl"
+                  />
+                </div>
+              </div>
+            </section>
+          </div>
+          <Footer currentGroup={access} />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -52,7 +255,7 @@ export default function HomePage() {
                       backgroundPosition: 'center',
                     }}
                   >
-                    <div className="px-5 py-6 sm:px-6 sm:py-7 space-y-3">
+                    <div className="px-5 py-6 sm:px-6 sm:py-7 space-y-3 font-ams-aditya">
                       <div className="text-sm text-burgundy tracking-wide">श्रीमते रामानुजाय नमः</div>
                       <div className="text-sm text-burgundy tracking-wide">श्री गणेशाय नमः</div>
 
@@ -60,12 +263,12 @@ export default function HomePage() {
                         सर्वेश्वर भगवान श्री पद्मावती वेंकटेशजी एवम अनन्त श्री विभूषित स्वामीजी श्री केशवाचार्यजी <span className="font-medium">बालक स्वामीजी</span> महाराज की कृपा से आपको आमंत्रित करने का शुभ अवसर प्राप्त हुआ है
                       </div>
 
-                      <div className="text-2xl font-serif text-burgundy">आस्था</div>
+                      <div className="text-2xl font-semibold text-burgundy">आस्था</div>
                       <div className="text-sm text-navy/80">सुपौत्री (श्री लक्ष्मीनारायणजी पार्वती देवी हुरकट) · सुपुत्री राम प्रीति हुरकट</div>
 
                       <div className="text-sm text-navy/70">एवं</div>
 
-                      <div className="text-2xl font-serif text-burgundy">प्रीतेश</div>
+                      <div className="text-2xl font-semibold text-burgundy">प्रीतेश</div>
                       <div className="text-sm text-navy/80">सुपौत्र ( बड़े पापा ओर दादी का नाम) · सुपुत्र नीतेशजी प्रीतिजी पटौदी</div>
 
                       <div className="text-base leading-relaxed text-navy/90 text-justify whitespace-pre-line">
@@ -118,7 +321,7 @@ export default function HomePage() {
                     className="w-40 mx-auto mb-4"
                   />
 
-                  <h1 className="text-3xl font-serif text-navy">Welcome to our wedding website!</h1>
+                  <h1 className="text-4xl sm:text-5xl font-serif text-navy">Welcome to our wedding website!</h1>
 
                   <div className="prose prose-md mx-auto space-y-4">
                     <div className="space-y-4">
@@ -181,7 +384,7 @@ export default function HomePage() {
                         backgroundPosition: 'center',
                       }}
                     >
-                      <div className="px-6 py-8 space-y-3">
+                      <div className="px-6 py-8 space-y-3 font-ams-aditya">
                         <div className="text-sm text-burgundy tracking-wide">श्रीमते रामानुजाय नमः</div>
                         <div className="text-sm text-burgundy tracking-wide">श्री गणेशाय नमः</div>
 
@@ -189,12 +392,12 @@ export default function HomePage() {
                           सर्वेश्वर भगवान श्री पद्मावती वेंकटेशजी एवम अनन्त श्री विभूषित स्वामीजी श्री केशवाचार्यजी <span className="font-medium">बालक स्वामीजी</span> महाराज की कृपा से आपको आमंत्रित करने का शुभ अवसर प्राप्त हुआ है
                         </div>
 
-                        <div className="text-2xl font-serif text-burgundy">आस्था</div>
+                        <div className="text-2xl font-semibold text-burgundy">आस्था</div>
                         <div className="text-sm text-navy/80">सुपौत्री (श्री लक्ष्मीनारायणजी पार्वती देवी हुरकट) · सुपुत्री राम प्रीति हुरकट</div>
 
                         <div className="text-sm text-navy/70">एवं</div>
 
-                        <div className="text-2xl font-serif text-burgundy">प्रीतेश</div>
+                        <div className="text-2xl font-semibold text-burgundy">प्रीतेश</div>
                         <div className="text-sm text-navy/80">सुपौत्र ( बड़े पापा ओर दादी का नाम) · सुपुत्र नीतेशजी प्रीतिजी पटौदी</div>
 
                         <div className="text-base leading-relaxed text-justify whitespace-pre-line">
@@ -247,7 +450,7 @@ export default function HomePage() {
                       className="h-28 mb-4"
                     />
 
-                    <h1 className="text-4xl font-serif text-navy mb-6">
+                    <h1 className="text-4xl sm:text-5xl font-serif text-navy mb-6">
                       Welcome to our wedding website!
                     </h1>
 
@@ -305,7 +508,7 @@ export default function HomePage() {
             </div>
           </section>
         </div>
-        <Footer />
+        <Footer currentGroup={access} />
       </div>
     </>
   );

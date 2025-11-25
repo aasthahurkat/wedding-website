@@ -26,6 +26,7 @@ export default function TravelPage({ group }) {
   
   // Only show Goa trip for friends and invitees, not guests
   const showGoaTrip = group !== 'guests';
+  const headingClass = group === 'bride' ? 'text-4xl sm:text-5xl' : 'text-3xl';
   
   const toggleSection = (sectionKey) => {
     setOpenSections(prev => ({
@@ -100,8 +101,12 @@ export default function TravelPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      
-      <main className="flex-1 bg-cream pt-24 pb-12 px-4">
+
+      <main className="flex-1 bg-cream pt-24 pb-12 px-4" style={group === 'bride' ? {
+        backgroundImage: "url('/blue-watercolor-bg.svg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      } : {}}>
         <div className="max-w-4xl mx-auto">
           
           {/* Header */}
@@ -109,7 +114,7 @@ export default function TravelPage({ group }) {
             <div className="flex justify-center mb-4">
               <MapPin className="w-8 h-8 text-burgundy" />
             </div>
-            <h1 className="text-3xl font-serif text-navy mb-4">{title}</h1>
+            <h1 className={`${headingClass} font-serif text-navy mb-4`}>{title}</h1>
             <p className="text-navy/70 max-w-2xl mx-auto">
               Your complete guide to getting here, staying connected, and {showGoaTrip ? 'joining us in Goa' : 'making the most of Indore'}
             </p>
@@ -270,7 +275,7 @@ export default function TravelPage({ group }) {
         </div>
       </main>
 
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }

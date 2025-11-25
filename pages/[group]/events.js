@@ -1,6 +1,6 @@
 // File: pages/[group]/events.js
 import Image from 'next/image';
-import { Clock, MapPin, Download } from 'lucide-react';
+import { Clock, MapPin, Download, Sparkles } from 'lucide-react';
 import React, { useState, useMemo, useCallback } from 'react';
 import { events } from '../../data/events';
 import { ACCESS_GROUPS } from '../../data/accessGroups';
@@ -57,6 +57,33 @@ export async function getStaticProps({ params }) {
 
 export default function EventsPage({ group }) {
   const upper = group.toUpperCase();
+  const isBride = upper === 'BRIDE';
+  const theme = isBride
+    ? {
+        pageBackground: 'bg-sky-50',
+        overlay: 'bg-sky-100/50',
+        accentText: 'text-sky-700',
+        buttonBase:
+          'inline-block px-6 py-3 min-h-[48px] bg-sky-600 text-white rounded-lg hover:bg-sky-700 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2',
+        iconColor: 'text-sky-600',
+        iconGlow: 'bg-sky-400',
+        dividerLeft: 'bg-gradient-to-r from-transparent to-sky-200',
+        dividerRight: 'bg-gradient-to-l from-transparent to-sky-200',
+        dividerDot: 'bg-sky-300',
+      }
+    : {
+        pageBackground: 'bg-cream',
+        overlay: 'bg-white bg-opacity-30',
+        accentText: 'text-burgundy',
+        buttonBase:
+          'inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2',
+        iconColor: 'text-burgundy',
+        iconGlow: 'bg-burgundy',
+        dividerLeft: 'bg-transparent',
+        dividerRight: 'bg-transparent',
+        dividerDot: 'bg-transparent',
+      };
+  const headingClass = isBride ? 'text-4xl sm:text-5xl tracking-wide' : 'text-2xl sm:text-3xl';
   
   // Memoize filtered events to prevent unnecessary recalculations
   const myEvents = useMemo(() => 
@@ -272,20 +299,41 @@ export default function EventsPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      
-      <main className="flex-1 relative bg-cream">
-        <div
-          className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm"
-          aria-hidden="true"
-        />
+
+      <main className={`flex-1 relative ${isBride ? '' : theme.pageBackground}`} style={isBride ? {
+        backgroundImage: "url('/blue-watercolor-bg.svg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      } : {}}>
+        {!isBride && (
+          <div
+            className={`absolute inset-0 backdrop-blur-sm ${theme.overlay}`}
+            aria-hidden="true"
+          />
+        )}
         <div className="relative z-10 pt-24 pb-12 px-4 max-w-7xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl font-serif text-center text-navy mb-2 capitalize">
+          {isBride && (
+            <div className="flex justify-center mt-4 mb-3">
+              <div className="relative">
+                <Sparkles className={`h-10 w-10 ${theme.iconColor}`} />
+                <div className={`absolute inset-0 blur-xl opacity-20 ${theme.iconGlow}`}></div>
+              </div>
+            </div>
+          )}
+          <h1 className={`${headingClass} font-serif text-center text-navy mb-4 capitalize`}>
             Wedding Festivities!
           </h1>
+          {isBride && (
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className={`w-12 h-px ${theme.dividerLeft}`}></div>
+              <div className={`w-1.5 h-1.5 rounded-full ${theme.dividerDot}`}></div>
+              <div className={`w-12 h-px ${theme.dividerRight}`}></div>
+            </div>
+          )}
           <p className="text-center text-navy/70 mb-4">
             Get ready to celebrate with us across multiple magical events! <br /> Below you will find
             the When and Where for each celebration— 
-            <span className="text-burgundy">
+            <span className={theme.accentText}>
                just tap to flip any plate
             </span>
              {' '}to dive into all the details.
@@ -304,7 +352,7 @@ export default function EventsPage({ group }) {
             {(upper === 'BRIDE' || upper === 'GROOM') && (
               <a
                 href={`/${group}/outfits`}
-                className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+                className={upper === 'BRIDE' ? theme.buttonBase : 'inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2'}
               >
                 View outfit guide
               </a>
@@ -359,7 +407,7 @@ export default function EventsPage({ group }) {
           )}
         </div>
       </main>
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }
@@ -397,6 +445,11 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
     boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
   };
 
+  const isBrideCard = userGroup === 'BRIDE';
+  const iconColor = isBrideCard ? 'text-sky-600' : 'text-burgundy';
+  const linkColor = isBrideCard ? 'text-sky-700' : 'text-burgundy';
+  const backFaceBg = isBrideCard ? '#E6F0FB' : '#F7F2E9';
+
   return (
     <div
       className="w-full hover-hover:hover:scale-105 transition-transform duration-200"
@@ -420,7 +473,7 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
         </div>
 
         {/* Back Face */}
-        <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: '#F7F2E9' }}>
+        <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: backFaceBg }}>
           <div className="relative h-full p-4 sm:p-6">
             <div className="flex flex-col justify-center h-full">
               <h3 className="text-lg sm:text-xl font-semibold text-navy mb-3">{getEventTitle(evt, userGroup)}</h3>
@@ -429,19 +482,19 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
               <div className="space-y-2 mb-4 text-sm">
                 {evt.time && (
                   <div className="flex items-center gap-2 text-navy/90">
-                    <Clock className="w-4 h-4 text-burgundy flex-shrink-0" />
+                    <Clock className={`w-4 h-4 flex-shrink-0 ${iconColor}`} />
                     <span className="font-medium">{evt.time}</span>
                   </div>
                 )}
                 {evt.location && (
                   <div className="flex items-center gap-2 text-navy/90">
-                    <MapPin className="w-4 h-4 text-burgundy flex-shrink-0" />
+                    <MapPin className={`w-4 h-4 flex-shrink-0 ${iconColor}`} />
                     <a
                       href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evt.mapQuery)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="font-medium text-burgundy hover:underline"
+                      className={`font-medium hover:underline ${linkColor}`}
                     >
                       {evt.location}
                     </a>

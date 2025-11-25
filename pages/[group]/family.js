@@ -27,72 +27,90 @@ export async function getStaticProps({ params }) {
 
 const FAMILY_CONTENT = {
   bride: {
-    heroTitle: 'Family & Blessings',
+    heroTitle: 'Awaiting Your Presence',
     heroSubtitle:
-      'Every wedding is held together by the love and blessings of family — from the elders who guide us to the cousins who celebrate with us.',
+      'With Reverence and Warm Invitation',
     heroIcon: Heart,
     sections: [
       {
         key: 'hosts',
-        title: 'Hosts & Immediate Family',
+        title: '',
         icon: Home,
-        description:
-          'Names that appear on the invitation as the primary hosts and the closest circle holding the rituals together.',
+        description: '',
         layout: 'centered',
         groups: [
           {
-            label: 'Formal Hosts',
+            label: 'Cordial Invitation',
             translate: false,
-            photo: '/images/family.jpg',
-            photoAlt: 'Immediate Hurkat family portrait placeholder',
             layout: 'centered',
-            columns: 2,
+            columns: 1,
             names: [
-              'Shri Laxminarayanji & Smt. Parvati Devi Hurkat',
-              'Ram Hurkat & Preeti Hurkat',
-              'Nishtha Hurkat',
-              'Hemank Hurkat',
+              'Mrs. Parvati Devi Hurkat',
+              'Mr. Ram & Mrs. Preeti Hurkat',
+              'Nishtha, Hemank Hurkat',
+              '',
+              'cordially invite you to join us in the joyous celebration of this sacred union with blessings from our elders and the love of our family and friends.',
             ],
           },
         ],
       },
       {
-        key: 'extended',
-        title: 'Extended Family & Inviting Households',
-        icon: Users,
-        description:
-          'Chachas, masis, jijus, bhabhis, cousins, and beloved family friends who stand as co-hosts. Add as many households as needed — we will keep expanding.',
+        key: 'affectionate',
+        title: '',
+        icon: Heart,
+        description: '',
+        layout: 'two-column',
         groups: [
           {
-            label: 'Hurkat Parivar',
-            photo: '/images/paternal-fam.jpg',
-            photoAlt: 'Hurkat family celebration photo placeholder',
+            label: 'With Affectionate Regards',
+            translate: false,
+            layout: 'centered-no-bullets',
             names: [
-              'Shri Manoharlal ji & Smt. Padma Soni',
-              'Shri Balramji & Smt. Brajbala Samdani',
-              'Shri Shyamji & Smt. Vinita Maheshwari',
-              'Shri Prakashji & Smt. Rama Laddha',
-              'Shri Loveji & Smt. Radha Surjan',
-              'Shri Shyamji & Smt. Trapti Singi',
+              'Mrs. Padma & Mr. Manohar Soni',
+              'Mrs. Braj & Mr. Balram Samdani',
+              'Mrs. Vinita & Mr. Shyam Soni',
+              'Mrs. Rama & Mr. Prakash Laddha',
+              'Mrs. Radha & Mr. Lavkumar Surjan',
+              'Mrs. Tripti & Mr. Shyam Singi',
             ],
           },
           {
-            label: 'Maternal Side',
-            photo: '/images/maternal-fam.jpg',
-            photoAlt: 'Maternal family gathering photo placeholder',
+            label: 'With Sincere Solicitation',
+            translate: false,
+            layout: 'centered-no-bullets',
             names: [
-              'Nani Kusumlata Heda',
-              'Shri Priteshji & Smt. Priti Heda',
-              'Shri Rakeshji Heda',
-              'Shri Manishji Heda',     
-              'Shri Maheshji Heda',
+              'Dr. Ishwarchandra, Ratanlal, Dewanand, Kishorchandra, Kamlakishor, Krishnadas, Sanjaykumar, Ravikumar Hurkat & Family',
+            ],
+          },
+        ],
+      },
+      {
+        key: 'maternal',
+        title: '',
+        icon: Users,
+        description: '',
+        layout: 'centered',
+        groups: [
+          {
+            label: 'Maternal Family (Nanihaal Side)',
+            translate: false,
+            layout: 'centered-no-bullets',
+            names: [
+              'Mr. Rajmal & Mrs. Krishnadevi',
+              'Mrs. Kusumdevi & Late Mr. Kailashchandra',
+              'Mr. Murlidhar & Mrs. Ramila',
+              'Mr. Mahesh & Mrs. Sarla',
+              'Mr. Rakesh & Mrs. Sunita',
+              'Mr. Preetesh & Mrs. Preeti',
+              'Mr. Manish & Mrs. Divya',
+              'Rahul, Avadh, Tanay, Khushi, Gargi Heda & Family',
             ],
           },
         ],
       },
     ],
     closing:
-      'हम सभी स्वागतातुर हैं — your presence and blessings at the wedding mean the world to every family listed here.',
+      '',
   },
   default: {
     heroTitle: 'Family & Blessings',
@@ -152,6 +170,48 @@ function normalizeEntry(entry) {
 export default function FamilyPage({ group }) {
   const content = FAMILY_CONTENT[group] || FAMILY_CONTENT.default;
   const HeroIcon = content.heroIcon || Heart;
+  const isBride = group === 'bride';
+  const theme = isBride
+    ? {
+        pageBackground: 'bg-sky-50',
+        heroLine: 'bg-gradient-to-r from-transparent via-sky-300 to-transparent opacity-60',
+        heroIcon: 'text-sky-600',
+        heroGlow: 'bg-sky-400',
+        sectionChip: 'bg-white/70 rounded-full border border-sky-200 shadow-sm',
+        sectionIcon: 'text-sky-600',
+        heroDividerLeft: 'bg-gradient-to-r from-transparent to-sky-200',
+        heroDividerRight: 'bg-gradient-to-l from-transparent to-sky-200',
+        heroDot: 'bg-sky-300',
+        cardBorder: 'border-sky-200',
+        labelDivider: 'border-sky-200',
+        labelAccent: 'bg-gradient-to-r from-sky-300 to-transparent',
+        labelText: 'text-sky-700',
+        bullet: 'text-sky-400',
+        nameHover: 'group-hover:text-sky-600',
+        closingLineLeft: 'bg-gradient-to-r from-transparent to-sky-300',
+        closingLineRight: 'bg-gradient-to-l from-transparent to-sky-300',
+        closingDot: 'bg-sky-400',
+      }
+    : {
+        pageBackground: 'bg-cream',
+        heroLine: 'bg-gradient-to-r from-transparent via-gold to-transparent opacity-40',
+        heroIcon: 'text-burgundy',
+        heroGlow: 'bg-burgundy',
+        sectionChip: 'bg-white/60 rounded-full border border-burgundy/10 shadow-sm',
+        sectionIcon: 'text-burgundy',
+        heroDividerLeft: 'bg-gradient-to-r from-transparent to-gold/40',
+        heroDividerRight: 'bg-gradient-to-l from-transparent to-gold/40',
+        heroDot: 'bg-gold/60',
+        cardBorder: 'border-burgundy/10',
+        labelDivider: 'border-gold/20',
+        labelAccent: 'bg-gradient-to-r from-gold/60 to-transparent',
+        labelText: 'text-burgundy/70',
+        bullet: 'text-gold/60',
+        nameHover: 'group-hover:text-burgundy',
+        closingLineLeft: 'bg-gradient-to-r from-transparent to-gold/40',
+        closingLineRight: 'bg-gradient-to-l from-transparent to-gold/40',
+        closingDot: 'bg-gold/60',
+      };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -159,24 +219,28 @@ export default function FamilyPage({ group }) {
         <title>Family | Aastha &amp; Preetesh</title>
       </Head>
       <Navbar currentGroup={group} />
-      <main className="flex-1 bg-cream pt-24 pb-12 px-4">
+      <main className={`flex-1 pt-24 pb-12 px-4 ${isBride ? '' : theme.pageBackground}`} style={isBride ? {
+        backgroundImage: "url('/blue-watercolor-bg.svg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      } : {}}>
         <div className="mx-auto max-w-4xl">
           {/* Header with decorative elements */}
           <section className="text-center mb-16 relative">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-40"></div>
+            <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-24 h-1 ${theme.heroLine}`}></div>
             <div className="flex justify-center mb-6 mt-8">
               <div className="relative">
-                <HeroIcon className="h-10 w-10 text-burgundy" />
-                <div className="absolute inset-0 blur-xl opacity-20 bg-burgundy"></div>
+                <HeroIcon className={`h-10 w-10 ${theme.heroIcon}`} />
+                <div className={`absolute inset-0 blur-xl opacity-20 ${theme.heroGlow}`}></div>
               </div>
             </div>
             <h1 className="text-4xl font-serif text-navy mb-4 tracking-wide">
               {content.heroTitle}
             </h1>
             <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-12 h-px bg-gradient-to-r from-transparent to-gold/40"></div>
-              <div className="w-1.5 h-1.5 rounded-full bg-gold/60"></div>
-              <div className="w-12 h-px bg-gradient-to-l from-transparent to-gold/40"></div>
+              <div className={`w-12 h-px ${theme.heroDividerLeft}`}></div>
+              <div className={`w-1.5 h-1.5 rounded-full ${theme.heroDot}`}></div>
+              <div className={`w-12 h-px ${theme.heroDividerRight}`}></div>
             </div>
             <p className="mx-auto max-w-2xl text-navy/70 leading-relaxed">
               {content.heroSubtitle}
@@ -192,66 +256,128 @@ export default function FamilyPage({ group }) {
               return (
                 <div key={section.key}>
                   {/* Section Header with decorative border */}
-                  <div className="text-center mb-10 relative">
-                    <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/60 rounded-full border border-burgundy/10 shadow-sm">
-                      <Icon className="w-5 h-5 text-burgundy" />
-                      <h2 className="text-xl font-serif text-navy tracking-wide">{section.title}</h2>
+                  {section.title && (
+                    <div className="text-center mb-10 relative">
+                      <div className={`inline-flex items-center gap-3 px-6 py-3 ${theme.sectionChip}`}>
+                        <Icon className={`w-5 h-5 ${theme.sectionIcon}`} />
+                        <h2 className="text-xl font-serif text-navy tracking-wide">{section.title}</h2>
+                      </div>
+                      <p className="text-sm text-navy/60 mt-4 max-w-2xl mx-auto leading-relaxed">
+                        {section.description}
+                      </p>
                     </div>
-                    <p className="text-sm text-navy/60 mt-4 max-w-2xl mx-auto leading-relaxed">
-                      {section.description}
-                    </p>
-                  </div>
+                  )}
 
                   {/* Family Groups */}
-                  <div className={`${isFirst ? 'space-y-12' : 'grid md:grid-cols-2 gap-8 md:gap-12'}`}>
-                    {section.groups?.map((group, groupIdx) => (
-                      <div
-                        key={`${section.key}-${groupIdx}`}
-                        className="bg-white/40 rounded-2xl p-8 border border-burgundy/10 shadow-sm hover:shadow-md transition-shadow"
-                      >
-                        {/* Group Label with decorative accent */}
-                        {group.label && (
-                          <div className="mb-6 pb-3 border-b border-gold/20 relative">
-                            <div className="absolute left-0 top-0 w-12 h-px bg-gradient-to-r from-gold/60 to-transparent"></div>
-                            <h3 className="text-xs font-semibold uppercase tracking-widest text-burgundy/70 pt-3">
-                              {group.label}
-                            </h3>
-                          </div>
-                        )}
+                  <div className={`${
+                    section.layout === 'two-column'
+                      ? 'grid md:grid-cols-2 gap-8 md:gap-12'
+                      : section.layout === 'centered' || isFirst
+                      ? 'space-y-12'
+                      : 'grid md:grid-cols-2 gap-8 md:gap-12'
+                  }`}>
+                    {section.groups?.map((group, groupIdx) => {
+                      // Special styling for different sections
+                      const isCordialInvitation = section.key === 'hosts';
+                      const isMaternalFamily = section.key === 'maternal';
+                      const isNoBullets = group.layout === 'centered-no-bullets';
 
-                        {/* Names List - elegant and spacious */}
-                        <ul className="space-y-3.5">
-                          {group.names?.map((rawEntry, nameIdx) => {
-                            const entry = normalizeEntry(rawEntry);
-                            const preventTranslate =
-                              entry.translate === false || group.translate === false;
-                            const translationProps = preventTranslate ? { translate: 'no' } : {};
+                      return (
+                        <div
+                          key={`${section.key}-${groupIdx}`}
+                          className={`${
+                            isCordialInvitation
+                              ? 'bg-white/60 rounded-xl p-10 border border-sky-200/50 shadow-md max-w-2xl mx-auto'
+                              : isMaternalFamily
+                              ? 'bg-white/60 rounded-xl p-10 border border-sky-200/50 shadow-md max-w-2xl mx-auto'
+                              : `bg-white/40 rounded-2xl p-8 border ${theme.cardBorder} shadow-sm hover:shadow-md transition-shadow`
+                          }`}
+                        >
+                          {/* Group Label with decorative accent */}
+                          {group.label && (
+                            <div className={`mb-6 pb-3 border-b relative ${theme.labelDivider} text-center`}>
+                              <h3 className={`text-base font-semibold tracking-wide ${theme.labelText}`}>
+                                {group.label}
+                              </h3>
+                            </div>
+                          )}
 
-                            return (
-                              <li
-                                key={`${section.key}-${groupIdx}-name-${nameIdx}`}
-                                className="flex items-start gap-3 group"
-                              >
-                                <span className="text-gold/60 mt-1.5 flex-shrink-0 text-sm">✦</span>
-                                <div className="flex-1">
-                                  <span
-                                    className={`text-navy/90 font-medium text-base leading-relaxed group-hover:text-burgundy transition-colors ${
-                                      preventTranslate ? 'notranslate' : ''
+                          {/* Names List - elegant and spacious */}
+                          <div className={`${
+                            isCordialInvitation
+                              ? 'space-y-2 text-center'
+                              : isNoBullets
+                              ? 'space-y-3 text-center'
+                              : 'space-y-3.5'
+                          }`}>
+                            {group.names?.map((rawEntry, nameIdx) => {
+                              const entry = normalizeEntry(rawEntry);
+                              const preventTranslate =
+                                entry.translate === false || group.translate === false;
+                              const translationProps = preventTranslate ? { translate: 'no' } : {};
+
+                              // Check if this is the invitation text (longer text)
+                              const isInvitationText = entry.text.includes('cordially invite');
+                              const isEmpty = !entry.text || entry.text.trim() === '';
+
+                              if (isCordialInvitation) {
+                                if (isEmpty) {
+                                  return <div key={`${section.key}-${groupIdx}-name-${nameIdx}`} className="h-3" />;
+                                }
+
+                                return (
+                                  <div
+                                    key={`${section.key}-${groupIdx}-name-${nameIdx}`}
+                                    className={`${
+                                      isInvitationText
+                                        ? 'text-sky-700/80 text-base leading-relaxed mt-6 max-w-xl mx-auto'
+                                        : 'text-navy font-medium text-lg'
                                     }`}
                                     {...translationProps}
                                   >
                                     {entry.text}
-                                  </span>
-                                  {entry.note && (
-                                    <span className="block text-sm text-navy/50 mt-1 italic">{entry.note}</span>
-                                  )}
+                                  </div>
+                                );
+                              }
+
+                              if (isNoBullets) {
+                                return (
+                                  <div
+                                    key={`${section.key}-${groupIdx}-name-${nameIdx}`}
+                                    className="text-navy/90 font-medium text-base leading-relaxed"
+                                    {...translationProps}
+                                  >
+                                    {entry.text}
+                                  </div>
+                                );
+                              }
+
+                              return (
+                                <div
+                                  key={`${section.key}-${groupIdx}-name-${nameIdx}`}
+                                  className="flex items-start gap-3 group"
+                                >
+                                  <span className={`${theme.bullet} mt-1.5 flex-shrink-0 text-sm`}>✦</span>
+                                  <div className="flex-1">
+                                    <span
+                                      className={`text-navy/90 font-medium text-base leading-relaxed transition-colors ${theme.nameHover} ${
+                                        preventTranslate ? 'notranslate' : ''
+                                      }`}
+                                      {...translationProps}
+                                    >
+                                      {entry.text}
+                                    </span>
+                                    {entry.note && (
+                                      <span className="block text-sm text-navy/50 mt-1 italic">{entry.note}</span>
+                                    )}
+                                  </div>
                                 </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    ))}
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               );
@@ -259,19 +385,21 @@ export default function FamilyPage({ group }) {
           </div>
 
           {/* Closing with decorative elements */}
-          <div className="mt-20 text-center relative">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-16 h-px bg-gradient-to-r from-transparent to-gold/40"></div>
-              <div className="w-2 h-2 rounded-full bg-gold/60"></div>
-              <div className="w-16 h-px bg-gradient-to-l from-transparent to-gold/40"></div>
+          {content.closing && (
+            <div className="mt-20 text-center relative">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className={`w-16 h-px ${theme.closingLineLeft}`}></div>
+                <div className={`w-2 h-2 rounded-full ${theme.closingDot}`}></div>
+                <div className={`w-16 h-px ${theme.closingLineRight}`}></div>
+              </div>
+              <p className="mx-auto max-w-2xl text-navy/70 leading-relaxed italic text-base">
+                {content.closing}
+              </p>
             </div>
-            <p className="mx-auto max-w-2xl text-navy/70 leading-relaxed italic text-base">
-              {content.closing}
-            </p>
-          </div>
+          )}
         </div>
       </main>
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }

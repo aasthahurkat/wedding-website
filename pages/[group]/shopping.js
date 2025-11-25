@@ -130,7 +130,11 @@ export default function ShoppingPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className="flex-1 relative bg-cream">
+      <main className="flex-1 relative bg-cream" style={group === 'bride' ? {
+        backgroundImage: "url('/blue-watercolor-bg.svg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      } : {}}>
         <div
           className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm"
           aria-hidden="true"
@@ -152,7 +156,7 @@ export default function ShoppingPage({ group }) {
             <div className="flex justify-center mb-4">
               <ShoppingBag className="w-12 h-12 text-burgundy" />
             </div>
-            <h1 className="text-3xl font-serif text-navy mb-4">Shopping Guide</h1>
+            <h1 className={`${group === 'bride' ? 'text-4xl sm:text-5xl' : 'text-3xl'} font-serif text-navy mb-4`}>Shopping Guide</h1>
             <p className="text-navy/70 max-w-2xl mx-auto">
               Find the perfect outfits for Aastha & Preetesh's wedding celebration! 
               From local stores in Indore to online shopping and rental options.
@@ -313,7 +317,7 @@ export default function ShoppingPage({ group }) {
         </div>
       </main>
 
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }

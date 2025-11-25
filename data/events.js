@@ -12,8 +12,8 @@ export const events = [
     date: '2025-12-22',
     time: '12 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
-    location: 'TBD',
-    mapQuery: 'Indore',
+    location: 'Daga Farmhouse',
+    mapQuery: 'Leeds Enclave, Indore',
     description: {
       BRIDE: 'मेहंदी की रस्म के साथ शादी का शगुन सजने जा रहा है। इस शुभ अवसर पर आप सभी का आशीर्वाद और साथ बहुत ज़रूरी है। आइए, मिलकर इस दिन को खुशियों के रंग से भर दें।',
       GROOM: 'मेहंदी की रस्म के साथ शादी का शगुन सजने जा रहा है। इस शुभ अवसर पर आप सभी का आशीर्वाद और साथ बहुत ज़रूरी है। आइए, मिलकर इस दिन को खुशियों के रंग से भर दें।',
