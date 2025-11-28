@@ -170,7 +170,7 @@ function normalizeEntry(entry) {
 export default function FamilyPage({ group }) {
   const content = FAMILY_CONTENT[group] || FAMILY_CONTENT.default;
   const HeroIcon = content.heroIcon || Heart;
-  const isBride = group === 'bride';
+  const isBride = group === 'bride' || group === 'groom';
   const theme = isBride
     ? {
         pageBackground: 'bg-sky-50',

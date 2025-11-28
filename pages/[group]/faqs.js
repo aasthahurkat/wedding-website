@@ -108,7 +108,7 @@ function CategorySection({ title, category, children, description, styles }) {
 
 export default function FAQPage({ group }) {
   const [openIndex, setOpenIndex] = useState(null);
-  const isBride = group === 'bride';
+  const isBride = group === 'bride' || group === 'groom';
   const theme = isBride
     ? {
         mainBackground: 'bg-sky-50',

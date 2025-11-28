@@ -3,7 +3,7 @@ export default function Footer({ variant, currentGroup }) {
   const normalizedGroup = (currentGroup || '').toLowerCase();
   const computedVariant =
     variant ??
-    (normalizedGroup === 'bride' ? 'bride' : 'default');
+    (normalizedGroup === 'bride' || normalizedGroup === 'groom' ? 'bride' : 'default');
 
   const isBride = computedVariant === 'bride';
   const backgroundClass = isBride ? 'bg-sky-600 text-white' : 'bg-primary text-cream';

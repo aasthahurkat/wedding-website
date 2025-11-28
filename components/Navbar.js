@@ -12,7 +12,7 @@ export default function Navbar({ currentGroup }) {
   const [open, setOpen] = useState(false);
 
   const theme = useMemo(() => {
-    if (groupParam === 'bride') {
+    if (groupParam === 'bride' || groupParam === 'groom') {
       return {
         navBackground: 'bg-sky-100/90',
         mobileBackground: 'bg-sky-100/95',

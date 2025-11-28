@@ -21,8 +21,8 @@ export default function HomePage() {
   // While loading or invalid, render nothing
   if (!router.isReady || !valid) return null;
 
-  // Special case for bride: use blue theme with same layout as friends
-  if (access === 'bride') {
+  // Special case for bride and groom: use blue theme with same layout as friends
+  if (access === 'bride' || access === 'groom') {
     return (
       <>
         <Head>
@@ -62,28 +62,57 @@ export default function HomePage() {
                     With hearts full of gratitude and the blessings of our elders, we joyfully invite you to witness and celebrate the sacred union of
                   </p>
 
-                  {/* Bride */}
-                  <div className="space-y-2">
-                    <h2 className="text-4xl font-prida text-sky-600">Aastha</h2>
-                    <p className="text-sm leading-relaxed">
-                      Granddaughter of Mrs. Parvati Devi Hurkat &<br />
-                      Late Mr. Lakshminarayan ji Hurkat<br />
-                      Daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
-                    </p>
-                  </div>
+                  {access === 'bride' ? (
+                    <>
+                      {/* Bride */}
+                      <div className="space-y-2">
+                        <h2 className="text-4xl font-prida text-sky-600">Aastha</h2>
+                        <p className="text-sm leading-relaxed">
+                          Granddaughter of Mrs. Parvati Devi Hurkat &<br />
+                          Late Mr. Lakshminarayan ji Hurkat<br />
+                          Daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
+                        </p>
+                      </div>
 
-                  {/* Ampersand */}
-                  <div className="text-3xl font-serif text-sky-600">&</div>
+                      {/* Ampersand */}
+                      <div className="text-3xl font-serif text-sky-600">&</div>
 
-                  {/* Groom */}
-                  <div className="space-y-2">
-                    <h2 className="text-4xl font-prida text-sky-600">Preetesh</h2>
-                    <p className="text-sm leading-relaxed">
-                      Grandson of Mr. Suresh ji Patodi & Late<br />
-                      Mrs. Usha Patodi<br />
-                      Son of Mr. Neetesh ji Patodi & Mrs. Preeti ji Patodi
-                    </p>
-                  </div>
+                      {/* Groom */}
+                      <div className="space-y-2">
+                        <h2 className="text-4xl font-prida text-sky-600">Preetesh</h2>
+                        <p className="text-sm leading-relaxed">
+                          Grandson of Mr. Suresh ji Patodi & Late<br />
+                          Mrs. Usha Patodi<br />
+                          Son of Mr. Neetesh ji Patodi & Mrs. Preeti ji Patodi
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Groom */}
+                      <div className="space-y-2">
+                        <h2 className="text-4xl font-prida text-sky-600">Preetesh</h2>
+                        <p className="text-sm leading-relaxed">
+                          Grandson of Mr. Suresh Patodi & Late<br />
+                          Mrs. Usha Patodi<br />
+                          Son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
+                        </p>
+                      </div>
+
+                      {/* Ampersand */}
+                      <div className="text-3xl font-serif text-sky-600">&</div>
+
+                      {/* Bride */}
+                      <div className="space-y-2">
+                        <h2 className="text-4xl font-prida text-sky-600">Aastha</h2>
+                        <p className="text-sm leading-relaxed">
+                          Granddaughter of Mrs. Parvati Devi ji Hurkat &<br />
+                          Late Mr. Lakshminarayan ji Hurkat<br />
+                          Daughter of Mr. Ram ji Hurkat & Mrs. Preeti ji Hurkat
+                        </p>
+                      </div>
+                    </>
+                  )}
 
                   {/* Message */}
                   <p className="text-base leading-relaxed px-4 pt-2">
@@ -102,7 +131,15 @@ export default function HomePage() {
                   {/* Closing */}
                   <div className="space-y-1">
                     <p className="text-sm italic">With Love,</p>
-                    <p className="text-lg font-serif">Parvati Devi Hurkat & Family</p>
+                    {access === 'bride' ? (
+                      <p className="text-lg font-serif">Parvati Devi Hurkat & Family</p>
+                    ) : (
+                      <div className="text-lg font-serif space-y-0.5">
+                        <p>Suresh Patodi</p>
+                        <p>Neetesh - Preeti Patodi</p>
+                        <p>& Family</p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -147,28 +184,57 @@ export default function HomePage() {
                       With hearts full of gratitude and the blessings of our elders, we joyfully invite you to witness and celebrate the sacred union of
                     </p>
 
-                    {/* Bride */}
-                    <div className="space-y-3">
-                      <h2 className="text-5xl font-prida text-sky-600">Aastha</h2>
-                      <p className="text-base leading-relaxed">
-                        Granddaughter of Mrs. Parvati Devi Hurkat &<br />
-                        Late Mr. Lakshminarayan ji Hurkat<br />
-                        Daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
-                      </p>
-                    </div>
+                    {access === 'bride' ? (
+                      <>
+                        {/* Bride */}
+                        <div className="space-y-3">
+                          <h2 className="text-5xl font-prida text-sky-600">Aastha</h2>
+                          <p className="text-base leading-relaxed">
+                            Granddaughter of Mrs. Parvati Devi Hurkat &<br />
+                            Late Mr. Lakshminarayan ji Hurkat<br />
+                            Daughter of Mr. Ram Hurkat & Mrs. Preeti Hurkat
+                          </p>
+                        </div>
 
-                    {/* Ampersand */}
-                    <div className="text-4xl font-serif text-sky-600">&</div>
+                        {/* Ampersand */}
+                        <div className="text-4xl font-serif text-sky-600">&</div>
 
-                    {/* Groom */}
-                    <div className="space-y-3">
-                      <h2 className="text-5xl font-prida text-sky-600">Preetesh</h2>
-                      <p className="text-base leading-relaxed">
-                        Grandson of Mr. Suresh ji Patodi & Late<br />
-                        Mrs. Usha Patodi<br />
-                        Son of Mr. Neetesh ji Patodi & Mrs. Preeti ji Patodi
-                      </p>
-                    </div>
+                        {/* Groom */}
+                        <div className="space-y-3">
+                          <h2 className="text-5xl font-prida text-sky-600">Preetesh</h2>
+                          <p className="text-base leading-relaxed">
+                            Grandson of Mr. Suresh ji Patodi & Late<br />
+                            Mrs. Usha Patodi<br />
+                            Son of Mr. Neetesh ji Patodi & Mrs. Preeti ji Patodi
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* Groom */}
+                        <div className="space-y-3">
+                          <h2 className="text-5xl font-prida text-sky-600">Preetesh</h2>
+                          <p className="text-base leading-relaxed">
+                            Grandson of Mr. Suresh Patodi & Late<br />
+                            Mrs. Usha Patodi<br />
+                            Son of Mr. Neetesh Patodi & Mrs. Preeti Patodi
+                          </p>
+                        </div>
+
+                        {/* Ampersand */}
+                        <div className="text-4xl font-serif text-sky-600">&</div>
+
+                        {/* Bride */}
+                        <div className="space-y-3">
+                          <h2 className="text-5xl font-prida text-sky-600">Aastha</h2>
+                          <p className="text-base leading-relaxed">
+                            Granddaughter of Mrs. Parvati Devi ji Hurkat &<br />
+                            Late Mr. Lakshminarayan ji Hurkat<br />
+                            Daughter of Mr. Ram ji Hurkat & Mrs. Preeti ji Hurkat
+                          </p>
+                        </div>
+                      </>
+                    )}
 
                     {/* Message */}
                     <p className="text-base leading-relaxed pt-4">
@@ -187,7 +253,15 @@ export default function HomePage() {
                     {/* Closing */}
                     <div className="space-y-2">
                       <p className="text-base italic">With Love,</p>
-                      <p className="text-2xl font-serif">Parvati Devi Hurkat & Family</p>
+                      {access === 'bride' ? (
+                        <p className="text-2xl font-serif">Parvati Devi Hurkat & Family</p>
+                      ) : (
+                        <div className="text-2xl font-serif space-y-1">
+                          <p>Suresh Patodi</p>
+                          <p>Neetesh - Preeti Patodi</p>
+                          <p>& Family</p>
+                        </div>
+                      )}
                     </div>
                   </div>
 

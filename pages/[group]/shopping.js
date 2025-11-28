@@ -130,7 +130,7 @@ export default function ShoppingPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className="flex-1 relative bg-cream" style={group === 'bride' ? {
+      <main className="flex-1 relative bg-cream" style={group === 'bride' || group === 'groom' ? {
         backgroundImage: "url('/blue-watercolor-bg.svg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',

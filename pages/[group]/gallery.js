@@ -33,7 +33,7 @@ export default function GalleryPage({ group }) {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [uploadMessage, setUploadMessage] = useState('');
   const [imageLoading, setImageLoading] = useState(false);
-  const isBride = group === 'bride';
+  const isBride = group === 'bride' || group === 'groom';
   const themed = (brideClass, defaultClass) => (isBride ? brideClass : defaultClass);
   const headingClass = isBride ? 'text-4xl sm:text-5xl' : 'text-4xl';
   

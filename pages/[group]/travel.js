@@ -26,7 +26,7 @@ export default function TravelPage({ group }) {
   
   // Only show Goa trip for friends and invitees, not guests
   const showGoaTrip = group !== 'guests';
-  const headingClass = group === 'bride' ? 'text-4xl sm:text-5xl' : 'text-3xl';
+  const headingClass = group === 'bride' || group === 'groom' ? 'text-4xl sm:text-5xl' : 'text-3xl';
   
   const toggleSection = (sectionKey) => {
     setOpenSections(prev => ({
@@ -102,7 +102,7 @@ export default function TravelPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className="flex-1 bg-cream pt-24 pb-12 px-4" style={group === 'bride' ? {
+      <main className="flex-1 bg-cream pt-24 pb-12 px-4" style={group === 'bride' || group === 'groom' ? {
         backgroundImage: "url('/blue-watercolor-bg.svg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',

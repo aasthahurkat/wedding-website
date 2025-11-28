@@ -86,7 +86,13 @@ const eventOutfitGuide = {
   },
   'mayra': {
     title: 'Mayra',
-    outfit: 'Women: Minimal white lehenga elevated with a traditional Bandhani dupatta. Men: Soft white kurta-pajama layered with a tailored Nehru jacket.',
+    outfit: {
+      BRIDE: 'Women: Minimal white lehenga elevated with a traditional Bandhani dupatta. Men: Soft white kurta-pajama layered with a tailored Nehru jacket.',
+      GROOM: 'Women: Traditional lehenga or suit in vibrant red, orange, or pink tones. Men: Soft white kurta-pajama layered with a tailored Nehru jacket.',
+      FRIENDS: 'Women: Minimal white lehenga elevated with a traditional Bandhani dupatta. Men: Soft white kurta-pajama layered with a tailored Nehru jacket.',
+      INVITEES: 'Women: Minimal white lehenga elevated with a traditional Bandhani dupatta. Men: Soft white kurta-pajama layered with a tailored Nehru jacket.',
+      GUESTS: 'Women: Minimal white lehenga elevated with a traditional Bandhani dupatta. Men: Soft white kurta-pajama layered with a tailored Nehru jacket.'
+    },
     colors: ['Shades of Pink', 'Shades of Orange', 'Shades of Red']
   },
   'sangeet': {
@@ -120,7 +126,7 @@ export default function OutfitsPage({ group }) {
   const router = useRouter();
   const current = group || router.query.group;
   const upperGroup = current.toUpperCase();
-  const isBride = upperGroup === 'BRIDE';
+  const isBride = upperGroup === 'BRIDE' || upperGroup === 'GROOM';
   const theme = isBride
     ? {
         pageBackground: 'bg-sky-50',
@@ -291,6 +297,11 @@ export default function OutfitsPage({ group }) {
                 const outfitInfo = eventOutfitGuide[event.id];
                 if (!outfitInfo) return null;
 
+                // Get group-specific outfit text
+                const outfitText = typeof outfitInfo.outfit === 'string'
+                  ? outfitInfo.outfit
+                  : (outfitInfo.outfit[upperGroup] || outfitInfo.outfit.FRIENDS || outfitInfo.outfit.BRIDE || outfitInfo.outfit.GROOM || '');
+
                 return (
                   <div
                     key={event.id}
@@ -308,9 +319,9 @@ export default function OutfitsPage({ group }) {
                         Recommended Outfit
                       </h4>
                       <div className={`text-navy/80 text-sm p-3 rounded-lg ${isBride ? 'bg-white/70 border border-sky-100' : 'bg-neutral/5'}`}>
-                        {outfitInfo.outfit.includes('Women:') ? (
+                        {outfitText.includes('Women:') ? (
                           <div className="space-y-2">
-                            {outfitInfo.outfit.split('Men:').map((part, idx) => {
+                            {outfitText.split('Men:').map((part, idx) => {
                               if (idx === 0) {
                                 // Women's section
                                 return (
@@ -331,7 +342,7 @@ export default function OutfitsPage({ group }) {
                             })}
                           </div>
                         ) : (
-                          <p>{outfitInfo.outfit}</p>
+                          <p>{outfitText}</p>
                         )}
                       </div>
                     </div>

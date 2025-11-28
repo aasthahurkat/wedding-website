@@ -41,6 +41,36 @@ const getEventImage = (event, userGroup) => {
   return event.id;
 };
 
+// Helper function to get the appropriate location based on user group
+const getEventLocation = (event, userGroup) => {
+  if (typeof event.location === 'string') {
+    return event.location;
+  } else if (typeof event.location === 'object' && event.location[userGroup]) {
+    return event.location[userGroup];
+  }
+  return event.location?.FRIENDS || event.location?.BRIDE || event.location?.GROOM || '';
+};
+
+// Helper function to get the appropriate map query based on user group
+const getEventMapQuery = (event, userGroup) => {
+  if (typeof event.mapQuery === 'string') {
+    return event.mapQuery;
+  } else if (typeof event.mapQuery === 'object' && event.mapQuery[userGroup]) {
+    return event.mapQuery[userGroup];
+  }
+  return event.mapQuery?.FRIENDS || event.mapQuery?.BRIDE || event.mapQuery?.GROOM || '';
+};
+
+// Helper function to get the appropriate time based on user group
+const getEventTime = (event, userGroup) => {
+  if (typeof event.time === 'string') {
+    return event.time;
+  } else if (typeof event.time === 'object' && event.time[userGroup]) {
+    return event.time[userGroup];
+  }
+  return event.time?.FRIENDS || event.time?.BRIDE || event.time?.GROOM || '';
+};
+
 export async function getStaticPaths() {
   return {
     paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
@@ -57,7 +87,7 @@ export async function getStaticProps({ params }) {
 
 export default function EventsPage({ group }) {
   const upper = group.toUpperCase();
-  const isBride = upper === 'BRIDE';
+  const isBride = upper === 'BRIDE' || upper === 'GROOM';
   const theme = isBride
     ? {
         pageBackground: 'bg-sky-50',
@@ -263,19 +293,21 @@ export default function EventsPage({ group }) {
           const bottomY = yPosition + cardHeight - 7;
 
           // Time on left
-          if (evt.time) {
+          const eventTime = getEventTime(evt, upper);
+          if (eventTime) {
             pdf.setTextColor(...navy);
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
-            pdf.text(evt.time, margin + 10, bottomY);
+            pdf.text(eventTime, margin + 10, bottomY);
           }
 
           // Venue on right (with link if available)
-          if (evt.location) {
+          const eventLocation = getEventLocation(evt, upper);
+          if (eventLocation) {
             pdf.setTextColor(...navy);
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
-            const venueText = evt.location;
+            const venueText = eventLocation;
             const venueWidth = pdf.getTextWidth(venueText);
             pdf.text(venueText, pageWidth - margin - 10 - venueWidth, bottomY);
           }
@@ -352,7 +384,7 @@ export default function EventsPage({ group }) {
             {(upper === 'BRIDE' || upper === 'GROOM') && (
               <a
                 href={`/${group}/outfits`}
-                className={upper === 'BRIDE' ? theme.buttonBase : 'inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2'}
+                className={upper === 'BRIDE' || upper === 'GROOM' ? theme.buttonBase : 'inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2'}
               >
                 View outfit guide
               </a>
@@ -480,23 +512,23 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
 
               {/* Time & Location Info */}
               <div className="space-y-2 mb-4 text-sm">
-                {evt.time && (
+                {getEventTime(evt, userGroup) && (
                   <div className="flex items-center gap-2 text-navy/90">
                     <Clock className={`w-4 h-4 flex-shrink-0 ${iconColor}`} />
-                    <span className="font-medium">{evt.time}</span>
+                    <span className="font-medium">{getEventTime(evt, userGroup)}</span>
                   </div>
                 )}
-                {evt.location && (
+                {getEventLocation(evt, userGroup) && (
                   <div className="flex items-center gap-2 text-navy/90">
                     <MapPin className={`w-4 h-4 flex-shrink-0 ${iconColor}`} />
                     <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evt.mapQuery)}`}
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getEventMapQuery(evt, userGroup))}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
                       className={`font-medium hover:underline ${linkColor}`}
                     >
-                      {evt.location}
+                      {getEventLocation(evt, userGroup)}
                     </a>
                   </div>
                 )}
