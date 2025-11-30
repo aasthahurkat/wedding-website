@@ -1,25 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
 import { Heart, Download, Camera, ChevronLeft, ChevronRight, X, ExternalLink, Upload, Check, ZoomIn, Info, AlertCircle } from 'lucide-react';
 import { isHEICFile, getHEICMessage } from '../../utils/imageConverter';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { isBrideTheme, getBackgroundStyle, getHeadingClass } from '../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group.toLowerCase();
-  const valid = ACCESS_GROUPS.map((g) => g.key.toLowerCase());
-  if (!valid.includes(group)) return { notFound: true };
-  return { props: { group } };
-}
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
 export default function GalleryPage({ group }) {
   const router = useRouter();
@@ -33,9 +23,9 @@ export default function GalleryPage({ group }) {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [uploadMessage, setUploadMessage] = useState('');
   const [imageLoading, setImageLoading] = useState(false);
-  const isBride = group === 'bride' || group === 'groom';
+  const isBride = isBrideTheme(group);
   const themed = (brideClass, defaultClass) => (isBride ? brideClass : defaultClass);
-  const headingClass = isBride ? 'text-4xl sm:text-5xl' : 'text-4xl';
+  const headingClass = getHeadingClass(group);
   
   // Filtering state removed - no longer filtering by events
   
@@ -297,11 +287,7 @@ export default function GalleryPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      <main className={`flex-1 relative ${isBride ? '' : 'bg-cream'}`} style={isBride ? {
-        backgroundImage: "url('/blue-watercolor-bg.svg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}>
+      <main className={`flex-1 relative ${isBride ? '' : 'bg-cream'}`} style={getBackgroundStyle(group)}>
         {!isBride && (
           <div className={`absolute inset-0 backdrop-blur-sm ${themed('bg-sky-100/50', 'bg-white bg-opacity-30')}`} />
         )}

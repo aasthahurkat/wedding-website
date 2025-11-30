@@ -2,28 +2,19 @@ import { ShoppingBag, MapPin, Globe, Clock, Phone, Star, ArrowLeft } from 'lucid
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
+import { isBrideTheme, getBackgroundStyle, getHeadingClass } from '../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
+export const getStaticPaths = createGroupPaths;
 
 export async function getStaticProps({ params }) {
-  const group = params.group?.toLowerCase() || '';
-  
   // Only allow friends to access shopping page
+  const group = params.group?.toLowerCase() || '';
   if (group !== 'friends') {
     return { notFound: true };
   }
-  
-  if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
-    return { notFound: true };
-  }
-  
-  return { props: { group } };
+
+  return validateGroupProps({ params });
 }
 
 export default function ShoppingPage({ group }) {
@@ -126,15 +117,13 @@ export default function ShoppingPage({ group }) {
     }
   ];
 
+  const headingClass = getHeadingClass(group);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className="flex-1 relative bg-cream" style={group === 'bride' || group === 'groom' ? {
-        backgroundImage: "url('/blue-watercolor-bg.svg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}>
+      <main className="flex-1 relative bg-cream" style={getBackgroundStyle(group)}>
         <div
           className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm"
           aria-hidden="true"
@@ -156,7 +145,7 @@ export default function ShoppingPage({ group }) {
             <div className="flex justify-center mb-4">
               <ShoppingBag className="w-12 h-12 text-burgundy" />
             </div>
-            <h1 className={`${group === 'bride' ? 'text-4xl sm:text-5xl' : 'text-3xl'} font-serif text-navy mb-4`}>Shopping Guide</h1>
+            <h1 className={`${headingClass} font-serif text-navy mb-4`}>Shopping Guide</h1>
             <p className="text-navy/70 max-w-2xl mx-auto">
               Find the perfect outfits for Aastha & Preetesh's wedding celebration! 
               From local stores in Indore to online shopping and rental options.

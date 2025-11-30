@@ -30,13 +30,13 @@ export default function HomePage() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
 
-        <div className="flex flex-col min-h-screen pt-8">
+        <div className="flex flex-col min-h-screen">
           <Navbar currentGroup={access} />
 
           <div className="flex-grow">
             {/* Mobile/Tablet: single-column, centered welcome */}
             <section
-              className="md:hidden px-4 py-12"
+              className="md:hidden px-4 pt-24 pb-12"
               style={{
                 backgroundImage: "url('/blue-watercolor-bg.svg')",
                 backgroundSize: 'cover',
@@ -47,7 +47,7 @@ export default function HomePage() {
                 <img
                   src="/hero-image.svg"
                   alt="Aastha & Preetesh"
-                  className="mx-auto mb-8 w-full max-w-sm drop-shadow-xl"
+                  className="mx-auto mb-8 w-full max-w-md drop-shadow-xl"
                 />
 
                 <img
@@ -150,19 +150,21 @@ export default function HomePage() {
                   >
                     View Events
                   </a>
-                  <a
-                    href={`/${access}/family`}
-                    className="inline-block px-6 py-3 min-h-[44px] bg-sky-600 text-white rounded-full shadow-lg hover:bg-sky-700 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
-                  >
-                    Hosts & Family
-                  </a>
+                  {access === 'bride' && (
+                    <a
+                      href={`/${access}/family`}
+                      className="inline-block px-6 py-3 min-h-[44px] bg-sky-600 text-white rounded-full shadow-lg hover:bg-sky-700 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
+                    >
+                      Hosts & Family
+                    </a>
+                  )}
                 </div>
               </div>
             </section>
 
             {/* Desktop: two-column welcome with vertical centering */}
             <section
-              className="hidden md:block px-8 py-16"
+              className="hidden md:block px-8 pt-24 pb-16"
               style={{
                 backgroundImage: "url('/blue-watercolor-bg.svg')",
                 backgroundSize: 'cover',
@@ -272,12 +274,14 @@ export default function HomePage() {
                     >
                       View Events
                     </a>
-                    <a
-                      href={`/${access}/family`}
-                      className="inline-block px-6 py-3 min-h-[44px] bg-sky-600 text-white rounded-full shadow-lg hover:bg-sky-700 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
-                    >
-                      Hosts & Family
-                    </a>
+                    {access === 'bride' && (
+                      <a
+                        href={`/${access}/family`}
+                        className="inline-block px-6 py-3 min-h-[44px] bg-sky-600 text-white rounded-full shadow-lg hover:bg-sky-700 hover:scale-105 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
+                      >
+                        Hosts & Family
+                      </a>
+                    )}
                   </div>
                 </div>
 
@@ -286,7 +290,7 @@ export default function HomePage() {
                   <img
                     src="/hero-image.svg"
                     alt="Aastha & Preetesh"
-                    className="w-full max-w-[380px] h-auto drop-shadow-xl"
+                    className="w-full max-w-[480px] h-auto drop-shadow-xl"
                   />
                 </div>
               </div>

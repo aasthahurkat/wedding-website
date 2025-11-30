@@ -4,22 +4,11 @@ import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
-import { ACCESS_GROUPS } from '../../../data/accessGroups';
+import { isBrideTheme, getBackgroundStyle, getHeadingClass } from '../../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group?.toLowerCase() || '';
-  if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
-    return { notFound: true };
-  }
-  return { props: { group } };
-}
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
 function RSVPPage({ group }) {
   const router = useRouter();
@@ -76,20 +65,18 @@ function RSVPPage({ group }) {
     }
   };
 
+  const headingClass = getHeadingClass(group);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className="flex-1 bg-cream pt-24 pb-12" style={group === 'bride' ? {
-        backgroundImage: "url('/blue-watercolor-bg.svg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}>
+      <main className="flex-1 bg-cream pt-24 pb-12" style={getBackgroundStyle(group)}>
         <div className="max-w-2xl mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-8">
             <Heart className="w-8 h-8 text-burgundy mx-auto mb-4" />
-            <h1 className="text-3xl sm:text-4xl font-serif text-navy mb-4">RSVP</h1>
+            <h1 className={`${headingClass} font-serif text-navy mb-4`}>RSVP</h1>
             <p className="text-navy/70">
               Please let us know if you'll be joining us for our special day
             </p>

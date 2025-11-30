@@ -2,31 +2,20 @@ import React, { useState } from 'react';
 import { MapPin, ChevronDown, Plane, Smartphone, Home, Shield } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
+import { isBrideTheme, getBackgroundStyle, getHeadingClass } from '../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group?.toLowerCase();
-  if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
-    return { notFound: true };
-  }
-  return { props: { group } };
-}
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
 export default function TravelPage({ group }) {
   const [selected, setSelected] = useState('visitors');
   const [openSections, setOpenSections] = useState({});
   const title = `Travel & Logistics`;
-  
+
   // Only show Goa trip for friends and invitees, not guests
   const showGoaTrip = group !== 'guests';
-  const headingClass = group === 'bride' || group === 'groom' ? 'text-4xl sm:text-5xl' : 'text-3xl';
+  const headingClass = getHeadingClass(group);
   
   const toggleSection = (sectionKey) => {
     setOpenSections(prev => ({
@@ -102,11 +91,7 @@ export default function TravelPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className="flex-1 bg-cream pt-24 pb-12 px-4" style={group === 'bride' || group === 'groom' ? {
-        backgroundImage: "url('/blue-watercolor-bg.svg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}>
+      <main className="flex-1 bg-cream pt-24 pb-12 px-4" style={getBackgroundStyle(group)}>
         <div className="max-w-4xl mx-auto">
           
           {/* Header */}

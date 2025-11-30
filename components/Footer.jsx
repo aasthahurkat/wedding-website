@@ -1,15 +1,16 @@
 // components/Footer.jsx
+import { isBrideTheme, getTheme } from '../lib/theme';
+
 export default function Footer({ variant, currentGroup }) {
   const normalizedGroup = (currentGroup || '').toLowerCase();
   const computedVariant =
     variant ??
-    (normalizedGroup === 'bride' || normalizedGroup === 'groom' ? 'bride' : 'default');
+    (isBrideTheme(normalizedGroup) ? 'bride' : 'default');
 
   const isBride = computedVariant === 'bride';
-  const backgroundClass = isBride ? 'bg-sky-600 text-white' : 'bg-primary text-cream';
-  const linkClass = isBride
-    ? 'underline decoration-white/80 hover:decoration-white'
-    : 'underline';
+  const theme = getTheme(isBride ? 'bride' : 'default');
+  const backgroundClass = theme.footerBackground;
+  const linkClass = theme.footerLink;
 
   return (
     <footer

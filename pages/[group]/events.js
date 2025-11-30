@@ -3,117 +3,41 @@ import Image from 'next/image';
 import { Clock, MapPin, Download, Sparkles } from 'lucide-react';
 import React, { useState, useMemo, useCallback } from 'react';
 import { events } from '../../data/events';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { getTheme, isBrideTheme, getBackgroundStyle } from '../../lib/theme';
+import {
+  getEventTitle,
+  getEventDescription,
+  getEventLocation,
+  getEventMapQuery,
+  getEventTime,
+  getEventImage,
+} from '../../lib/eventHelpers';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
 // Lazy load jsPDF only when needed for better initial page load
 const loadJsPDF = () => import('jspdf');
 
-// Helper function to get the appropriate description based on user group
-const getEventDescription = (event, userGroup) => {
-  if (typeof event.description === 'string') {
-    return event.description;
-  } else if (typeof event.description === 'object' && event.description[userGroup]) {
-    return event.description[userGroup];
-  }
-  return event.description?.FRIENDS || event.description?.BRIDE || event.description?.GROOM || '';
-};
+export const getStaticPaths = createGroupPaths;
 
-// Helper function to get the appropriate title based on user group
-const getEventTitle = (event, userGroup) => {
-  if (typeof event.title === 'string') {
-    return event.title;
-  } else if (typeof event.title === 'object' && event.title[userGroup]) {
-    return event.title[userGroup];
-  }
-  return event.title?.FRIENDS || event.title?.BRIDE || event.title?.GROOM || '';
-};
-
-const getEventImage = (event, userGroup) => {
-  if (typeof event.image === 'string') {
-    return event.image;
-  }
-  if (typeof event.image === 'object' && event.image !== null) {
-    return event.image[userGroup] || event.image.FRIENDS || event.image.BRIDE || event.image.GROOM;
-  }
-  return event.id;
-};
-
-// Helper function to get the appropriate location based on user group
-const getEventLocation = (event, userGroup) => {
-  if (typeof event.location === 'string') {
-    return event.location;
-  } else if (typeof event.location === 'object' && event.location[userGroup]) {
-    return event.location[userGroup];
-  }
-  return event.location?.FRIENDS || event.location?.BRIDE || event.location?.GROOM || '';
-};
-
-// Helper function to get the appropriate map query based on user group
-const getEventMapQuery = (event, userGroup) => {
-  if (typeof event.mapQuery === 'string') {
-    return event.mapQuery;
-  } else if (typeof event.mapQuery === 'object' && event.mapQuery[userGroup]) {
-    return event.mapQuery[userGroup];
-  }
-  return event.mapQuery?.FRIENDS || event.mapQuery?.BRIDE || event.mapQuery?.GROOM || '';
-};
-
-// Helper function to get the appropriate time based on user group
-const getEventTime = (event, userGroup) => {
-  if (typeof event.time === 'string') {
-    return event.time;
-  } else if (typeof event.time === 'object' && event.time[userGroup]) {
-    return event.time[userGroup];
-  }
-  return event.time?.FRIENDS || event.time?.BRIDE || event.time?.GROOM || '';
-};
-
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group.toLowerCase();
-  const valid = ACCESS_GROUPS.map((g) => g.key.toLowerCase());
-  if (!valid.includes(group)) return { notFound: true };
-  return { props: { group } };
-}
+export const getStaticProps = validateGroupProps;
 
 export default function EventsPage({ group }) {
   const upper = group.toUpperCase();
-  const isBride = upper === 'BRIDE' || upper === 'GROOM';
-  const theme = isBride
-    ? {
-        pageBackground: 'bg-sky-50',
-        overlay: 'bg-sky-100/50',
-        accentText: 'text-sky-700',
-        buttonBase:
-          'inline-block px-6 py-3 min-h-[48px] bg-sky-600 text-white rounded-lg hover:bg-sky-700 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2',
-        iconColor: 'text-sky-600',
-        iconGlow: 'bg-sky-400',
-        dividerLeft: 'bg-gradient-to-r from-transparent to-sky-200',
-        dividerRight: 'bg-gradient-to-l from-transparent to-sky-200',
-        dividerDot: 'bg-sky-300',
-      }
-    : {
-        pageBackground: 'bg-cream',
-        overlay: 'bg-white bg-opacity-30',
-        accentText: 'text-burgundy',
-        buttonBase:
-          'inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2',
-        iconColor: 'text-burgundy',
-        iconGlow: 'bg-burgundy',
-        dividerLeft: 'bg-transparent',
-        dividerRight: 'bg-transparent',
-        dividerDot: 'bg-transparent',
-      };
+  const isBride = isBrideTheme(group);
+  const theme = getTheme(group);
   const headingClass = isBride ? 'text-4xl sm:text-5xl tracking-wide' : 'text-2xl sm:text-3xl';
+
+  // Add event-specific theme properties
+  const eventTheme = {
+    ...theme,
+    iconGlow: isBride ? 'bg-sky-400' : 'bg-burgundy',
+    dividerLeft: isBride ? 'bg-gradient-to-r from-transparent to-sky-200' : 'bg-transparent',
+    dividerRight: isBride ? 'bg-gradient-to-l from-transparent to-sky-200' : 'bg-transparent',
+    dividerDot: isBride ? 'bg-sky-300' : 'bg-transparent',
+  };
   
   // Memoize filtered events to prevent unnecessary recalculations
   const myEvents = useMemo(() => 
@@ -332,11 +256,7 @@ export default function EventsPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className={`flex-1 relative ${isBride ? '' : theme.pageBackground}`} style={isBride ? {
-        backgroundImage: "url('/blue-watercolor-bg.svg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}>
+      <main className={`flex-1 relative ${isBride ? '' : theme.pageBackground}`} style={getBackgroundStyle(group)}>
         {!isBride && (
           <div
             className={`absolute inset-0 backdrop-blur-sm ${theme.overlay}`}
@@ -347,8 +267,8 @@ export default function EventsPage({ group }) {
           {isBride && (
             <div className="flex justify-center mt-4 mb-3">
               <div className="relative">
-                <Sparkles className={`h-10 w-10 ${theme.iconColor}`} />
-                <div className={`absolute inset-0 blur-xl opacity-20 ${theme.iconGlow}`}></div>
+                <Sparkles className={`h-10 w-10 ${eventTheme.iconColor}`} />
+                <div className={`absolute inset-0 blur-xl opacity-20 ${eventTheme.iconGlow}`}></div>
               </div>
             </div>
           )}

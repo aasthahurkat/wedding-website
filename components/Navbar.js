@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NAV_ITEMS } from '../data/navItems';
 import { useState, useEffect, useMemo } from 'react';
+import { getTheme } from '../lib/theme';
 
 export default function Navbar({ currentGroup }) {
   const { asPath, query } = useRouter();
@@ -11,31 +12,7 @@ export default function Navbar({ currentGroup }) {
   );
   const [open, setOpen] = useState(false);
 
-  const theme = useMemo(() => {
-    if (groupParam === 'bride' || groupParam === 'groom') {
-      return {
-        navBackground: 'bg-sky-100/90',
-        mobileBackground: 'bg-sky-100/95',
-        linkText: 'text-sky-900',
-        linkHover: 'hover:text-sky-700 hover:bg-sky-50',
-        activeText: 'text-sky-700',
-        activeBorder: 'border-sky-700',
-        hamburgerBar: 'bg-sky-600',
-        focusRing: 'focus:ring-sky-500',
-      };
-    }
-
-    return {
-      navBackground: 'bg-ivory/90',
-      mobileBackground: 'bg-ivory/95',
-      linkText: 'text-card-black',
-      linkHover: 'hover:text-primary hover:bg-neutral/50',
-      activeText: 'text-secondary',
-      activeBorder: 'border-secondary',
-      hamburgerBar: 'bg-primary',
-      focusRing: 'focus:ring-primary',
-    };
-  }, [groupParam]);
+  const theme = useMemo(() => getTheme(groupParam), [groupParam]);
 
   // Close mobile menu when scrolling
   useEffect(() => {

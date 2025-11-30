@@ -3,22 +3,11 @@ import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp, Calendar, Gift, Home, Crown, Camera } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
+import { isBrideTheme, getBackgroundStyle, getHeadingClass } from '../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group?.toLowerCase() || '';
-  if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
-    return { notFound: true };
-  }
-  return { props: { group } };
-}
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
 const CATEGORY_ICONS = {
   rsvp: Calendar,
@@ -108,7 +97,7 @@ function CategorySection({ title, category, children, description, styles }) {
 
 export default function FAQPage({ group }) {
   const [openIndex, setOpenIndex] = useState(null);
-  const isBride = group === 'bride' || group === 'groom';
+  const isBride = isBrideTheme(group);
   const theme = isBride
     ? {
         mainBackground: 'bg-sky-50',
@@ -137,7 +126,7 @@ export default function FAQPage({ group }) {
         linkClass: 'text-burgundy',
       };
   const categoryStyles = getCategoryStyles(isBride);
-  const headingClass = isBride ? 'text-4xl sm:text-5xl' : 'text-3xl';
+  const headingClass = getHeadingClass(group);
   const accentLinkClassBold = `${theme.linkClass} hover:underline font-medium`;
   const accentLinkClass = `${theme.linkClass} hover:underline`;
 
@@ -368,11 +357,7 @@ export default function FAQPage({ group }) {
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className={`flex-1 pt-24 pb-12 px-4 ${isBride ? '' : theme.mainBackground}`} style={isBride ? {
-        backgroundImage: "url('/blue-watercolor-bg.svg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}>
+      <main className={`flex-1 pt-24 pb-12 px-4 ${isBride ? '' : theme.mainBackground}`} style={getBackgroundStyle(group)}>
         {/* CONSISTENT WIDTH CONTAINER */}
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -409,8 +394,8 @@ export default function FAQPage({ group }) {
 
             {/* Lodging (hidden for Invitees) */}
             {group !== 'invitees' && (
-              <CategorySection 
-                title="Lodging" 
+              <CategorySection
+                title="Lodging"
                 category="lodging"
                 styles={categoryStyles}
               >
@@ -420,6 +405,7 @@ export default function FAQPage({ group }) {
                     question={faq.question}
                     isOpen={openIndex === faq.id}
                     onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                    theme={theme}
                   >
                     {faq.content}
                   </FAQItem>

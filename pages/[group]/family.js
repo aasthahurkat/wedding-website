@@ -3,27 +3,12 @@ import Image from 'next/image';
 import { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
 import { Heart, Users, Sparkles, Feather, Scroll, Gem, Home, ChevronDown } from 'lucide-react';
+import { isBrideTheme, getTheme, getBackgroundStyle } from '../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group.toLowerCase();
-  const isValid = ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group);
-  if (!isValid) {
-    return { notFound: true };
-  }
-
-  return {
-    props: { group },
-  };
-}
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
 const FAMILY_CONTENT = {
   bride: {
@@ -170,48 +155,31 @@ function normalizeEntry(entry) {
 export default function FamilyPage({ group }) {
   const content = FAMILY_CONTENT[group] || FAMILY_CONTENT.default;
   const HeroIcon = content.heroIcon || Heart;
-  const isBride = group === 'bride' || group === 'groom';
-  const theme = isBride
-    ? {
-        pageBackground: 'bg-sky-50',
-        heroLine: 'bg-gradient-to-r from-transparent via-sky-300 to-transparent opacity-60',
-        heroIcon: 'text-sky-600',
-        heroGlow: 'bg-sky-400',
-        sectionChip: 'bg-white/70 rounded-full border border-sky-200 shadow-sm',
-        sectionIcon: 'text-sky-600',
-        heroDividerLeft: 'bg-gradient-to-r from-transparent to-sky-200',
-        heroDividerRight: 'bg-gradient-to-l from-transparent to-sky-200',
-        heroDot: 'bg-sky-300',
-        cardBorder: 'border-sky-200',
-        labelDivider: 'border-sky-200',
-        labelAccent: 'bg-gradient-to-r from-sky-300 to-transparent',
-        labelText: 'text-sky-700',
-        bullet: 'text-sky-400',
-        nameHover: 'group-hover:text-sky-600',
-        closingLineLeft: 'bg-gradient-to-r from-transparent to-sky-300',
-        closingLineRight: 'bg-gradient-to-l from-transparent to-sky-300',
-        closingDot: 'bg-sky-400',
-      }
-    : {
-        pageBackground: 'bg-cream',
-        heroLine: 'bg-gradient-to-r from-transparent via-gold to-transparent opacity-40',
-        heroIcon: 'text-burgundy',
-        heroGlow: 'bg-burgundy',
-        sectionChip: 'bg-white/60 rounded-full border border-burgundy/10 shadow-sm',
-        sectionIcon: 'text-burgundy',
-        heroDividerLeft: 'bg-gradient-to-r from-transparent to-gold/40',
-        heroDividerRight: 'bg-gradient-to-l from-transparent to-gold/40',
-        heroDot: 'bg-gold/60',
-        cardBorder: 'border-burgundy/10',
-        labelDivider: 'border-gold/20',
-        labelAccent: 'bg-gradient-to-r from-gold/60 to-transparent',
-        labelText: 'text-burgundy/70',
-        bullet: 'text-gold/60',
-        nameHover: 'group-hover:text-burgundy',
-        closingLineLeft: 'bg-gradient-to-r from-transparent to-gold/40',
-        closingLineRight: 'bg-gradient-to-l from-transparent to-gold/40',
-        closingDot: 'bg-gold/60',
-      };
+  const isBride = isBrideTheme(group);
+  const baseTheme = getTheme(group);
+
+  // Extended theme with family-specific properties
+  const theme = {
+    ...baseTheme,
+    pageBackground: isBride ? 'bg-sky-50' : 'bg-cream',
+    heroLine: isBride ? 'bg-gradient-to-r from-transparent via-sky-300 to-transparent opacity-60' : 'bg-gradient-to-r from-transparent via-gold to-transparent opacity-40',
+    heroIcon: isBride ? 'text-sky-600' : 'text-burgundy',
+    heroGlow: isBride ? 'bg-sky-400' : 'bg-burgundy',
+    sectionChip: isBride ? 'bg-white/70 rounded-full border border-sky-200 shadow-sm' : 'bg-white/60 rounded-full border border-burgundy/10 shadow-sm',
+    sectionIcon: isBride ? 'text-sky-600' : 'text-burgundy',
+    heroDividerLeft: isBride ? 'bg-gradient-to-r from-transparent to-sky-200' : 'bg-gradient-to-r from-transparent to-gold/40',
+    heroDividerRight: isBride ? 'bg-gradient-to-l from-transparent to-sky-200' : 'bg-gradient-to-l from-transparent to-gold/40',
+    heroDot: isBride ? 'bg-sky-300' : 'bg-gold/60',
+    cardBorder: isBride ? 'border-sky-200' : 'border-burgundy/10',
+    labelDivider: isBride ? 'border-sky-200' : 'border-gold/20',
+    labelAccent: isBride ? 'bg-gradient-to-r from-sky-300 to-transparent' : 'bg-gradient-to-r from-gold/60 to-transparent',
+    labelText: isBride ? 'text-sky-700' : 'text-burgundy/70',
+    bullet: isBride ? 'text-sky-400' : 'text-gold/60',
+    nameHover: isBride ? 'group-hover:text-sky-600' : 'group-hover:text-burgundy',
+    closingLineLeft: isBride ? 'bg-gradient-to-r from-transparent to-sky-300' : 'bg-gradient-to-r from-transparent to-gold/40',
+    closingLineRight: isBride ? 'bg-gradient-to-l from-transparent to-sky-300' : 'bg-gradient-to-l from-transparent to-gold/40',
+    closingDot: isBride ? 'bg-sky-400' : 'bg-gold/60',
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -219,11 +187,7 @@ export default function FamilyPage({ group }) {
         <title>Family | Aastha &amp; Preetesh</title>
       </Head>
       <Navbar currentGroup={group} />
-      <main className={`flex-1 pt-24 pb-12 px-4 ${isBride ? '' : theme.pageBackground}`} style={isBride ? {
-        backgroundImage: "url('/blue-watercolor-bg.svg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}>
+      <main className={`flex-1 pt-24 pb-12 px-4 ${isBride ? '' : theme.pageBackground}`} style={getBackgroundStyle(group)}>
         <div className="mx-auto max-w-4xl">
           {/* Header with decorative elements */}
           <section className="text-center mb-16 relative">

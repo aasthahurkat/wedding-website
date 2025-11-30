@@ -1,43 +1,16 @@
 // pages/[group]/outfits.js
 import { useRouter } from 'next/router';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
 import { events } from '../../data/events';
 import { Crown, Sparkles, Camera, Clock, Palette, Lightbulb, ShoppingBag } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import React from 'react'; // Added for React.useMemo
+import React from 'react';
+import { getTheme, isBrideTheme, getBackgroundStyle } from '../../lib/theme';
+import { getEventTitle, getEventDescription } from '../../lib/eventHelpers';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({
-      params: { group: g.key.toLowerCase() },
-    })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group.toLowerCase();
-  if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
-    return { notFound: true };
-  }
-  return { props: { group } };
-}
-
-// Helper functions for event data
-const getEventTitle = (event, userGroup) => {
-  if (typeof event.title === 'string') {
-    return event.title;
-  }
-  return event.title[userGroup] || event.title.FRIENDS || event.title.BRIDE || event.title.GROOM;
-};
-
-const getEventDescription = (event, userGroup) => {
-  if (typeof event.description === 'string') {
-    return event.description;
-  }
-  return event.description[userGroup] || event.description.FRIENDS || event.description.BRIDE || event.description.GROOM;
-};
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
 // Event-specific background colors based on their color palettes
 const defaultEventCardClasses = {
@@ -126,20 +99,8 @@ export default function OutfitsPage({ group }) {
   const router = useRouter();
   const current = group || router.query.group;
   const upperGroup = current.toUpperCase();
-  const isBride = upperGroup === 'BRIDE' || upperGroup === 'GROOM';
-  const theme = isBride
-    ? {
-        pageBackground: 'bg-sky-50',
-        overlay: 'bg-sky-100/50',
-        heroIcon: 'text-sky-600',
-        cardHighlight: 'bg-sky-50/70',
-      }
-    : {
-        pageBackground: 'bg-cream',
-        overlay: 'bg-white bg-opacity-30',
-        heroIcon: 'text-burgundy',
-        cardHighlight: 'bg-neutral/5',
-      };
+  const isBride = isBrideTheme(current);
+  const theme = getTheme(current);
   const cardShadowClass = isBride ? 'border shadow-md hover:shadow-lg' : 'shadow-lg hover:shadow-xl';
   const headingClass = isBride ? 'text-4xl sm:text-5xl' : 'text-2xl sm:text-3xl';
 
@@ -235,11 +196,7 @@ export default function OutfitsPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={current} />
-      <main className={`flex-1 relative ${isBride ? '' : theme.pageBackground}`} style={isBride ? {
-        backgroundImage: "url('/blue-watercolor-bg.svg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}>
+      <main className={`flex-1 relative ${isBride ? '' : theme.pageBackground}`} style={getBackgroundStyle(current)}>
         {/* Custom CSS for animations */}
         <style jsx>{`
           @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
