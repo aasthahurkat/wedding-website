@@ -1,9 +1,10 @@
 /* styles/globals.css */
 
-/* 1) Font loading  
+/* 1) Font loading
    — For best performance, move these to <Head> as <link rel="preconnect"> + <link href="…">, but kept here for simplicity */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Great+Vibes&display=swap');
 
 /* 2) Tailwind directives */
 @tailwind base;
@@ -22,6 +23,22 @@
   font-family: 'DIN Condensed';
   src: url('/fonts/din-condensed-bold.ttf') format('truetype');
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AMS Aaditya';
+  src: url('/fonts/AMS%20Aaditya%20Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Prida02Calt';
+  src: url('/fonts/Prida02Calt.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -152,6 +169,29 @@
   }
   .event-meta {
     @apply text-base font-bold text-black flex items-center space-x-1;
+  }
+
+  .font-ams-aditya {
+    font-family: var(--font-amita), 'AMS Aaditya', serif;
+  }
+
+  .font-prida {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+  }
+
+  .font-crimson {
+    font-family: 'Crimson Text', serif;
+    font-weight: 600;
+  }
+
+  .font-baskerville {
+    font-family: 'Libre Baskerville', serif;
+  }
+
+  .font-great-vibes {
+    font-family: 'Great Vibes', cursive;
+    font-weight: 400;
   }
 
   .perspective {

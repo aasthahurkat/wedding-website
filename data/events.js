@@ -12,8 +12,16 @@ export const events = [
     date: '2025-12-22',
     time: '12 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
-    location: 'TBD',
-    mapQuery: 'Indore',
+    location: {
+      BRIDE: 'Daga Farmhouse',
+      GROOM: 'Adinath Bagh',
+      FRIENDS: 'Daga Farmhouse'
+    },
+    mapQuery: {
+      BRIDE: 'Leeds Enclave, Indore',
+      GROOM: 'Adinath Bagh, Indore',
+      FRIENDS: 'Leeds Enclave, Indore'
+    },
     description: {
       BRIDE: 'मेहंदी की रस्म के साथ शादी का शगुन सजने जा रहा है। इस शुभ अवसर पर आप सभी का आशीर्वाद और साथ बहुत ज़रूरी है। आइए, मिलकर इस दिन को खुशियों के रंग से भर दें।',
       GROOM: 'मेहंदी की रस्म के साथ शादी का शगुन सजने जा रहा है। इस शुभ अवसर पर आप सभी का आशीर्वाद और साथ बहुत ज़रूरी है। आइए, मिलकर इस दिन को खुशियों के रंग से भर दें।',
@@ -31,13 +39,19 @@ export const events = [
     },
     title: {
       BRIDE: 'Mayra',
-      GROOM: 'Mayra Ceremony', 
+      GROOM: 'Mayra Ceremony',
       FRIENDS: 'Mayra & Mixer Hour',
       INVITEES: 'Mayra & Mixer Hour',
       GUESTS: 'Mayra & Mixer Hour'
     },
     date: '2025-12-23',
-    time: '10:30 AM onwards',
+    time: {
+      BRIDE: '1 PM onwards',
+      GROOM: '10:30 AM onwards',
+      FRIENDS: '10:30 AM onwards',
+      INVITEES: '10:30 AM onwards',
+      GUESTS: '10:30 AM onwards'
+    },
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS', 'INVITEES', 'GUESTS'],
     location: 'Anandam Banquet Hall',
     mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
@@ -60,7 +74,7 @@ export const events = [
     },
     title: 'Sangeet',
     date: '2025-12-23',
-    time: '7 PM onwards',
+    time: '6:30 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS', 'INVITEES', 'GUESTS'],
     location: 'Anandam Lawn',
     mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
@@ -78,7 +92,7 @@ export const events = [
     image: 'baraat-bride',
     title: 'Baraat Welcome',
     date: '2025-12-24',
-    time: '10 AM onwards',
+    time: '11:30 AM onwards',
     allowedGroups: ['BRIDE'],
     location: 'Anandam Lawn',
     mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
@@ -95,7 +109,12 @@ export const events = [
     },
     title: 'Baraat',
     date: '2025-12-24',
-    time: '10 AM onwards',
+    time: {
+      GROOM: '9 AM onwards',
+      FRIENDS: '10 AM onwards',
+      INVITEES: '10 AM onwards',
+      GUESTS: '10 AM onwards'
+    },
     allowedGroups: ['GROOM', 'FRIENDS', 'INVITEES', 'GUESTS'],
     location: 'Anandam Lawn',
     mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',

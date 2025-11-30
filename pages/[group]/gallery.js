@@ -1,25 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
 import { Heart, Download, Camera, ChevronLeft, ChevronRight, X, ExternalLink, Upload, Check, ZoomIn, Info, AlertCircle } from 'lucide-react';
 import { isHEICFile, getHEICMessage } from '../../utils/imageConverter';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { isBrideTheme, getBackgroundStyle, getHeadingClass } from '../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group.toLowerCase();
-  const valid = ACCESS_GROUPS.map((g) => g.key.toLowerCase());
-  if (!valid.includes(group)) return { notFound: true };
-  return { props: { group } };
-}
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
 export default function GalleryPage({ group }) {
   const router = useRouter();
@@ -33,6 +23,9 @@ export default function GalleryPage({ group }) {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [uploadMessage, setUploadMessage] = useState('');
   const [imageLoading, setImageLoading] = useState(false);
+  const isBride = isBrideTheme(group);
+  const themed = (brideClass, defaultClass) => (isBride ? brideClass : defaultClass);
+  const headingClass = getHeadingClass(group);
   
   // Filtering state removed - no longer filtering by events
   
@@ -294,22 +287,39 @@ export default function GalleryPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      <main className="flex-1 relative bg-cream">
-        <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm" />
+      <main className={`flex-1 relative ${isBride ? '' : 'bg-cream'}`} style={getBackgroundStyle(group)}>
+        {!isBride && (
+          <div className={`absolute inset-0 backdrop-blur-sm ${themed('bg-sky-100/50', 'bg-white bg-opacity-30')}`} />
+        )}
         <div className="relative z-10 pt-24 pb-12 px-4 max-w-7xl mx-auto">
           
           {/* Page Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-serif text-navy mb-4">
+            {isBride && (
+              <div className="flex justify-center mt-2 mb-4">
+                <div className="relative">
+                  <Camera className="w-10 h-10 text-sky-600" />
+                  <div className="absolute inset-0 blur-xl opacity-20 bg-sky-300"></div>
+                </div>
+              </div>
+            )}
+            <h1 className={`${headingClass} font-serif text-navy mb-4`}>
               Wedding Memories
             </h1>
+            {isBride && (
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-12 h-px bg-gradient-to-r from-transparent to-sky-200"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-sky-300"></div>
+                <div className="w-12 h-px bg-gradient-to-l from-transparent to-sky-200"></div>
+              </div>
+            )}
             <p className="text-lg text-navy/80 max-w-2xl mx-auto">
               Share your favorite moments from our special day! Browse memories and add your photos.
             </p>
           </div>
             
           {/* Share Your Photos Section */}
-            <div className="mb-6 bg-burgundy/5 rounded-lg p-4 max-w-3xl mx-auto">
+            <div className={`mb-6 rounded-lg p-4 max-w-3xl mx-auto ${themed('bg-sky-100/60', 'bg-burgundy/5')}`}>
               <div className="text-center">
                 <p className="text-navy/80 text-sm mb-3">
                   <strong>📸 Share Your Photos:</strong>
@@ -328,7 +338,7 @@ export default function GalleryPage({ group }) {
               
               {/* Gallery Upload Button */}
             {isChampion && (
-              <label className="inline-flex items-center px-6 py-3 bg-burgundy text-ivory rounded-lg cursor-pointer hover:bg-burgundy/90 transition-colors text-sm font-medium shadow-sm">
+                    <label className={`inline-flex items-center px-6 py-3 rounded-lg cursor-pointer transition-colors text-sm font-medium shadow-sm ${themed('bg-sky-600 text-white hover:bg-sky-700', 'bg-burgundy text-ivory hover:bg-burgundy/90')}`}>
                 <Upload className="w-4 h-4 mr-2" />
                 {uploading ? 'Uploading...' : 'Add Photos to Gallery'}
                 <input
@@ -356,8 +366,8 @@ export default function GalleryPage({ group }) {
 
           {/* Upload Progress */}
           {uploading && (
-            <div className="flex items-center justify-center gap-2 text-burgundy mb-6">
-              <div className="w-4 h-4 border-2 border-burgundy/30 border-t-burgundy rounded-full animate-spin"></div>
+            <div className={`flex items-center justify-center gap-2 mb-6 ${themed('text-sky-600', 'text-burgundy')}`}>
+              <div className={`w-4 h-4 border-2 rounded-full animate-spin ${themed('border-sky-400/30 border-t-sky-600', 'border-burgundy/30 border-t-burgundy')}`}></div>
               <span>Adding your photos...</span>
             </div>
           )}
@@ -393,10 +403,10 @@ export default function GalleryPage({ group }) {
                   >
                     {photo.url?.toLowerCase().includes('.heic') ? (
                       // HEIC files are not supported by browsers - show conversion message
-                      <div className="w-full h-full bg-burgundy/10 flex flex-col items-center justify-center text-center p-4">
-                        <Camera className="w-8 h-8 text-burgundy/60 mb-2" />
-                        <p className="text-xs text-burgundy/80 mb-1 font-medium">HEIC Photo</p>
-                        <p className="text-xs text-burgundy/60">Tap to view</p>
+                      <div className={`w-full h-full flex flex-col items-center justify-center text-center p-4 ${themed('bg-sky-100/70', 'bg-burgundy/10')}`}>
+                        <Camera className={`w-8 h-8 mb-2 ${themed('text-sky-600/70', 'text-burgundy/60')}`} />
+                        <p className={`text-xs mb-1 font-medium ${themed('text-sky-700/80', 'text-burgundy/80')}`}>HEIC Photo</p>
+                        <p className={`text-xs ${themed('text-sky-600/70', 'text-burgundy/60')}`}>Tap to view</p>
                       </div>
                     ) : (
                       <Image
@@ -418,19 +428,19 @@ export default function GalleryPage({ group }) {
                     
                     {/* Error fallback for non-HEIC images */}
                     <div 
-                      className="w-full h-full bg-burgundy/10 flex flex-col items-center justify-center text-center p-4" 
+                      className={`w-full h-full flex flex-col items-center justify-center text-center p-4 ${themed('bg-sky-100/70', 'bg-burgundy/10')}`} 
                       style={{ display: 'none' }}
                     >
-                      <AlertCircle className="w-8 h-8 text-burgundy/60 mb-2" />
-                      <p className="text-xs text-burgundy/80 mb-1 font-medium">Image Error</p>
-                      <p className="text-xs text-burgundy/60">Format not supported</p>
+                      <AlertCircle className={`w-8 h-8 mb-2 ${themed('text-sky-600/70', 'text-burgundy/60')}`} />
+                      <p className={`text-xs mb-1 font-medium ${themed('text-sky-700/80', 'text-burgundy/80')}`}>Image Error</p>
+                      <p className={`text-xs ${themed('text-sky-600/70', 'text-burgundy/60')}`}>Format not supported</p>
                     </div>
                       
                       {/* Hover Overlay */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
                         <div className="opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
                           <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                            <ZoomIn className="w-6 h-6 text-burgundy" />
+                            <ZoomIn className={`w-6 h-6 ${themed('text-sky-600', 'text-burgundy')}`} />
                           </div>
                         </div>
                       </div>
@@ -445,7 +455,7 @@ export default function GalleryPage({ group }) {
                   <button
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
-                    className="flex items-center px-6 py-3 bg-burgundy text-ivory rounded-full disabled:bg-gray-300 disabled:text-gray-500 transition-all duration-200 hover:bg-burgundy/90 hover:scale-105 disabled:hover:scale-100 shadow-lg"
+                    className={`flex items-center px-6 py-3 rounded-full disabled:bg-gray-300 disabled:text-gray-500 transition-all duration-200 hover:scale-105 disabled:hover:scale-100 shadow-lg ${themed('bg-sky-600 text-white hover:bg-sky-700', 'bg-burgundy text-ivory hover:bg-burgundy/90')}`}
                   >
                     <ChevronLeft className="w-4 h-4 mr-2" />
                     Previous
@@ -458,8 +468,8 @@ export default function GalleryPage({ group }) {
                         onClick={() => setCurrentPage(i + 1)}
                         className={`w-10 h-10 rounded-full transition-all duration-200 ${
                           currentPage === i + 1
-                            ? 'bg-burgundy text-ivory shadow-lg scale-110'
-                            : 'bg-burgundy/20 text-burgundy hover:bg-burgundy/30 hover:scale-105'
+                            ? themed('bg-sky-600 text-white shadow-lg scale-110', 'bg-burgundy text-ivory shadow-lg scale-110')
+                            : themed('bg-sky-100 text-sky-700 hover:bg-sky-200 hover:scale-105', 'bg-burgundy/20 text-burgundy hover:bg-burgundy/30 hover:scale-105')
                         }`}
                       >
                         {i + 1}
@@ -470,7 +480,7 @@ export default function GalleryPage({ group }) {
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
-                    className="flex items-center px-6 py-3 bg-burgundy text-ivory rounded-full disabled:bg-gray-300 disabled:text-gray-500 transition-all duration-200 hover:bg-burgundy/90 hover:scale-105 disabled:hover:scale-100 shadow-lg"
+                    className={`flex items-center px-6 py-3 rounded-full disabled:bg-gray-300 disabled:text-gray-500 transition-all duration-200 hover:scale-105 disabled:hover:scale-100 shadow-lg ${themed('bg-sky-600 text-white hover:bg-sky-700', 'bg-burgundy text-ivory hover:bg-burgundy/90')}`}
                   >
                     Next
                     <ChevronRight className="w-4 h-4 ml-2" />
@@ -484,8 +494,8 @@ export default function GalleryPage({ group }) {
           {loading && (
             <div className="flex flex-col items-center justify-center py-20">
               <div className="relative mb-6">
-                <div className="w-16 h-16 border-4 border-burgundy/20 border-t-burgundy rounded-full animate-spin"></div>
-                <Camera className="w-6 h-6 text-burgundy absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                <div className={`w-16 h-16 border-4 rounded-full animate-spin ${themed('border-sky-300/40 border-t-sky-600', 'border-burgundy/20 border-t-burgundy')}`}></div>
+                <Camera className={`w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${themed('text-sky-600', 'text-burgundy')}`} />
               </div>
               <h3 className="text-xl font-serif text-navy mb-2">Loading photos...</h3>
               <p className="text-navy/60 text-center max-w-md">Getting everything ready for you</p>
@@ -496,7 +506,7 @@ export default function GalleryPage({ group }) {
           {!loading && photos.length === 0 && (
             <div className="text-center py-20">
               <div className="mb-6">
-                <Heart className="w-20 h-20 text-burgundy/30 mx-auto mb-4" />
+                <Heart className={`w-20 h-20 mx-auto mb-4 ${themed('text-sky-500/30', 'text-burgundy/30')}`} />
               </div>
               <h3 className="text-2xl font-serif text-navy mb-4">Photos Coming Soon</h3>
               <p className="text-navy/70 mb-6 max-w-md mx-auto leading-relaxed">
@@ -506,7 +516,7 @@ export default function GalleryPage({ group }) {
                 }
               </p>
               {isChampion && (
-                <p className="text-burgundy/80 text-sm">
+                <p className={`${themed('text-sky-700/80', 'text-burgundy/80')} text-sm`}>
                   Use the "Add Photos" button above to get started ✨
                 </p>
               )}
@@ -624,7 +634,7 @@ export default function GalleryPage({ group }) {
                       </p>
                       <button
                         onClick={() => downloadPhoto(selectedPhoto)}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-burgundy hover:bg-burgundy/90 text-white rounded-full transition-all duration-200 hover:scale-105"
+                        className={`inline-flex items-center gap-2 px-6 py-3 text-white rounded-full transition-all duration-200 hover:scale-105 ${themed('bg-sky-600 hover:bg-sky-700', 'bg-burgundy hover:bg-burgundy/90')}`}
                       >
                         <Download className="w-4 h-4" />
                         Download Original
@@ -687,7 +697,7 @@ export default function GalleryPage({ group }) {
           )}
         </div>
       </main>
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }

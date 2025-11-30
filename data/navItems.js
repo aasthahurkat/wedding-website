@@ -20,6 +20,13 @@ export const NAV_ITEMS = [
     href: '/[group]/outfits',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS', 'INVITEES', 'GUESTS'],
   },
+  // Bride-specific family tab
+  {
+    key: 'family',
+    label: 'Family',
+    href: '/[group]/family',
+    allowedGroups: ['BRIDE'],
+  },
   //friends and invitees - action items
   {
     key: 'rsvp',

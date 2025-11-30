@@ -3,71 +3,70 @@ import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp, Calendar, Gift, Home, Crown, Camera } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
+import { isBrideTheme, getBackgroundStyle, getHeadingClass } from '../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
-export async function getStaticProps({ params }) {
-  const group = params.group?.toLowerCase() || '';
-  if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
-    return { notFound: true };
-  }
-  return { props: { group } };
-}
+const CATEGORY_ICONS = {
+  rsvp: Calendar,
+  lodging: Home,
+  events: Calendar,
+  dressCode: Crown,
+  gifts: Gift,
+  photos: Camera,
+};
 
-// Simple category styling - just for headers
-const categoryStyles = {
-  rsvp: {
-    headerColor: 'text-purple-700',
-    icon: Calendar,
-  },
-  lodging: {
-    headerColor: 'text-blue-700',
-    icon: Home,
-  },
-  events: {
-    headerColor: 'text-amber-700',
-    icon: Calendar,
-  },
-  dressCode: {
-    headerColor: 'text-pink-700',
-    icon: Crown,
-  },
-  gifts: {
-    headerColor: 'text-emerald-700',
-    icon: Gift,
-  },
-  photos: {
-    headerColor: 'text-pink-700',
-    icon: Camera,
-  }
+const DEFAULT_CATEGORY_COLORS = {
+  rsvp: 'text-purple-700',
+  lodging: 'text-blue-700',
+  events: 'text-amber-700',
+  dressCode: 'text-pink-700',
+  gifts: 'text-emerald-700',
+  photos: 'text-pink-700',
+};
+
+const BRIDE_CATEGORY_COLORS = {
+  rsvp: 'text-sky-800',
+  lodging: 'text-sky-700',
+  events: 'text-sky-600',
+  dressCode: 'text-sky-700',
+  gifts: 'text-sky-700',
+  photos: 'text-sky-700',
+};
+
+const getCategoryStyles = (isBride) => {
+  const palette = isBride ? BRIDE_CATEGORY_COLORS : DEFAULT_CATEGORY_COLORS;
+  return Object.entries(CATEGORY_ICONS).reduce((acc, [key, Icon]) => {
+    acc[key] = {
+      headerColor: palette[key],
+      icon: Icon,
+    };
+    return acc;
+  }, {});
 };
 
 // Simple FAQ Item component
-function FAQItem({ question, children, isOpen, onToggle }) {
+function FAQItem({ question, children, isOpen, onToggle, theme }) {
   return (
-    <div className="bg-ivory/50 rounded-lg mb-4 border border-neutral/20 shadow-sm hover:shadow-md transition-shadow">
+    <div className={`rounded-lg mb-4 shadow-sm hover:shadow-md transition-shadow ${theme.cardClass}`}>
       <button
         onClick={onToggle}
-        className="w-full text-left p-4 flex justify-between items-center font-semibold text-navy hover:text-burgundy transition-colors"
+        className={`w-full text-left p-4 flex justify-between items-center font-semibold transition-colors ${theme.questionText} ${theme.questionHover}`}
         aria-expanded={isOpen}
       >
         <span className="pr-4">{question}</span>
         <div className="flex-shrink-0">
           {isOpen ? (
-            <ChevronUp className="w-5 h-5 text-burgundy transition-transform duration-200" />
+            <ChevronUp className={`w-5 h-5 transition-transform duration-200 ${theme.iconOpen}`} />
           ) : (
-            <ChevronDown className="w-5 h-5 text-navy transition-transform duration-200" />
+            <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${theme.iconClosed}`} />
           )}
         </div>
       </button>
       {isOpen && (
-        <div className="px-4 pb-4 text-navy/80 leading-relaxed border-t border-neutral/10 pt-3 mt-1">
+        <div className={`px-4 pb-4 leading-relaxed border-t pt-3 mt-1 ${theme.answerText} ${theme.answerBorder}`}>
           {children}
         </div>
       )}
@@ -76,8 +75,8 @@ function FAQItem({ question, children, isOpen, onToggle }) {
 }
 
 // Simple Category Section component
-function CategorySection({ title, category, children, description }) {
-  const style = categoryStyles[category];
+function CategorySection({ title, category, children, description, styles }) {
+  const style = styles[category];
   const IconComponent = style.icon;
   
   return (
@@ -98,6 +97,38 @@ function CategorySection({ title, category, children, description }) {
 
 export default function FAQPage({ group }) {
   const [openIndex, setOpenIndex] = useState(null);
+  const isBride = isBrideTheme(group);
+  const theme = isBride
+    ? {
+        mainBackground: 'bg-sky-50',
+        sectionBorder: 'border-l-2 border-sky-200',
+        headerIcon: 'text-sky-600',
+        cardClass: 'bg-white/70 border border-sky-200',
+        questionText: 'text-sky-900',
+        questionHover: 'hover:text-sky-700',
+        iconOpen: 'text-sky-600',
+        iconClosed: 'text-sky-500',
+        answerText: 'text-sky-900/80',
+        answerBorder: 'border-sky-100',
+        linkClass: 'text-sky-700',
+      }
+    : {
+        mainBackground: 'bg-cream',
+        sectionBorder: 'border-l-2 border-burgundy',
+        headerIcon: 'text-burgundy',
+        cardClass: 'bg-ivory/50 border border-neutral/20',
+        questionText: 'text-navy',
+        questionHover: 'hover:text-burgundy',
+        iconOpen: 'text-burgundy',
+        iconClosed: 'text-navy',
+        answerText: 'text-navy/80',
+        answerBorder: 'border-neutral/10',
+        linkClass: 'text-burgundy',
+      };
+  const categoryStyles = getCategoryStyles(isBride);
+  const headingClass = getHeadingClass(group);
+  const accentLinkClassBold = `${theme.linkClass} hover:underline font-medium`;
+  const accentLinkClass = `${theme.linkClass} hover:underline`;
 
   const allFAQs = [
     // RSVP & Invitations
@@ -138,7 +169,7 @@ export default function FAQPage({ group }) {
             href="https://www.shreemaya.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-burgundy hover:underline font-medium"
+            className={accentLinkClassBold}
           >
             Hotel Shreemaya
           </a>{' '}
@@ -147,7 +178,7 @@ export default function FAQPage({ group }) {
             href="https://www.lemontreehotels.com/lemon-tree-hotel/indore/hotel-indore"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-burgundy hover:underline font-medium"
+            className={accentLinkClassBold}
           >
             Lemon Tree Hotel
           </a>
@@ -169,7 +200,7 @@ export default function FAQPage({ group }) {
               href="https://www.google.com/maps/place/Shri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust/@22.6420739,75.8978692,17z/data=!4m17!1m10!3m9!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!2sShri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust!8m2!3d22.64203!4d75.8978915!10e5!14m1!1BCgIYEw!16s%2Fg%2F11h3l5csyj!3m5!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!8m2!3d22.64203!4d75.8978915!16s%2Fg%2F11h3l5csyj?entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-burgundy hover:underline"
+              className={accentLinkClass}
             >
               Shri Anandam, Maheshwari Jankalyan Trust
             </a>. For exact dates and times, check out our Events page.</>
@@ -179,7 +210,7 @@ export default function FAQPage({ group }) {
               href="https://www.google.com/maps/place/Shri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust/@22.6420739,75.8978692,17z/data=!4m17!1m10!3m9!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!2sShri+Anandam+Pro.+Shri+Maheshwari+Jankalyan+Trust!8m2!3d22.64203!4d75.8978915!10e5!14m1!1BCgIYEw!16s%2Fg%2F11h3l5csyj!3m5!1s0x3962fb1e3f28ceff:0x16945c477d0fa625!8m2!3d22.64203!4d75.8978915!16s%2Fg%2F11h3l5csyj?entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-burgundy hover:underline"
+              className={accentLinkClass}
             >
               Shri Anandam, Maheshwari Jankalyan Trust
             </a>
@@ -199,7 +230,7 @@ export default function FAQPage({ group }) {
           We will have information on our{' '}
           <a
             href={`/${group}/outfits`}
-            className="text-burgundy hover:underline font-medium"
+            className={accentLinkClassBold}
           >
             Outfits page
           </a>
@@ -325,27 +356,28 @@ export default function FAQPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      
-      <main className="flex-1 bg-cream pt-24 pb-12 px-4">
+
+      <main className={`flex-1 pt-24 pb-12 px-4 ${isBride ? '' : theme.mainBackground}`} style={getBackgroundStyle(group)}>
         {/* CONSISTENT WIDTH CONTAINER */}
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
             <div className="flex justify-center mb-4">
-              <HelpCircle className="w-8 h-8 text-burgundy" />
+              <HelpCircle className={`w-8 h-8 ${theme.headerIcon}`} />
             </div>
-            <h1 className="text-3xl font-serif text-navy mb-4">Frequently Asked Questions</h1>
+            <h1 className={`${headingClass} font-serif text-navy mb-4`}>Frequently Asked Questions</h1>
             <p className="text-navy/70 max-w-2xl mx-auto">
               Here you'll find answers to the questions we get asked the most about the event and
               RSVP. If your question isn't here, just reach out — we're always happy to help!
             </p>
           </div>
 
-          <div className="border-l-2 border-burgundy pl-6 space-y-8">
+          <div className={`pl-6 space-y-8 ${theme.sectionBorder}`}>
             {/* RSVP & Invitations */}
             <CategorySection 
               title="RSVP & Invitations" 
               category="rsvp"
+              styles={categoryStyles}
             >
               {faqsByCategory.rsvp.map((faq) => (
                 <FAQItem
@@ -353,6 +385,7 @@ export default function FAQPage({ group }) {
                   question={faq.question}
                   isOpen={openIndex === faq.id}
                   onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                  theme={theme}
                 >
                   {faq.content}
                 </FAQItem>
@@ -361,9 +394,10 @@ export default function FAQPage({ group }) {
 
             {/* Lodging (hidden for Invitees) */}
             {group !== 'invitees' && (
-              <CategorySection 
-                title="Lodging" 
+              <CategorySection
+                title="Lodging"
                 category="lodging"
+                styles={categoryStyles}
               >
                 {faqsByCategory.lodging.map((faq) => (
                   <FAQItem
@@ -371,6 +405,7 @@ export default function FAQPage({ group }) {
                     question={faq.question}
                     isOpen={openIndex === faq.id}
                     onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                    theme={theme}
                   >
                     {faq.content}
                   </FAQItem>
@@ -382,6 +417,7 @@ export default function FAQPage({ group }) {
             <CategorySection 
               title="Event Timeline & Venues" 
               category="events"
+              styles={categoryStyles}
             >
               {faqsByCategory.events.map((faq) => (
                 <FAQItem
@@ -389,6 +425,7 @@ export default function FAQPage({ group }) {
                   question={faq.question}
                   isOpen={openIndex === faq.id}
                   onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                  theme={theme}
                 >
                   {faq.content}
                 </FAQItem>
@@ -399,6 +436,7 @@ export default function FAQPage({ group }) {
             <CategorySection 
               title="Packing & Dress Code" 
               category="dressCode"
+              styles={categoryStyles}
             >
               {faqsByCategory.dressCode.map((faq) => (
                 <FAQItem
@@ -406,6 +444,7 @@ export default function FAQPage({ group }) {
                   question={faq.question}
                   isOpen={openIndex === faq.id}
                   onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                  theme={theme}
                 >
                   {faq.content}
                 </FAQItem>
@@ -416,6 +455,7 @@ export default function FAQPage({ group }) {
             <CategorySection 
               title="Gift Registry & Gifting" 
               category="gifts"
+              styles={categoryStyles}
             >
               {faqsByCategory.gifts.map((faq) => (
                 <FAQItem
@@ -423,6 +463,7 @@ export default function FAQPage({ group }) {
                   question={faq.question}
                   isOpen={openIndex === faq.id}
                   onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                  theme={theme}
                 >
                   {faq.content}
                 </FAQItem>
@@ -433,6 +474,7 @@ export default function FAQPage({ group }) {
             <CategorySection 
               title="Photo Sharing" 
               category="photos"
+              styles={categoryStyles}
             >
               {faqsByCategory.photos.map((faq) => (
                 <FAQItem
@@ -440,6 +482,7 @@ export default function FAQPage({ group }) {
                   question={faq.question}
                   isOpen={openIndex === faq.id}
                   onToggle={() => setOpenIndex(openIndex === faq.id ? null : faq.id)}
+                  theme={theme}
                 >
                   {faq.content}
                 </FAQItem>
@@ -449,10 +492,9 @@ export default function FAQPage({ group }) {
         </div>
       </main>
 
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }
 
 FAQPage.noLayout = true;
-

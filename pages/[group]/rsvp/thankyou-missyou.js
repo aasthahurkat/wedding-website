@@ -3,22 +3,24 @@ import Link from 'next/link';
 import { Heart, MessageCircleHeart, Camera } from 'lucide-react';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
+import { getBackgroundStyle, getHeadingClass } from '../../../lib/theme';
 
 export default function ThankYouMissYou() {
   const router = useRouter();
   const group = (router.query.group || 'friends').toLowerCase();
+  const headingClass = getHeadingClass(group);
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
 
-      <main className="flex-1 bg-cream pt-24 pb-12">
+      <main className="flex-1 bg-cream pt-24 pb-12" style={getBackgroundStyle(group)}>
         <div className="max-w-2xl mx-auto px-4 text-center">
           <div className="mb-6">
             <MessageCircleHeart className="w-8 h-8 text-burgundy mx-auto mb-4" />
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-serif text-navy mb-6">
+          <h1 className={`${headingClass} font-serif text-navy mb-6`}>
             We'll Miss You!
           </h1>
 
@@ -52,7 +54,7 @@ export default function ThankYouMissYou() {
         </div>
       </main>
 
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }

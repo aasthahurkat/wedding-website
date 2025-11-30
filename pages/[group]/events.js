@@ -1,62 +1,43 @@
 // File: pages/[group]/events.js
 import Image from 'next/image';
-import { Clock, MapPin, Download } from 'lucide-react';
+import { Clock, MapPin, Download, Sparkles } from 'lucide-react';
 import React, { useState, useMemo, useCallback } from 'react';
 import { events } from '../../data/events';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { getTheme, isBrideTheme, getBackgroundStyle } from '../../lib/theme';
+import {
+  getEventTitle,
+  getEventDescription,
+  getEventLocation,
+  getEventMapQuery,
+  getEventTime,
+  getEventImage,
+} from '../../lib/eventHelpers';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
 // Lazy load jsPDF only when needed for better initial page load
 const loadJsPDF = () => import('jspdf');
 
-// Helper function to get the appropriate description based on user group
-const getEventDescription = (event, userGroup) => {
-  if (typeof event.description === 'string') {
-    return event.description;
-  } else if (typeof event.description === 'object' && event.description[userGroup]) {
-    return event.description[userGroup];
-  }
-  return event.description?.FRIENDS || event.description?.BRIDE || event.description?.GROOM || '';
-};
+export const getStaticPaths = createGroupPaths;
 
-// Helper function to get the appropriate title based on user group
-const getEventTitle = (event, userGroup) => {
-  if (typeof event.title === 'string') {
-    return event.title;
-  } else if (typeof event.title === 'object' && event.title[userGroup]) {
-    return event.title[userGroup];
-  }
-  return event.title?.FRIENDS || event.title?.BRIDE || event.title?.GROOM || '';
-};
-
-const getEventImage = (event, userGroup) => {
-  if (typeof event.image === 'string') {
-    return event.image;
-  }
-  if (typeof event.image === 'object' && event.image !== null) {
-    return event.image[userGroup] || event.image.FRIENDS || event.image.BRIDE || event.image.GROOM;
-  }
-  return event.id;
-};
-
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group.toLowerCase();
-  const valid = ACCESS_GROUPS.map((g) => g.key.toLowerCase());
-  if (!valid.includes(group)) return { notFound: true };
-  return { props: { group } };
-}
+export const getStaticProps = validateGroupProps;
 
 export default function EventsPage({ group }) {
   const upper = group.toUpperCase();
+  const isBride = isBrideTheme(group);
+  const theme = getTheme(group);
+  const headingClass = isBride ? 'text-4xl sm:text-5xl tracking-wide' : 'text-2xl sm:text-3xl';
+
+  // Add event-specific theme properties
+  const eventTheme = {
+    ...theme,
+    iconGlow: isBride ? 'bg-sky-400' : 'bg-burgundy',
+    dividerLeft: isBride ? 'bg-gradient-to-r from-transparent to-sky-200' : 'bg-transparent',
+    dividerRight: isBride ? 'bg-gradient-to-l from-transparent to-sky-200' : 'bg-transparent',
+    dividerDot: isBride ? 'bg-sky-300' : 'bg-transparent',
+  };
   
   // Memoize filtered events to prevent unnecessary recalculations
   const myEvents = useMemo(() => 
@@ -236,19 +217,21 @@ export default function EventsPage({ group }) {
           const bottomY = yPosition + cardHeight - 7;
 
           // Time on left
-          if (evt.time) {
+          const eventTime = getEventTime(evt, upper);
+          if (eventTime) {
             pdf.setTextColor(...navy);
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
-            pdf.text(evt.time, margin + 10, bottomY);
+            pdf.text(eventTime, margin + 10, bottomY);
           }
 
           // Venue on right (with link if available)
-          if (evt.location) {
+          const eventLocation = getEventLocation(evt, upper);
+          if (eventLocation) {
             pdf.setTextColor(...navy);
             pdf.setFontSize(11);
             pdf.setFont('helvetica', 'normal');
-            const venueText = evt.location;
+            const venueText = eventLocation;
             const venueWidth = pdf.getTextWidth(venueText);
             pdf.text(venueText, pageWidth - margin - 10 - venueWidth, bottomY);
           }
@@ -272,20 +255,37 @@ export default function EventsPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      
-      <main className="flex-1 relative bg-cream">
-        <div
-          className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm"
-          aria-hidden="true"
-        />
+
+      <main className={`flex-1 relative ${isBride ? '' : theme.pageBackground}`} style={getBackgroundStyle(group)}>
+        {!isBride && (
+          <div
+            className={`absolute inset-0 backdrop-blur-sm ${theme.overlay}`}
+            aria-hidden="true"
+          />
+        )}
         <div className="relative z-10 pt-24 pb-12 px-4 max-w-7xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl font-serif text-center text-navy mb-2 capitalize">
+          {isBride && (
+            <div className="flex justify-center mt-4 mb-3">
+              <div className="relative">
+                <Sparkles className={`h-10 w-10 ${eventTheme.iconColor}`} />
+                <div className={`absolute inset-0 blur-xl opacity-20 ${eventTheme.iconGlow}`}></div>
+              </div>
+            </div>
+          )}
+          <h1 className={`${headingClass} font-serif text-center text-navy mb-4 capitalize`}>
             Wedding Festivities!
           </h1>
+          {isBride && (
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className={`w-12 h-px ${theme.dividerLeft}`}></div>
+              <div className={`w-1.5 h-1.5 rounded-full ${theme.dividerDot}`}></div>
+              <div className={`w-12 h-px ${theme.dividerRight}`}></div>
+            </div>
+          )}
           <p className="text-center text-navy/70 mb-4">
             Get ready to celebrate with us across multiple magical events! <br /> Below you will find
             the When and Where for each celebration— 
-            <span className="text-burgundy">
+            <span className={theme.accentText}>
                just tap to flip any plate
             </span>
              {' '}to dive into all the details.
@@ -304,7 +304,7 @@ export default function EventsPage({ group }) {
             {(upper === 'BRIDE' || upper === 'GROOM') && (
               <a
                 href={`/${group}/outfits`}
-                className="inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+                className={upper === 'BRIDE' || upper === 'GROOM' ? theme.buttonBase : 'inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2'}
               >
                 View outfit guide
               </a>
@@ -359,7 +359,7 @@ export default function EventsPage({ group }) {
           )}
         </div>
       </main>
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }
@@ -397,6 +397,11 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
     boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
   };
 
+  const isBrideCard = userGroup === 'BRIDE';
+  const iconColor = isBrideCard ? 'text-sky-600' : 'text-burgundy';
+  const linkColor = isBrideCard ? 'text-sky-700' : 'text-burgundy';
+  const backFaceBg = isBrideCard ? '#E6F0FB' : '#F7F2E9';
+
   return (
     <div
       className="w-full hover-hover:hover:scale-105 transition-transform duration-200"
@@ -420,30 +425,30 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
         </div>
 
         {/* Back Face */}
-        <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: '#F7F2E9' }}>
+        <div style={{ ...faceStyle, transform: 'rotateY(180deg)', backgroundColor: backFaceBg }}>
           <div className="relative h-full p-4 sm:p-6">
             <div className="flex flex-col justify-center h-full">
               <h3 className="text-lg sm:text-xl font-semibold text-navy mb-3">{getEventTitle(evt, userGroup)}</h3>
 
               {/* Time & Location Info */}
               <div className="space-y-2 mb-4 text-sm">
-                {evt.time && (
+                {getEventTime(evt, userGroup) && (
                   <div className="flex items-center gap-2 text-navy/90">
-                    <Clock className="w-4 h-4 text-burgundy flex-shrink-0" />
-                    <span className="font-medium">{evt.time}</span>
+                    <Clock className={`w-4 h-4 flex-shrink-0 ${iconColor}`} />
+                    <span className="font-medium">{getEventTime(evt, userGroup)}</span>
                   </div>
                 )}
-                {evt.location && (
+                {getEventLocation(evt, userGroup) && (
                   <div className="flex items-center gap-2 text-navy/90">
-                    <MapPin className="w-4 h-4 text-burgundy flex-shrink-0" />
+                    <MapPin className={`w-4 h-4 flex-shrink-0 ${iconColor}`} />
                     <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evt.mapQuery)}`}
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getEventMapQuery(evt, userGroup))}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="font-medium text-burgundy hover:underline"
+                      className={`font-medium hover:underline ${linkColor}`}
                     >
-                      {evt.location}
+                      {getEventLocation(evt, userGroup)}
                     </a>
                   </div>
                 )}

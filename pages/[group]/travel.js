@@ -2,30 +2,20 @@ import React, { useState } from 'react';
 import { MapPin, ChevronDown, Plane, Smartphone, Home, Shield } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { ACCESS_GROUPS } from '../../data/accessGroups';
+import { isBrideTheme, getBackgroundStyle, getHeadingClass } from '../../lib/theme';
+import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration';
 
-export async function getStaticPaths() {
-  return {
-    paths: ACCESS_GROUPS.map((g) => ({ params: { group: g.key.toLowerCase() } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const group = params.group?.toLowerCase();
-  if (!ACCESS_GROUPS.some((g) => g.key.toLowerCase() === group)) {
-    return { notFound: true };
-  }
-  return { props: { group } };
-}
+export const getStaticPaths = createGroupPaths;
+export const getStaticProps = validateGroupProps;
 
 export default function TravelPage({ group }) {
   const [selected, setSelected] = useState('visitors');
   const [openSections, setOpenSections] = useState({});
   const title = `Travel & Logistics`;
-  
+
   // Only show Goa trip for friends and invitees, not guests
   const showGoaTrip = group !== 'guests';
+  const headingClass = getHeadingClass(group);
   
   const toggleSection = (sectionKey) => {
     setOpenSections(prev => ({
@@ -100,8 +90,8 @@ export default function TravelPage({ group }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar currentGroup={group} />
-      
-      <main className="flex-1 bg-cream pt-24 pb-12 px-4">
+
+      <main className="flex-1 bg-cream pt-24 pb-12 px-4" style={getBackgroundStyle(group)}>
         <div className="max-w-4xl mx-auto">
           
           {/* Header */}
@@ -109,7 +99,7 @@ export default function TravelPage({ group }) {
             <div className="flex justify-center mb-4">
               <MapPin className="w-8 h-8 text-burgundy" />
             </div>
-            <h1 className="text-3xl font-serif text-navy mb-4">{title}</h1>
+            <h1 className={`${headingClass} font-serif text-navy mb-4`}>{title}</h1>
             <p className="text-navy/70 max-w-2xl mx-auto">
               Your complete guide to getting here, staying connected, and {showGoaTrip ? 'joining us in Goa' : 'making the most of Indore'}
             </p>
@@ -270,7 +260,7 @@ export default function TravelPage({ group }) {
         </div>
       </main>
 
-      <Footer />
+      <Footer currentGroup={group} />
     </div>
   );
 }
