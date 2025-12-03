@@ -8,7 +8,7 @@ export const events = [
       GROOM: 'mehndi-hindi',
       FRIENDS: 'mehndi-friends'
     },
-    title: 'Mehndi',
+    title: 'Mehendi',
     date: '2025-12-22',
     time: '12 PM onwards',
     allowedGroups: ['BRIDE', 'GROOM', 'FRIENDS'],
@@ -25,7 +25,7 @@ export const events = [
     description: {
       BRIDE: 'मेहंदी की रस्म के साथ शादी का शगुन सजने जा रहा है। इस शुभ अवसर पर आप सभी का आशीर्वाद और साथ बहुत ज़रूरी है। आइए, मिलकर इस दिन को खुशियों के रंग से भर दें।',
       GROOM: 'मेहंदी की रस्म के साथ शादी का शगुन सजने जा रहा है। इस शुभ अवसर पर आप सभी का आशीर्वाद और साथ बहुत ज़रूरी है। आइए, मिलकर इस दिन को खुशियों के रंग से भर दें।',
-      FRIENDS: "Join the celebrations! Whether you're joining the bride's mehndi ceremony or the groom's pre-wedding festivities, experience the beautiful tradition of henna designs with music, laughter, and celebration!"
+      FRIENDS: "Two celebrations happening! Bride's Mehendi at Daga Farmhouse and Groom's festivities at Adinath Bagh. Choose your vibe or hop between both!"
     }
   },
   {
@@ -97,7 +97,7 @@ export const events = [
     location: 'Anandam Lawn',
     mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     description:
-      "दूल्हे की भव्य बारात का स्वागत करने का समय आ गया है। आइए, पारंपरिक रीति-रिवाजों और उत्सव के साथ प्रीतेश का स्वागत करें।",
+      "दूल्हे की भव्य बारात का स्वागत करने का समय आ गया है। आइए, पारंपरिक रीति-रिवाजों और उत्सव के साथ प्रीतेश जी का स्वागत करें।",
   },
   {
     id: 'baraat',
@@ -156,23 +156,12 @@ export const events = [
     image: 'reception',
     title: 'Cocktails & Toasts - Friends Only!',
     date: '2025-12-24',
-    time: '7 PM onwards',
+    time: '8 PM onwards',
     allowedGroups: ['FRIENDS', 'INVITEES'],
     location: 'Anandam Lawn',
     mapQuery: 'Shri Anandam Pro. Shri Maheshwari Jankalyan Trust',
     outfits: ['Evening gown', 'Formal suit'],
     description:
       'A festive dinner and dance under the stars, complete with toasts, and a chance to celebrate with the newlyweds.',
-  },
-  {
-    id: 'after-party',
-    image: 'after-party',
-    title: 'After Party',
-    date: '2025-12-23',
-    time: 'TBD',
-    allowedGroups: ['FRIENDS'],
-    location: 'Anandam Banquet Hall',
-    mapQuery: 'Indore',
-    description: 'The party continues! An intimate late-night celebration for those who want to keep the energy going.',
   },
 ];

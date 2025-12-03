@@ -36,7 +36,7 @@ export default function HomePage() {
           <div className="flex-grow">
             {/* Mobile/Tablet: single-column, centered welcome */}
             <section
-              className="md:hidden px-4 pt-24 pb-12"
+              className="md:hidden px-4 pt-40 pb-12"
               style={{
                 backgroundImage: "url('/blue-watercolor-bg.svg')",
                 backgroundSize: 'cover',
@@ -164,7 +164,7 @@ export default function HomePage() {
 
             {/* Desktop: two-column welcome with vertical centering */}
             <section
-              className="hidden md:block px-8 pt-24 pb-16"
+              className="hidden md:block px-8 pt-32 pb-16"
               style={{
                 backgroundImage: "url('/blue-watercolor-bg.svg')",
                 backgroundSize: 'cover',

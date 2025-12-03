@@ -1,7 +1,7 @@
 // pages/[group]/outfits.js
 import { useRouter } from 'next/router';
 import { events } from '../../data/events';
-import { Crown, Sparkles, Camera, Clock, Palette, Lightbulb, ShoppingBag } from 'lucide-react';
+import { Crown, Sparkles, Camera, Clock, Palette, Lightbulb, ShoppingBag, Download } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import React from 'react';
@@ -48,6 +48,14 @@ const getEventCardClass = (eventId, isBride) => {
     return `bg-gradient-to-br ${gradient} backdrop-blur-sm`;
   }
   return defaultEventCardClasses[eventId] || 'bg-gradient-to-br from-ivory to-cream border-neutral/20';
+};
+
+// Group-specific outfit guide PDFs
+const OUTFIT_GUIDE_PDFS = {
+  BRIDE: '/outfit-guides/bride-outfit-guide.pdf',
+  GROOM: '/outfit-guides/groom-outfit-guide.pdf',
+  FRIENDS: '/outfit-guides/friends-outfit-guide.pdf',
+  // INVITEES and GUESTS don't have outfit guides
 };
 
 // Event-specific outfit recommendations
@@ -245,6 +253,24 @@ export default function OutfitsPage({ group }) {
                 When in doubt, wear something that makes you smile! ✨
               </p>
             </div>
+
+            {/* Download Outfit Guide Button */}
+            {OUTFIT_GUIDE_PDFS[upperGroup] && (
+              <div className="mt-6 flex justify-center">
+                <a
+                  href={OUTFIT_GUIDE_PDFS[upperGroup]}
+                  download
+                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                    isBride
+                      ? 'bg-sky-600 text-white hover:bg-sky-700 hover:scale-105 shadow-lg hover:shadow-xl'
+                      : 'bg-burgundy text-ivory hover:bg-burgundy/90 hover:scale-105 shadow-lg hover:shadow-xl'
+                  }`}
+                >
+                  <Download className="w-5 h-5" />
+                  Download Outfit Guide
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Event-Specific Outfit Cards */}
