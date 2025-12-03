@@ -1,7 +1,7 @@
 // File: pages/[group]/events.js
 import Image from 'next/image';
 import { Clock, MapPin, Download, Sparkles } from 'lucide-react';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { events } from '../../data/events';
 
 import Navbar from '../../components/Navbar';
@@ -19,6 +19,14 @@ import { createGroupPaths, validateGroupProps } from '../../lib/staticGeneration
 
 // Lazy load jsPDF only when needed for better initial page load
 const loadJsPDF = () => import('jspdf');
+
+// Group-specific schedule PDFs
+const SCHEDULE_PDFS = {
+  BRIDE: '/schedules/bride-schedule.pdf',
+  GROOM: '/schedules/groom-schedule.pdf',
+  FRIENDS: '/schedules/friends-schedule.pdf',
+  // INVITEES and GUESTS don't have pre-made schedules
+};
 
 export const getStaticPaths = createGroupPaths;
 
@@ -48,6 +56,27 @@ export default function EventsPage({ group }) {
   // Track which card is flipped
   const [flippedId, setFlippedId] = useState(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  // Auto-flip the first event card on page load
+  useEffect(() => {
+    if (myEvents.length > 0) {
+      const firstEventId = myEvents[0].id;
+      // Flip after a short delay
+      const flipTimer = setTimeout(() => {
+        setFlippedId(firstEventId);
+      }, 500);
+
+      // Flip back after 3 seconds
+      const flipBackTimer = setTimeout(() => {
+        setFlippedId(null);
+      }, 3500);
+
+      return () => {
+        clearTimeout(flipTimer);
+        clearTimeout(flipBackTimer);
+      };
+    }
+  }, [myEvents]);
 
   // Memoize grouped events to prevent recalculation on each render
   const { grouped, sortedDates } = useMemo(() => {
@@ -302,32 +331,57 @@ export default function EventsPage({ group }) {
             )}
 
             {(upper === 'BRIDE' || upper === 'GROOM') && (
-              <a
-                href={`/${group}/outfits`}
-                className={upper === 'BRIDE' || upper === 'GROOM' ? theme.buttonBase : 'inline-block px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2'}
-              >
-                View outfit guide
-              </a>
+              <>
+                <a
+                  href={`/${group}/outfits`}
+                  className={theme.buttonBase}
+                >
+                  View outfit guide
+                </a>
+                {SCHEDULE_PDFS[upper] && (
+                  <a
+                    href={SCHEDULE_PDFS[upper]}
+                    download
+                    className={theme.buttonBase + ' inline-flex items-center gap-2'}
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download Schedule</span>
+                  </a>
+                )}
+              </>
             )}
 
             {upper !== 'BRIDE' && upper !== 'GROOM' && (
-              <button
-                onClick={generatePDF}
-                disabled={isGeneratingPDF}
-                className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
-              >
-                {isGeneratingPDF ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ivory"></div>
-                    <span>Generating...</span>
-                  </>
-                ) : (
-                  <>
+              <>
+                {SCHEDULE_PDFS[upper] ? (
+                  <a
+                    href={SCHEDULE_PDFS[upper]}
+                    download
+                    className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2"
+                  >
                     <Download className="w-4 h-4" />
                     <span>Download Schedule</span>
-                  </>
+                  </a>
+                ) : (
+                  <button
+                    onClick={generatePDF}
+                    disabled={isGeneratingPDF}
+                    className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-burgundy text-ivory rounded-lg hover:bg-burgundy/90 hover:scale-105 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-burgundy focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
+                  >
+                    {isGeneratingPDF ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ivory"></div>
+                        <span>Generating...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-4 h-4" />
+                        <span>Download Schedule</span>
+                      </>
+                    )}
+                  </button>
                 )}
-              </button>
+              </>
             )}
           </div>
 
@@ -438,19 +492,55 @@ const EventCard = React.memo(({ evt, userGroup, isFlipped, onFlip }) => {
                     <span className="font-medium">{getEventTime(evt, userGroup)}</span>
                   </div>
                 )}
-                {getEventLocation(evt, userGroup) && (
-                  <div className="flex items-center gap-2 text-navy/90">
-                    <MapPin className={`w-4 h-4 flex-shrink-0 ${iconColor}`} />
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getEventMapQuery(evt, userGroup))}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className={`font-medium hover:underline ${linkColor}`}
-                    >
-                      {getEventLocation(evt, userGroup)}
-                    </a>
+                {/* Special handling for Mehndi event with FRIENDS group - show both locations */}
+                {evt.id === 'mehndi' && userGroup === 'FRIENDS' ? (
+                  <div className="space-y-1.5">
+                    <div className="flex items-start gap-2 text-navy/90">
+                      <MapPin className={`w-4 h-4 flex-shrink-0 mt-0.5 ${iconColor}`} />
+                      <div className="flex flex-wrap items-baseline gap-1">
+                        <span className="font-medium whitespace-nowrap">Bride's Mehndi:</span>
+                        <a
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evt.mapQuery.BRIDE)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className={`hover:underline ${linkColor}`}
+                        >
+                          {evt.location.BRIDE}
+                        </a>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 text-navy/90">
+                      <MapPin className={`w-4 h-4 flex-shrink-0 mt-0.5 ${iconColor}`} />
+                      <div className="flex flex-wrap items-baseline gap-1">
+                        <span className="font-medium whitespace-nowrap">Groom's Mehndi:</span>
+                        <a
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evt.mapQuery.GROOM)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className={`hover:underline ${linkColor}`}
+                        >
+                          {evt.location.GROOM}
+                        </a>
+                      </div>
+                    </div>
                   </div>
+                ) : (
+                  getEventLocation(evt, userGroup) && (
+                    <div className="flex items-center gap-2 text-navy/90">
+                      <MapPin className={`w-4 h-4 flex-shrink-0 ${iconColor}`} />
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getEventMapQuery(evt, userGroup))}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className={`font-medium hover:underline ${linkColor}`}
+                      >
+                        {getEventLocation(evt, userGroup)}
+                      </a>
+                    </div>
+                  )
                 )}
               </div>
 
