@@ -30,7 +30,7 @@ export default function Navbar({ currentGroup }) {
     <nav
       role="navigation"
       translate="no"
-      className={`fixed inset-x-0 top-0 backdrop-blur-sm shadow-card z-30 notranslate ${theme.navBackground}`}
+      className={`fixed inset-x-0 top-0 backdrop-blur-md shadow-md border-b border-black/5 z-30 notranslate ${theme.navBackground}`}
     >
       <div className="container flex items-center justify-between py-4">
         {/* Branding or Logo could go here if needed */}
